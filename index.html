@@ -5,10 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Inline style removed and added to external CSS for better organization */
+        .profile-picture {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            transition: width 0.5s ease, height 0.5s ease; /* Added transition for smooth resizing */
+        }
+
+        /* Additional styling for header */
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+    </style>
 </head>
 <body style="align-items: center;">
     <header style="align-items: center;">
-        <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
+        <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture" id="profile-picture">
         <h1 style="color: red; text-align: center;">Kamizan Amirudin</h1>
         <nav style="font-size: 100px; color: white;">
             <ul>
@@ -47,7 +62,22 @@
 
     <!-- You can add additional sections for skills, testimonials, etc. -->
 
-    <!-- You can link your JavaScript file here -->
-    <!-- <script src="script.js"></script> -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const profilePicture = document.getElementById('profile-picture');
+            const scrollPosition = window.scrollY;
+
+            // Calculate the new size based on scroll position
+            const newSize = 150 - (scrollPosition * 0.1); // Adjust the scroll effect speed here
+
+            // Limit the minimum size
+            const minSize = 50;
+            const newSizeLimited = Math.max(newSize, minSize);
+
+            // Set the new size
+            profilePicture.style.width = newSizeLimited + 'px';
+            profilePicture.style.height = newSizeLimited + 'px';
+        });
+    </script>
 </body>
 </html>
