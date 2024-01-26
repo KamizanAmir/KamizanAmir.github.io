@@ -5,6 +5,16 @@ body, h1, h2, h3, p, ul, li {
     font-family: Arial, Helvetica, sans-serif;
     color : red;
 }
+.profile-picture {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+header h1 {
+    text-align: center;
+    margin-top: 10px; /* Adjust margin as needed */
+}
 
 body {
     font-family: Arial, sans-serif;
