@@ -9,8 +9,11 @@ body, h1, h2, h3, p, ul, li {
 .profile-picture {
     display: block;
     margin: 0 auto;
-    border-radius: 50%; /* This makes the image round */
-    overflow: hidden; /* This ensures the image stays within the rounded border */
+    border-radius: 50%;
+    /* Ensure the image retains its aspect ratio */
+    width: 150px; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+    object-fit: cover;
 }
 
 
