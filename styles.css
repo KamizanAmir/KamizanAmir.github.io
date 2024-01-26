@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    transition: padding-top 0.5s ease; /* Add transition for smooth header resize */
 }
 
 header {
@@ -13,6 +14,7 @@ header {
     width: 100%;
     z-index: 1000;
     text-align: center;
+    transition: padding 0.5s ease; /* Add transition for smooth header resize */
 }
 
 .header-content {
