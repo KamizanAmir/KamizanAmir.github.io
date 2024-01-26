@@ -12,6 +12,9 @@
             margin: 0 auto;
             border-radius: 50%;
             transition: width 0.5s ease, height 0.5s ease; /* Added transition for smooth resizing */
+            max-width: 100%; /* Ensure the image doesn't exceed the viewport width */
+            width: 150px; /* Set an initial width */
+            height: auto; /* Maintain aspect ratio */
         }
 
         /* Additional styling for header */
@@ -24,7 +27,7 @@
 <body style="align-items: center;">
     <header style="align-items: center;">
         <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture" id="profile-picture">
-        <h1 style="color: red; text-align: center; font-size: 80px;">Kamizan Amirudin</h1>
+        <h1 style="color: red; text-align: center;">Kamizan Amirudin</h1>
         <nav style="font-size: 100px; color: white;">
             <ul>
                 <li><a href="#about">About | </a></li>
