@@ -1,7 +1,6 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    transition: padding-top 0.5s ease; /* Add transition for smooth header resize */
 }
 
 header {
@@ -11,7 +10,7 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100%; /* Make the header span the full width */
     z-index: 1000;
     text-align: center;
     transition: padding 0.5s ease; /* Add transition for smooth header resize */
@@ -19,9 +18,10 @@ header {
 
 .header-content {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between; /* Ensure items are spaced evenly */
     align-items: center;
-    padding-bottom: 20px;
+    max-width: 1200px; /* Limit the width of header content */
+    margin: 0 auto; /* Center the header content horizontally */
 }
 
 .profile-picture {
@@ -55,7 +55,7 @@ section {
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
     margin-top: 10px; /* Add margin to separate sections from each other */
-    opacity: 0; /* Initially hidden */
+    opacity: 1; /* Keep sections visible */
     transition: opacity 0.5s ease;
 }
 
