@@ -19,6 +19,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 20px;
 }
 
 .profile-picture {
@@ -51,6 +52,7 @@ section {
     padding: 20px;
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
+    margin-top: 10px; /* Add margin to separate sections from each other */
     opacity: 0; /* Initially hidden */
     transition: opacity 0.5s ease;
 }
