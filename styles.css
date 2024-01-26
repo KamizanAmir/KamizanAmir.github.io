@@ -12,22 +12,18 @@ header {
     left: 0;
     width: 100%;
     z-index: 1000;
-}
-
-.header-content {
-    display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 .profile-picture {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-right: 20px;
 }
 
 nav ul {
     list-style-type: none;
+    padding: 0;
 }
 
 nav ul li {
@@ -41,17 +37,15 @@ nav ul li a {
 }
 
 main {
-    padding-top: 150px; /* Adjust according to the height of header */
+    padding-top: 160px; /* Adjust according to the height of header */
 }
 
 section {
     padding: 20px;
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
-}
-
-section:last-child {
-    border-bottom: none;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s ease;
 }
 
 /* Styling for portfolio items */
@@ -63,14 +57,7 @@ section:last-child {
     margin-bottom: 5px;
 }
 
-/* Scroll reveal effect */
-.section-hidden {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s, transform 0.5s;
-}
-
-.section-reveal {
+/* Reveal sections when in viewport */
+.section-visible {
     opacity: 1;
-    transform: translateY(0);
 }
