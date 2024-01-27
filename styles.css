@@ -1,7 +1,7 @@
 header {
     background-color: #156583; /* Background color to blend in */
     color: #fff;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     text-align: center;
@@ -41,7 +41,7 @@ nav ul li a {
 }
 
 main {
-    padding-top: 250px; /* Adjust according to the height of header and profile picture */
+    padding-top: 0px; /* Adjust according to the height of header and profile picture */
 }
 
 section {
