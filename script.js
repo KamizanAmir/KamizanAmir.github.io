@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function adjustSectionPosition() {
     const about = document.getElementById('about');
+    const aboutTitle = document.querySelector('#about h2');
     const experience = document.getElementById('experience');
     const portfolio = document.getElementById('portfolio');
     const contact = document.getElementById('contact');
@@ -11,12 +12,13 @@ function adjustSectionPosition() {
     const scrollPosition = window.scrollY;
 
     if (scrollPosition < about.offsetTop) {
+        aboutTitle.style.position = 'static';
+    } else {
+        aboutTitle.style.position = 'fixed';
+    }
+
+    if (scrollPosition < experience.offsetTop) {
         about.style.position = 'static';
-        experience.style.position = 'static';
-        portfolio.style.position = 'static';
-        contact.style.position = 'static';
-    } else if (scrollPosition >= about.offsetTop && scrollPosition < experience.offsetTop) {
-        about.style.position = 'fixed';
         experience.style.position = 'static';
         portfolio.style.position = 'static';
         contact.style.position = 'static';
