@@ -9,6 +9,7 @@ header {
     align-items: center;
     justify-content: center;
     transition: padding 0.5s ease; /* Add transition for smooth header resize */
+    border-radius: 15px; /* Add rounded corners */
 }
 
 .header-content {
