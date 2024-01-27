@@ -55,23 +55,23 @@ section {
 }
 
 .portfolio-grid {
-    display: flex; /* Use flexbox layout */
-    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
-    overflow-x: auto; /* Add horizontal scroll if needed */
-    gap: 20px; /* Add space between items */
-    padding-bottom: 20px; /* Add some padding at the bottom */
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
 }
 
 .portfolio-item {
-    flex-shrink: 0; /* Prevent items from shrinking */
-    width: 300px; /* Fixed width for each portfolio item */
-    margin-right: 20px; /* Add space between items */
+    flex-shrink: 0;
+    width: 300px;
+    margin-right: 20px;
 }
 
 .project-image {
-    width: 100%; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 10px; /* Add space between images and project descriptions */
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
 }
 
 /* Reveal sections when in viewport */
