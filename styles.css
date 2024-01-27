@@ -4,7 +4,9 @@ header {
     position: fixed; /* Change position to fixed */
     top: 0;
     left: 0;
-    width: 100%;
+    width: calc(100% - 20px); /* Adjusted width to accommodate margin */
+    margin-left: 10px; /* Add space on the left */
+    margin-right: 10px; /* Add space on the right */
     text-align: center;
     align-items: center;
     justify-content: center;
