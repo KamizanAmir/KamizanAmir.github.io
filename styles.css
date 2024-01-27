@@ -49,6 +49,13 @@ nav ul li a {
     text-decoration: none;
 }
 
+/* Adjust padding-top for smaller screens */
+@media only screen and (max-width: 768px) {
+    main {
+        padding-top: 280px; /* Adjust according to the height of header and profile picture */
+    }
+}
+
 main {
     padding-top: 280px; /* Adjust according to the height of header and profile picture */
 }
