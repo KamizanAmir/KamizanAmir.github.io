@@ -1,22 +1,39 @@
 document.addEventListener('DOMContentLoaded', function() {
-    window.addEventListener('scroll', adjustHeaderSize);
+    window.addEventListener('scroll', adjustSectionPosition);
 });
 
-function adjustHeaderSize() {
-    const header = document.querySelector('header');
-    const profilePicture = document.querySelector('.profile-picture');
-    const headerHeight = header.offsetHeight;
-    const scrollTop = window.scrollY;
+function adjustSectionPosition() {
+    const about = document.getElementById('about');
+    const experience = document.getElementById('experience');
+    const portfolio = document.getElementById('portfolio');
+    const contact = document.getElementById('contact');
+    
+    const scrollPosition = window.scrollY;
 
-    if (scrollTop > headerHeight) {
-        header.style.paddingTop = '10px';
-        header.style.paddingBottom = '10px';
-        profilePicture.style.width = '100px'; // Adjust size as needed
-        profilePicture.style.height = '100px'; // Adjust size as needed
+    if (scrollPosition < about.offsetTop) {
+        about.style.position = 'static';
+        experience.style.position = 'static';
+        portfolio.style.position = 'static';
+        contact.style.position = 'static';
+    } else if (scrollPosition >= about.offsetTop && scrollPosition < experience.offsetTop) {
+        about.style.position = 'fixed';
+        experience.style.position = 'static';
+        portfolio.style.position = 'static';
+        contact.style.position = 'static';
+    } else if (scrollPosition >= experience.offsetTop && scrollPosition < portfolio.offsetTop) {
+        about.style.position = 'static';
+        experience.style.position = 'fixed';
+        portfolio.style.position = 'static';
+        contact.style.position = 'static';
+    } else if (scrollPosition >= portfolio.offsetTop && scrollPosition < contact.offsetTop) {
+        about.style.position = 'static';
+        experience.style.position = 'static';
+        portfolio.style.position = 'fixed';
+        contact.style.position = 'static';
     } else {
-        header.style.paddingTop = '20px';
-        header.style.paddingBottom = '20px';
-        profilePicture.style.width = '150px'; // Adjust size as needed
-        profilePicture.style.height = '150px'; // Adjust size as needed
+        about.style.position = 'static';
+        experience.style.position = 'static';
+        portfolio.style.position = 'static';
+        contact.style.position = 'fixed';
     }
 }

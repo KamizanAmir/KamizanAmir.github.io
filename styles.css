@@ -87,8 +87,9 @@ section {
     right: -10px; /* Adjust the position as needed */
     width: 1px; /* Width of the divider */
     height: 100%;
-    background-color: #ddd; /* Color of the divider */
+    background-color: black; /* Color of the divider */
 }
+
 .project-image {
     width: 100%;
     height: auto;
