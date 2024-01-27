@@ -54,6 +54,11 @@ nav ul li a {
     main {
         padding-top: 280px; /* Adjust according to the height of header and profile picture */
     }
+
+    /* Add top margin to about section */
+    #about {
+        margin-top: 300px; /* Adjust margin as needed */
+    }
 }
 
 main {
