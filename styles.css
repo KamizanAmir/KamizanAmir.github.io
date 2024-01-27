@@ -84,8 +84,8 @@ section {
     content: '';
     position: absolute;
     top: 0;
-    right: -10px; /* Adjust the position as needed */
-    width: 1px; /* Width of the divider */
+    right: -30px; /* Adjust the position as needed */
+    width: 10px; /* Width of the divider */
     height: 100%;
     background-color: black; /* Color of the divider */
 }
