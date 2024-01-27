@@ -56,27 +56,17 @@ section {
 }
 
 .portfolio-grid {
-    display: flex; /* Use flexbox layout */
-    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
-    overflow-x: auto; /* Add horizontal scroll if needed */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ensure the items are responsive and fill the space horizontally */
     gap: 20px; /* Add space between items */
+    overflow-x: auto; /* Add horizontal scroll if needed */
     padding-bottom: 20px; /* Add some padding at the bottom */
 }
 
 /* Ensure each portfolio item has a fixed width to maintain consistency */
 .portfolio-item {
-    width: 300px; /* Adjust the width as needed */
+    width: 100%; /* Ensure items occupy the full width of their grid cell */
     flex-shrink: 0; /* Prevent items from shrinking */
-    margin-right: 20px; /* Add space between items */
-}
-
-/* Optional: If you want the last item to have no margin-right */
-.portfolio-item:last-child {
-    margin-right: 0;
-}
-
-.portfolio-item h3 {
-    margin-bottom: 5px;
 }
 
 .project-image {
