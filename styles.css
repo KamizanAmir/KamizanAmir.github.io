@@ -1,17 +1,16 @@
 header {
     background-color: #156583;
     color: #fff;
-    position: fixed;
+    position: fixed; /* Change position to fixed */
+    top: 0;
     left: 0;
-    width: calc(100% - 20px); /* Adjusted width to accommodate margin */
-    margin-left: 10px; /* Add space on the left */
-    margin-right: 10px; /* Add space on the right */
+    width: 100%;
     text-align: center;
     align-items: center;
     justify-content: center;
     transition: padding 0.5s ease;
     border-radius: 15px;
-    z-index: 1000;
+    z-index: 1000; /* Ensure the header is above other content */
 }
 
 /* Ensure the header maintains its size when in fixed position */
@@ -49,20 +48,8 @@ nav ul li a {
     text-decoration: none;
 }
 
-/* Adjust padding-top for smaller screens */
-@media only screen and (max-width: 768px) {
-    main {
-        padding-top: 280px; /* Adjust according to the height of header and profile picture */
-    }
-
-    /* Add top margin to about section */
-    #about {
-        margin-top: 300px; /* Adjust margin as needed */
-    }
-}
-
 main {
-    padding-top: 280px; /* Adjust according to the height of header and profile picture */
+    padding-top: 250px; /* Adjust according to the height of header and profile picture */
 }
 
 section {
