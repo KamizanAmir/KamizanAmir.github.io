@@ -1,26 +1,34 @@
 header {
-    background-color: #156583; /* Background color to blend in */
+    background-color: #156583;
     color: #fff;
-    position: relative;
+    position: fixed; /* Change position to fixed */
     top: 0;
     left: 0;
+    width: 100%;
     text-align: center;
     align-items: center;
     justify-content: center;
-    transition: padding 0.5s ease; /* Add transition for smooth header resize */
-    border-radius: 15px; /* Add rounded corners */
+    transition: padding 0.5s ease;
+    border-radius: 15px;
+    z-index: 1000; /* Ensure the header is above other content */
+}
+
+/* Ensure the header maintains its size when in fixed position */
+header.header-fixed {
+    padding-top: 20px; /* Adjust padding as needed */
+    padding-bottom: 20px; /* Adjust padding as needed */
 }
 
 .header-content {
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    margin: 0 auto; /* Center the header content horizontally */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 .profile-picture {
-    width: 150px; /* Adjust size as needed */
-    height: 150px; /* Adjust size as needed */
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     margin-bottom: 10px;
 }
@@ -48,10 +56,10 @@ section {
     padding: 20px;
     background-color: #f9f9f9;
     border-bottom: 1px solid #ddd;
-    margin-top: 10px; /* Add margin to separate sections from each other */
-    opacity: 1; /* Keep sections visible */
+    margin-top: 10px;
+    opacity: 1;
     transition: opacity 0.5s ease;
-    border-radius: 15px; /* Add rounded corners */
+    border-radius: 15px;
 }
 
 .portfolio-grid {
