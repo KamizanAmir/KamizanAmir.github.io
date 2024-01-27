@@ -13,6 +13,8 @@ header {
     width: 100%; /* Make the header span the full width */
     /*z-index: 1000;*/
     text-align: center;
+    align-items: center;
+    justify-content: center;
     transition: padding 0.5s ease; /* Add transition for smooth header resize */
 }
 
