@@ -1,17 +1,10 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
 header {
     background-color: #333; /* Background color to blend in */
     color: #fff;
-    padding: 200px; /* This to change the range to the about section */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%; /* Make the header span the full width */
-    /*z-index: 1000;*/
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -25,6 +18,7 @@ header {
     justify-content: center; /* Center items vertically */
     max-width: 1200px; /* Limit the width of header content */
     margin: 0 auto; /* Center the header content horizontally */
+    padding: 20px; /* Add padding to the header content */
 }
 
 .profile-picture {
