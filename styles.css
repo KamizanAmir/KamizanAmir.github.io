@@ -55,20 +55,6 @@ main {
     padding-top: 320px; /* Adjust according to the height of header and profile picture */
 }
 
-.experience-item {
-    display: flex; /* Display items in a flex container */
-    align-items: baseline; /* Align items at the baseline */
-}
-
-.experience-item h3,
-.experience-item .experience-year {
-    margin-right: 10px; /* Add some space between elements */
-}
-
-.experience-item .experience-year {
-    font-weight: bold; /* Optionally make the year bold */
-}
-
 section {
     padding: 20px;
     background-color: #f9f9f9;
