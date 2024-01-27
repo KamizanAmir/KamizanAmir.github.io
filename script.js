@@ -9,14 +9,14 @@ function adjustHeaderSize() {
     const scrollTop = window.scrollY;
 
     if (scrollTop > headerHeight) {
-        header.style.paddingTop = '250px';
-        header.style.paddingBottom = '250px';
-        profilePicture.style.width = '250px'; // Adjust size as needed
-        profilePicture.style.height = '250px'; // Adjust size as needed
+        header.style.paddingTop = '10px';
+        header.style.paddingBottom = '10px';
+        profilePicture.style.width = '100px'; // Adjust size as needed
+        profilePicture.style.height = '100px'; // Adjust size as needed
     } else {
-        header.style.paddingTop = '500px';
-        header.style.paddingBottom = '500px';
-        profilePicture.style.width = '300px'; // Adjust size as needed
-        profilePicture.style.height = '300px'; // Adjust size as needed
+        header.style.paddingTop = '20px';
+        header.style.paddingBottom = '20px';
+        profilePicture.style.width = '150px'; // Adjust size as needed
+        profilePicture.style.height = '150px'; // Adjust size as needed
     }
 }
