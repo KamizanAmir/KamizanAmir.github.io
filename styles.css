@@ -77,8 +77,18 @@ section {
     flex-shrink: 0;
     width: 300px;
     margin-right: 20px;
+    position: relative; /* Add position relative */
 }
 
+.portfolio-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px; /* Adjust the position as needed */
+    width: 1px; /* Width of the divider */
+    height: 100%;
+    background-color: #ddd; /* Color of the divider */
+}
 .project-image {
     width: 100%;
     height: auto;
