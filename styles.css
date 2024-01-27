@@ -11,7 +11,7 @@ header {
     top: 0;
     left: 0;
     width: 100%; /* Make the header span the full width */
-    z-index: 1000;
+    /*z-index: 1000;*/
     text-align: center;
     transition: padding 0.5s ease; /* Add transition for smooth header resize */
 }
