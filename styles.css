@@ -70,6 +70,12 @@ section {
     margin-bottom: 5px;
 }
 
+.project-image {
+    width: 100%; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Add space between images and project descriptions */
+}
+
 /* Reveal sections when in viewport */
 .section-visible {
     opacity: 1;
