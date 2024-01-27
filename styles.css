@@ -85,7 +85,7 @@ section {
     position: absolute;
     top: 0;
     right: -30px; /* Adjust the position as needed */
-    width: 10px; /* Width of the divider */
+    width: 5px; /* Width of the divider */
     height: 100%;
     background-color: black; /* Color of the divider */
 }
