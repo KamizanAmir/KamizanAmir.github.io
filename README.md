@@ -1,2 +1,2 @@
 # kamizanamir.github.io
-My simple portfolio using laravel and bootstrap
+My simple portfolio using html and javascript and css
