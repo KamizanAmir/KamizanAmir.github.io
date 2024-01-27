@@ -20,7 +20,7 @@ header {
     display: flex;
     justify-content: space-between; /* Ensure items are spaced evenly */
     align-items: center;
-    max-width: 1200px; /* Limit the width of header content */
+    max-width: 500px; /* Limit the width of header content */
     margin: 0 auto; /* Center the header content horizontally */
 }
 
