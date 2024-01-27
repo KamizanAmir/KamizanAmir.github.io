@@ -4,9 +4,9 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #333; /* Background color to blend in */
     color: #fff;
-    padding: 20px;
+    padding: 200px; /* This to change the range to the about section */
     position: fixed;
     top: 0;
     left: 0;
