@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', adjustHeaderSize);
 });
-
 function adjustHeaderSize() {
     const header = document.querySelector('header');
     const profilePicture = document.querySelector('.profile-picture');

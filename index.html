@@ -8,7 +8,13 @@
     <link rel="icon" href="images/icon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
 </head>
-<body style="background-color: rgb(35, 162, 162);">
+<body>
+    <div id="fb-root"></div>
+    <script 
+        async defer crossorigin="anonymous" 
+        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787" 
+        nonce="BREqFWxC">
+    </script>
     <header style="background-color: #156583;">
         <div class="header-content">
             <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
@@ -252,18 +258,21 @@
             </div>
         </section>
         <section id="resume" style="text-align: left; background-color: #156583;">
-            <h2>End Of File (EOF)</h2>
-            <div style="text-align: center; align-items: left;">
-                <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <a href="resume/resume.pdf" download><img style="border-radius: 15px;" src="images/resume_icon.jpg" alt="Resume Icon" width="50" height="50"></a>
-                        <p>Download/View My Resume</p>
-                    </div>
-                    <div class="portfolio-item">
-                        <a href="resume/cv.docx" download><img style="border-radius: 15px;" src="images/cv_icon.jpg" alt="CV Icon" width="50" height="50"></a>
-                        <p>Download/View My CV</p>
-                    </div>
+            <h2 style="text-align: center; align-items: center;">End Of File (EOF)</h2>
+            <div class="portfolio-grid" style="display: flex; align-items: center; justify-content: center;">
+                <div class="portfolio-item" style="text-align: center;">
+                    <a href="resume/resume.pdf" download>
+                        <img style="border-radius: 15px;" src="images/resume_icon.jpg" alt="Resume Icon" width="50" height="50">
+                    </a>
+                    <p>Download/View My Resume</p>
                 </div>
+                <div class="portfolio-item" style="text-align: center;">
+                    <a href="resume/cv.docx" download>
+                        <img style="border-radius: 15px;" src="images/cv_icon.jpg" alt="CV Icon" width="50" height="50">
+                    </a>
+                    <p>Download/View My CV</p>
+                </div>
+            </div>                                    
         </section>
         <section id="contact" style="text-align: center; background-color: #156583;">      
             <h2>Contact</h2>
@@ -299,9 +308,12 @@
                     <p>Instagram : <a href="https://www.instagram.com/kamizanamir">kamizanamir</a></p>
                 </p>
             </div>
+            <div class="fb-comments" data-href="https://github.com/KamizanAmir/KamizanAmir.github.io/blob/main/index.html" data-width="" data-numposts="10"></div>
         </section>
-                     
-    </main>
+        <footer style="font-size:20px; background-color: #156583; align-items: center; text-align: center; border-radius: 30px;">
+            <p>&copy; 2024 Kamizan Amirudin. All rights reserved.</p>
+        </footer>             
+    </main>      
     <script src="script.js"></script>
 </body>
 </html>

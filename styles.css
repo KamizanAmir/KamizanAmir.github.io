@@ -14,6 +14,17 @@ header {
     z-index: 1000; /* Ensure the header is above other content */
 }
 
+button:hover, .button-class:hover {
+    background-color: #1282A2; /* Darker shade of the button color */
+    cursor: pointer;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
 /* Ensure the header maintains its size when in fixed position */
 header.header-fixed {
     padding-top: 20px; /* Adjust padding as needed */
@@ -49,6 +60,13 @@ nav ul li {
 nav ul li a {
     color: #fff;
     text-decoration: none;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* other styles */
 }
 
 main {
