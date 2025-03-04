@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
   function adjustHeaderSize() {
     const header = document.querySelector('header');
     const profilePicture = document.querySelector('.profile-picture');
-    const headerHeight = header.offsetHeight;
     const scrollTop = window.scrollY;
   
-    if (scrollTop > headerHeight) {
+    // Use a fixed threshold (e.g., 100px) instead of the dynamic header height.
+    if (scrollTop > 100) {
       header.style.height = '20vh';
       profilePicture.style.width = '80px';
       profilePicture.style.height = '80px';
@@ -35,5 +35,5 @@ document.addEventListener('DOMContentLoaded', function() {
       profilePicture.style.width = '150px';
       profilePicture.style.height = '150px';
     }
-  }
+  }  
   
