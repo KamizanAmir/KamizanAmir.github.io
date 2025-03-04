@@ -20,9 +20,11 @@
   
   /* 2) Sticky Header (site-header) */
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 9999; /* So it stays above other content */
+    left: 0;
+    width: 100%;
+    z-index: 9999;
     background-color: #0c0c0c;
     padding: 10px 20px;
     border-bottom: 1px solid rgba(255,255,255,0.2);
@@ -162,6 +164,7 @@
   /* 4) Main & Sections */
   main {
     padding: 0 20px 20px 20px; /* some side padding */
+    margin-top: 80px;
   }
   
   /* Each section has a subtle fade-in on scroll */
