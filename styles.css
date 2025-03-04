@@ -185,6 +185,35 @@
     border-radius: 0;
   }
   
+  /* Position .main-nav in the top-right corner */
+.main-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; 
+    gap: 15px; /* spacing between menu items */
+  }
+  
+  .main-nav ul li {
+    /* No bullet points */
+  }
+  
+  .main-nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .main-nav ul li a:hover {
+    color: #00ffea;  /* or any accent color you like */
+  }
   /* 6) Contact Icons */
   #contact img {
     transition: transform 0.3s;
