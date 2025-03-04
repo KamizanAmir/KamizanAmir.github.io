@@ -1,515 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kamizan Amirudin</title>
 
   <!-- Google Fonts (Orbitron for a futuristic vibe, plus a cleaner sans-serif) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" 
-    rel="stylesheet"
-  />
-
-  <!-- Your Stylesheet -->
-  <link rel="stylesheet" href="styles.css" />
-
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Existing CSS -->
+  <link rel="stylesheet" href="styles.css">
+  
   <!-- Favicon(s) -->
-  <link rel="icon" href="images/icon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon" />
+  <link rel="icon" href="images/icon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
 </head>
 
 <body>
-  <!-- FB Root Script (if you need Facebook comments) -->
-  <div id="fb-root"></div>
-  <script
-    async
-    defer
-    crossorigin="anonymous"
-    src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787"
-    nonce="BREqFWxC">
-  </script>
-
-  <!-- Header (site-header) that sticks at the top -->
-  <header class="site-header">
-    <div class="header-content">
-      <!-- Profile Picture -->
-      <img
-        src="images/icon.jpg"
-        alt="Profile Picture"
-        class="profile-picture"
-      />
-
-      <!-- Main Text -->
-      <div class="header-text">
-        <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
-        <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
-      </div>
-
-      <!-- Small sub-nav listing your roles (optional) -->
-      <nav class="roles-nav">
-        <ul>
-          <li>Network</li>
-          <li>App Developer</li>
-          <li>System Analyst</li>
-        </ul>
-      </nav>
-
-      <!-- Main Navigation -->
-      <nav class="main-nav">
-        <ul>
-          <li><a href="#about">About Me</a></li>
-          <li><a href="#education">Education</a></li>
-          <li><a href="#certificate">Certification</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <!-- Link to the resume section (AKA “End Of File”) -->
-          <li><a href="#resume">End Of File</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    <!-- ABOUT -->
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        I am a person full of energy, I love to code and learn new things as
-        well as explore new challenges to embrace myself for the next path I
-        will take in the future. My skills are not only limited to:
-      </p>
-      <ul>
-        <li>Laravel/PHP</li>
-        <li>C++</li>
-        <li>Javascript</li>
-        <li>HTML</li>
-        <li>Visual Basic 6.0 and .net</li>
-        <li>Android Studio Java/Kotlin</li>
-        <li>Dart-Flutter/Swift</li>
-        <li>ReactJS</li>
-        <li>SQL: MySQL/MSSQL</li>
-        <li>NoSQL: MongoDB</li>
-        <li>Cisco Devices</li>
-        <li>Linux OS</li>
-        <li>Windows OS</li>
-        <li>Server Management DR/VM Recovery</li>
-        <li>Nutanix/Acropolis/Veeam</li>
-        <li>VMWare and Vsphere</li>
-        <li>Hyper-V</li>
-        <li>Google GCP</li>
-        <li>Runcloud</li>
-      </ul>
-    </section>
-
-    <!-- EDUCATION -->
-    <section id="education">
-      <h2>Education</h2>
-      <div class="portfolio-grid">
-        <div class="portfolio-item">
-          <h3>Perak Human Capital Development Center</h3>
-          <b>Data Analyst Certification</b><span> (2022)</span>
-          <h4>Achievement</h4>
-          <ul>
-            <li>Create data linear regression using Python.</li>
-            <li>Learn to use PowerBI and Python Language.</li>
-          </ul>
+    <div id="fb-root"></div>
+    <script 
+        async defer crossorigin="anonymous" 
+        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787" 
+        nonce="BREqFWxC">
+    </script>
+    <header>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+        <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
+        <div class="header-text">
+            <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
+            <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
+            <nav>
+            <ul>
+                <li>Network</li>
+                <li>App Developer</li>
+                <li>System Analyst</li>
+            </ul>
+            </nav>
         </div>
-        <div class="portfolio-item">
-          <h3>Politeknik Tuanku Syed Sirajuddin</h3>
-          <b>Diploma in Digital Technology - 3.26 CGPA</b><span>
-            (2016 - 2019)</span>
-          <h4>Achievement</h4>
-          <ul>
-            <li>Joined RELASIS PTSS since 2016 (uniform unit)</li>
-            <li>Dean list student (2nd Semester)</li>
-          </ul>
         </div>
-        <div class="portfolio-item">
-          <h3>Sekolah Menengah Sains Teluk Intan</h3>
-          <b>Sijil Pelajaran Malaysia (SPM)</b><span> (2014 - 2015)</span>
-          <h4>Achievement</h4>
-          <ul>
-            <li>
-              Became Additional Mathematics “Guru Muda” during trip to MOZAC
-              (Sekolah Menengah Sains Muzaffar Syah, Melaka)
-            </li>
-            <li>2nd Place in Silat Olahraga among area school competition</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Sekolah Menengah Kebangsaan Pengkalan Hulu</h3>
-          <b>Penilaian Menengah Rendah (7A 1B)</b><span> (2011 - 2013)</span>
-          <h4>Achievement</h4>
-          <ul>
-            <li>Active in school sport tournaments</li>
-            <li>Competed in silat school competition</li>
-            <li>AJK Computer Club</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Sekolah Kebangsaan Kuak Luar</h3>
-          <b>Ujian Pelajaran Sekolah Rendah (4A 1B)</b
-          ><span> (2006 - 2010)</span>
-          <h4>Achievement</h4>
-          <ul>
-            <li>Became Library Prefect</li>
-            <li>Active in school sport tournaments</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- CERTIFICATION -->
-    <section id="certificate">
-      <h2>Certification</h2>
-      <div class="portfolio-grid">
-        <div class="portfolio-item">
-          <h3>CompTIA Security+ Certificate</h3>
-          <img
-            src="images/cert1.png"
-            alt="Project 1 Image"
-            class="project-image"
-          />
-          <p>CompTIA Security+ Certification in 2021</p>
-        </div>
-        <div class="portfolio-item">
-          <h3>Introduction to Windows Server Administration</h3>
-          <img
-            src="images/cert2.png"
-            alt="Project 1 Image"
-            class="project-image"
-          />
-          <p>Obtained this certificate while working at Mesiniaga Sdn Bhd</p>
-        </div>
-        <div class="portfolio-item">
-          <h3>Cloud Computing Fundamentals</h3>
-          <img
-            src="images/cert3.png"
-            alt="Project 1 Image"
-            class="project-image"
-          />
-          <p>Obtained this certificate under Runcloud</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience">
-      <h2>Experience</h2>
-      <div class="portfolio-grid">
-        <div class="portfolio-item">
-          <h3>YHCM Sdn Bhd</h3>
-          <b>Senior Programmer</b><span> (Jan 2025 - Present)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Involved in project development & brainstorming sessions</li>
-            <li>
-              Leadership: Manage programmer team, provide proper guidelines
-            </li>
-            <li>
-              Consulting: Work closely with Project Manager on consultations
-            </li>
-            <li>
-              Analyzing: Data gathering for project requirements
-            </li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>Using Visual Basic 6.0 in manufacturing systems</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>AIC Semiconductor Sdn Bhd</h3>
-          <b>System Analyst</b><span> (Nov 2023 - Oct 2024)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Assessing current organizational systems & processes</li>
-            <li>Requirements gathering</li>
-            <li>Design solutions to meet organizational needs</li>
-            <li>Collaborate with stakeholders</li>
-            <li>Implementation & testing</li>
-            <li>Documentation, evaluation, problem-solving</li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>Visual Basic 6.0 for manufacturing</li>
-            <li>Manage Microsoft SQL Database</li>
-            <li>SAP Business One for PO & invoices</li>
-            <li>Crystal Reports</li>
-            <li>ERP & production flow knowledge</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Risau IO Sdn Bhd</h3>
-          <b>Software Developer</b><span> (May 2023 - Nov 2023)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Maintain company application, doc, enhancements</li>
-            <li>Worked with Yii2/Laravel frameworks & APIs</li>
-            <li>Flutter/Dart for debugging & updating current app</li>
-            <li>Documentation for white-label solutions</li>
-            <li>DB management (MongoDB & MySQL)</li>
-            <li>Cloud management with RunCloud, GCP, DigitalOcean</li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>JWT-based API secrets</li>
-            <li>CI/CD pipeline using GitLab</li>
-            <li>Recover lost files in GCP Linux</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Freelance App Developer</h3>
-          <b>Freelance</b><span> (Dec 2022 - Present)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Build simple Android apps in Java/Kotlin</li>
-            <li>Commissioned by UiTM Student for FYP</li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>Client communication & user documentation</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Mesiniaga Sdn Bhd</h3>
-          <b>Solutions Engineer - 1 year Contractual</b
-          ><span> (Nov 2021 - Oct 2022)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Worked with VMware, Hyper-V, Nutanix</li>
-            <li>On-site visits for client issue resolution</li>
-            <li>
-              Participated in Veeam, VMware events for new technology
-              experience
-            </li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>User requirement analysis & site-based solutions</li>
-            <li>Quotation & negotiation with customers</li>
-            <li>Monitoring with Nutanix & Veeam</li>
-          </ul>
-        </div>
-        <div class="portfolio-item">
-          <h3>Aspen Glove Sdn Bhd</h3>
-          <b>Quality Assurance</b><span> (Apr 2021 - Nov 2021)</span>
-          <h4>Job Description</h4>
-          <ul>
-            <li>Ensuring product quality, documentation per shift</li>
-            <li>Pre-shipping inspection</li>
-          </ul>
-          <h4>Skills Acquired</h4>
-          <ul>
-            <li>Identify AQL needed before shipment</li>
-            <li>Manage & hold non-qualified product</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- PORTFOLIO -->
-    <section id="portfolio">
-      <h2>Portfolio</h2>
-      <div class="portfolio-grid">
-        <div class="portfolio-item">
-          <h3>Runcloud Assessment Test</h3>
-          <img
-            src="images/project1.png"
-            alt="Project 1 Image"
-            class="project-image"
-          />
-          <p>
-            Incomplete project for a Runcloud developer assessment (on hold).
-          </p>
-          <b
-            >Link to source code :
-            <a href="https://github.com/KamizanAmir/runcloud/"
-              >Source Code</a
-            ></b
-          >
-        </div>
-        <div class="portfolio-item">
-          <h3>Laravel Documentation</h3>
-          <img
-            src="images/project2.png"
-            alt="Project 2 Image"
-            class="project-image"
-          />
-          <p>
-            Created Laravel docs for a previous company to ease future devs.
-          </p>
-          <b>This is a confidential project</b>
-        </div>
-        <div class="portfolio-item">
-          <h3>Simple Splash Application</h3>
-          <img
-            src="images/project3.png"
-            alt="Project 3 Image"
-            class="project-image"
-          />
-          <p>
-            Ongoing Flutter project: user chat & mini games (under development).
-          </p>
-          <b
-            >Link to source code :
-            <a href="https://github.com/KamizanAmir/kamching/"
-              >Source Code</a
-            ></b
-          >
-        </div>
-        <div class="portfolio-item">
-          <h3>UITM Application</h3>
-          <img
-            src="images/project4.png"
-            alt="Project 4 Image"
-            class="project-image"
-          />
-          <p>
-            A simple project for a UITM FYP. Java with Android Studio
-            (learning purpose only).
-          </p>
-          <b>This is a confidential project (Client request)</b>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESUME -->
-    <section id="resume">
-      <h2 style="text-align: center; align-items: center;">End Of File (EOF)</h2>
-      <div
-        class="portfolio-grid"
-        style="display: flex; align-items: center; justify-content: center;">
-        <div class="portfolio-item" style="text-align: center;">
-          <a href="resume/resume.pdf" download>
-            <img
-              style="border-radius: 15px;"
-              src="images/resume_icon.jpg"
-              alt="Resume Icon"
-              width="50"
-              height="50"
-            />
-          </a>
-          <p>Download/View My Resume</p>
-        </div>
-        <div class="portfolio-item" style="text-align: center;">
-          <a href="resume/cv.docx" download>
-            <img
-              style="border-radius: 15px;"
-              src="images/cv_icon.jpg"
-              alt="CV Icon"
-              width="50"
-              height="50"
-            />
-          </a>
-          <p>Download/View My CV</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <div>
-        <p>
-          <a
-            href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself">
-            <img
-              style="border-radius: 15px; vertical-align: middle;"
-              src="images/email_icon.png"
-              alt="Email"
-              width="50"
-              height="50"
-            />
-          </a>
-          <br />
-          Email :
-          <a
-            href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself"
-            >kamizan980505@gmail.com</a
-          >
-        </p>
-        <p>
-          <a href="https://wasap.my/60134718690">
-            <img
-              style="border-radius: 15px; vertical-align: middle;"
-              src="images/ws_icon.png"
-              alt="Whatsapp"
-              width="50"
-              height="50"
-            />
-          </a>
-          <br />
-          Whatsapp :
-          <a href="https://wasap.my/60134718690">+6013-471 8690</a>
-        </p>
-        <p>
-          <a href="https://www.linkedin.com/in/kamizan-amirudin">
-            <img
-              style="border-radius: 15px; vertical-align: middle;"
-              src="images/linkedin_icon.png"
-              alt="LinkedIn"
-              width="50"
-              height="50"
-            />
-          </a>
-          <br />
-          LinkedIn :
-          <a href="https://www.linkedin.com/in/kamizan-amirudin"
-            >Kamizan Amirudin</a
-          >
-        </p>
-        <p>
-          <a href="https://m.facebook.com/kamizanamir">
-            <img
-              style="border-radius: 15px; vertical-align: middle;"
-              src="images/facebook_icon.png"
-              alt="Facebook"
-              width="50"
-              height="50"
-            />
-          </a>
-          <br />
-          Facebook :
-          <a href="https://m.facebook.com/kamizanamir">Kamizan Amirudin</a>
-        </p>
-        <p>
-          <a href="https://www.instagram.com/kamizanamir">
-            <img
-              style="border-radius: 15px; vertical-align: middle;"
-              src="images/ig_icon.png"
-              alt="Instagram"
-              width="50"
-              height="50"
-            />
-          </a>
-          <br />
-          Instagram :
-          <a href="https://www.instagram.com/kamizanamir">kamizanamir</a>
-        </p>
-      </div>
-
-      <!-- If you want FB comments on the same page -->
-      <section id="comment" style="background-color: white; margin-top: 20px;">
-        <h2>Leave a comment...</h2>
-        <div
-          class="fb-comments"
-          data-href="https://github.com/KamizanAmir/KamizanAmir.github.io/blob/main/index.html"
-          data-width=""
-          data-numposts="10"></div>
-      </section>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <p>&copy; 2024 Kamizan Amirudin. All rights reserved.</p>
-    </footer>
-  </main>
-
-  <!-- Your JavaScript -->
-  <script src="script.js"></script>
+    </header>
+    <main>
+        <section id="about" style="background-color: #156583;">
+            <h2>About Me</h2>
+            <p>I am a person full of energy, I love to code and learn new things as well as explore new challenges to embrace myself for the next path I will take in the future. My skills are not only limited to:</p>
+            <ul>
+                <li style="text-align: left;">Laravel/PHP</li>
+                <li style="text-align: left;">C++</li>
+                <li style="text-align: left;">Javascript</li>
+                <li style="text-align: left;">HTML</li>
+                <li style="text-align: left;">Visual Basic 6.0 and .net</li>
+                <li style="text-align: left;">Android Studio Java/Kotlin</li>
+                <li style="text-align: left;">Dart-Flutter/Swift</li>
+                <li style="text-align: left;">ReactJS</li>
+                <li style="text-align: left;">SQL : MySQL/MSSQL</li>
+                <li style="text-align: left;">NoSQL : MongoDB</li>
+                <li style="text-align: left;">Cisco Devices</li>
+                <li style="text-align: left;">Linux OS</li>
+                <li style="text-align: left;">Windows OS</li>
+                <li style="text-align: left;">Server Management DR/VM Recovery</li>
+                <li style="text-align: left;">Nutanix/Acropolis/Veeam</li>
+                <li style="text-align: left;">VMWare and Vsphere</li>
+                <li style="text-align: left;">Hyper-V</li>
+                <li style="text-align: left;">Google GCP</li>
+                <li style="text-align: left;">Runcloud</li>
+            </ul>
+        </section>
+        <section id="education" style="background-color: #156583;">
+            <h2>Education</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <h3>Perak Human Capital Development Center </h3>
+                    <b>Data Analyst Certification</b><span> (2022)</span>
+                    <h4>Achievement</h4>
+                    <ul>
+                        <li>Create data linear regression using pyton.</li>
+                        <li>Learn to use PowerBI and Pyton Language.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Politeknik Tuanku Syed Sirajuddin</h3>
+                    <b>Diploma in Digital Technology - 3.26 CGPA</b><span> (2016 - 2019)</span>
+                    <h4>Achievement</h4>
+                    <ul>
+                        <li>Join RELASIS PTSS since 2016 as a uniform unit during study</li>
+                        <li>Dean list student during 2nd Semester.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Sekolah Menengah Sains Teluk Intan</h3>
+                    <b>Sijil Pelajaran Malaysia (SPM)</b><span> (2014 - 2015)</span>
+                    <h4>Achievement</h4>
+                    <ul>
+                        <li>Become additional mathematic Guru Muda during trip to MOZAC(Sekolah Menengah Sains Muzaffar Syah, Melaka).</li>
+                        <li>Get 2nd Place in Silat Olahraga among area school competition.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Sekolah Menengah Kebangsaan Pengkalan Hulu</h3>
+                    <b>Pelaran Menengah Rendah (7A 1B)</b><span> (2011 - 2013)</span>
+                    <h4>Achievement</h4>
+                    <ul>
+                        <li>Active in school sport tournament.</li>
+                        <li>Compete in silat school competition.</li>
+                        <li>AJK Computer Club.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Sekolah Kebangsaan Kuak Luar</h3>
+                    <b>Ujian Pelajaran Sekolah Rendah (4A 1B)</b><span> (2006 - 2010)</span>
+                    <h4>Achievement</h4>
+                    <ul>
+                        <li>Become Library Prefect.</li>
+                        <li>Active school sport tournament.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="certificate" style="background-color: #156583;">
+            <h2>Certification</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <h3>Comptia Security+ Certificate</h3>
+                    <img style="border-radius: 15px;" src="images/cert1.png" alt="Project 1 Image" class="project-image">
+                    <p>Comptia Security+ Certification in 2021</p>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Introduction to Windows Server Administration</h3>
+                    <img style="border-radius: 15px;" src="images/cert2.png" alt="Project 1 Image" class="project-image">
+                    <p>Obtain this certificate while working in Mesiniaga Sdn Bhd Northern</p>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Cloud Computing Fundamentals</h3>
+                    <img style="border-radius: 15px;" src="images/cert3.png" alt="Project 1 Image" class="project-image">
+                    <p>Obtain this certificate under runcloud</p>
+                </div>
+            </div>
+        </section>
+        <section id="experience" style="text-align: left; background-color: #156583;">
+            <h2>Experience</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <h3>YHCM Sdn Bhd</h3>
+                    <b>Senior Programmer</b><span> (Jan 2025 - Present)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Development: Involve in projects development and brainstorming sessions.</li>
+                        <li>Leadership: Manage programmer team and provide proper guidelines and programming etique while completing projects.</li>
+                        <li>Consulting: Work closely with Project Manager on consultations with end-user.</li>
+                        <li>Analyzing: Analyze and data gathering for requirements on the projects.</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Using Visual Basic 6.0 to manage current program in the manifacturing</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>AIC Semiconductor Sdn Bhd</h3>
+                    <b>System Analyst</b><span> (Nov 2023 - Oct 2024)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Analysis: Assessing current organizational systems and
+                            processes.</li>
+                        <li>Requirements Gathering: Identifying and documenting
+                            user and business requirements.</li>
+                        <li>Design: Creating system solutions to meet organizational needs.</li>
+                        <li>Communication: Collaborating with stakeholders, including users and developers.</li>
+                        <li>Implementation: Overseeing the integration of new systems and improvements.</li>
+                        <li>Testing: Ensuring developed systems meet specified requirements.</li>
+                        <li>Evaluation: Assessing the effectiveness of implemented solutions.</li>
+                        <li>Documentation: Recording and maintaining system-related information.</li>
+                        <li>Problem-solving: Addressing issues and optimizing system performance.</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Using Visual Basic 6.0 to manage current program in the manifacturing</li>
+                        <li>Manage Microsoft SQL Database</li>
+                        <li>Use SAP Business One to acquire PO and invoice</li>
+                        <li>Use crytal report</li>
+                        <li>Learn ERP and production flow</li>
+                        <li>Learn to communicate with user to achieve company goals and ensure smooth production process</li>
+                        <li>Enhancement of previous software to ease user</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Risau IO Sdn Bhd</h3>
+                    <b>Software Developer</b><span> (May 2023 - Nov 2023)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Maintain company application, documentation, enhancement and involved in new products or project by this company.</li>
+                        <li>Familiar with Yii2/Laravel framework with side-server API implementation.</li>
+                        <li>Working with Flutter/Dart language for pre-existing app for debugging and updating current app.</li>
+                        <li>Prepare documentation for whitelabel/cloning for pre-sales program</li>
+                        <li>Involve with internal events which is Malakat Mall itself.</li>
+                        <li>Using mongodb and mysql for database management and data analysis.</li>
+                        <li>Work with Visual Studio IDE and CD/CI GitLab for pipeline working.</li>
+                        <li>Cloud management with RunCloud and GCP, sometime work with DigitalOcean for web application management.</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Learn to use API Secret function with JWT.</li>
+                        <li>Learn pipeline control(fork, pull, commit, etc) using Gitlab.</li>
+                        <li>Learn to manage VM Instance in GCP.</li>
+                        <li>Manage to recover lost file in GCP database Linux.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Freelance App Developer</h3>
+                    <b>Freelance</b><span> (Dec 2022 - Present)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Create simple app using Android Studio with Java/Kotlin.</li>
+                        <li>Once hired by UiTM Student to create simple application for learning purpose</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Learn to communicate with client and provide proper documentation for user.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Mesiniaga Sdn Bhd</h3>
+                    <b>Solutions Engineer - 1 year Contractual</b><span> (Nov 2021 - Oct 2022)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Familiar with server application. Using VMware Vsphere, Hyper-V, and Nutanix to manage nodes and cluster.</li>
+                        <li>Remote or visit customer site to reach more understanding regarding their problem.</li>
+                        <li>Involve in Mesiniaga team event such as Veeam, VMWare for new experience and new technology involvement so we can get more insight to provide better solution for current customer regarding server servicing.</li>
+                        <li>Prepare UAT for clients and guide them to complete the UAT.</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Identifying user requirements based on geographical condition and suggest the best instrument for network/server implementation.</li>
+                        <li>Negotiations skills to issue a quotation for customers.</li>
+                        <li>Learn to use Nutanix, and Veeam application for server health monitoring.</li>
+                    </ul>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Aspen Glove Sdn Bhd</h3>
+                    <b>Quality Assurance Sdn Bhd</b><span> (Apr 2021 - Nov 2021)</span>
+                    <h4>Job Description</h4>
+                    <ul>
+                        <li>Ensure Aspen Glove product quality to be the best of the best and gain more customers and benefit due to high quality glove..</li>
+                        <li>Documentation for every inspection by shift.</li>
+                        <li>nvolve in pre-shipping inspection before release it for clients.</li>
+                    </ul>
+                    <h4>Skills Acquired</h4>
+                    <ul>
+                        <li>Learn to identify AQL that needed before shipment.</li>
+                        <li>Manage to hold products that not qualified for shipment.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>                     
+        <section id="portfolio" style="text-align: center; background-color: #156583;">
+            <h2>Portfolio</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <h3>Runcloud Assessment Test</h3>
+                    <img style="border-radius: 15px;" src="images/project1.png" alt="Project 1 Image" class="project-image">
+                    <p>This is incomplete project of Runcloud Assessment Test for web developer. This project is onhold due to time is not on my side.</p>
+                    <b>Link to source code : <a style="color:red;" href="https://github.com/KamizanAmir/runcloud/">>Source Code<</a></b>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Laravel Documentation</h3>
+                    <img style="border-radius: 15px;" src="images/project2.png" alt="Project 2 Image" class="project-image">
+                    <p>I make Laravel Documentation for my previous company to ease next person who will build or configure this website. All important data and instruction also well included.</p>
+                    <b>This is confidental project</b>
+                </div>
+                <div class="portfolio-item">
+                    <h3>Simple splash application</h3>
+                    <img style="border-radius: 15px;" src="images/project3.png" alt="Project 4 Image" class="project-image">
+                    <p>This is my ongoing project with Flutter. In this application, user can interact with each other via chatting, and also can play game together; under development.</p>
+                    <b>Link to source code :<a style="color: red;" href="https://github.com/KamizanAmir/kamching/">>Source Code<</a></b>
+                </div>
+                <div class="portfolio-item">
+                    <h3>UITM Application</h3>
+                    <img style="border-radius: 15px;" src="images/project4.png" alt="Project 5 Image" class="project-image">
+                    <p>I build a simple project for UITM FYP, this app is for learning purpose only. Language included Java with Android Studio IDE.</p>
+                    <b>This is confidental project (Client request)</b>
+                </div>
+            </div>
+        </section>
+        <section id="resume" style="text-align: left; background-color: #156583;">
+            <h2 style="text-align: center; align-items: center;">End Of File (EOF)</h2>
+            <div class="portfolio-grid" style="display: flex; align-items: center; justify-content: center;">
+                <div class="portfolio-item" style="text-align: center;">
+                    <a href="resume/resume.pdf" download>
+                        <img style="border-radius: 15px;" src="images/resume_icon.jpg" alt="Resume Icon" width="50" height="50">
+                    </a>
+                    <p>Download/View My Resume</p>
+                </div>
+                <div class="portfolio-item" style="text-align: center;">
+                    <a href="resume/cv.docx" download>
+                        <img style="border-radius: 15px;" src="images/cv_icon.jpg" alt="CV Icon" width="50" height="50">
+                    </a>
+                    <p>Download/View My CV</p>
+                </div>
+            </div>                                    
+        </section>
+        <section id="contact" style="text-align: center; background-color: #156583;">      
+            <h2>Contact</h2>
+            <div>
+                <p>
+                    <a href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself">
+                        <img style="border-radius: 15px; vertical-align: middle;" src="images/email_icon.png" alt="Email" width="50" height="50">
+                    </a> 
+                    <p>Email : <a href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself">kamizan980505@gmail.com</a></p>
+                </p>
+                <p>
+                    <a href="https://wasap.my/60134718690">
+                        <img style="border-radius: 15px; vertical-align: middle;" src="images/ws_icon.png" alt="Whatsapp" width="50" height="50">
+                    </a> 
+                    <p>Whatsapp : <a href="https://wasap.my/60134718690">+6013-471 8690</a></p>
+                </p>
+                <p>
+                    <a href="https://www.linkedin.com/in/kamizan-amirudin">
+                        <img style="border-radius: 15px; vertical-align: middle;" src="images/linkedin_icon.png" alt="LinkedIn" width="50" height="50">
+                    </a>
+                    <p>LinkedIn : <a href="https://www.linkedin.com/in/kamizan-amirudin">Kamizan Amirudin</a></p>
+                </p>
+                <p>
+                    <a href="https://m.facebook.com/kamizanamir">
+                        <img style="border-radius: 15px; vertical-align: middle;" src="images/facebook_icon.png" alt="Facebook" width="50" height="50">
+                    </a>
+                    <p>Facebook : <a href="https://m.facebook.com/kamizanamir">Kamizan Amirudin</a></p>
+                </p>
+                <p>
+                    <a href="https://www.instagram.com/kamizanamir">
+                        <img style="border-radius: 15px; vertical-align: middle;" src="images/ig_icon.png" alt="Instagram" width="50" height="50">
+                    </a>
+                    <p>Instagram : <a href="https://www.instagram.com/kamizanamir">kamizanamir</a></p>
+                </p>
+            </div>
+        <section id="comment" style="text-align: center; background-color: white;">
+            <h2>Leave a comment...</h2>
+            <div class="fb-comments" data-href="https://github.com/KamizanAmir/KamizanAmir.github.io/blob/main/index.html" data-width="" data-numposts="10"></div>
+        </section>
+        </section>
+        <footer style="font-size:20px; background-color: #156583; align-items: center; text-align: center; border-radius: 30px;">
+            <p>&copy; 2024 Kamizan Amirudin. All rights reserved.</p>
+        </footer>             
+    </main>      
+    <script src="script.js"></script>
 </body>
 </html>

@@ -4,8 +4,7 @@
     padding: 0;
     box-sizing: border-box;
   }
-  html,
-  body {
+  html, body {
     height: 100%;
     width: 100%;
     scroll-behavior: smooth;
@@ -18,181 +17,123 @@
     line-height: 1.6;
   }
   
-  /* 2) Sticky Header (site-header) */
-  .site-header {
+  /* 2) Header Styles */
+  header {
     position: fixed;
+    width: 100%;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 80px; /* Keep a fixed height */
-    z-index: 9999;
-    background-color: #0c0c0c;
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
-  
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* space between left & right groups */
-  }
-  
-  /* Profile pic in header */
-  .profile-picture {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    object-fit: cover;
-    margin-right: 15px;
-  }
-  
-  /* Big name text with glow (Orbitron) */
-  .glow-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    animation: neonGlow 2.5s ease-in-out infinite alternate;
-    margin: 0; /* remove default h1 margin */
-  }
-  
-  /* Current job below your name */
-  .current-job {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    color: #f0f0f0;
-    opacity: 0.85;
-    margin: 4px 0;
-  }
-  
-  /* .header-text container that holds glow-text & current-job */
-  .header-text {
-    display: flex;
-    flex-direction: column;
-    margin-right: 20px;
-  }
-  
-  /* Small sub-nav listing your roles (optional) */
-  .roles-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-  }
-  .roles-nav ul li {
-    font-weight: 500;
-    opacity: 0.8;
-  }
-  
-  /* MAIN NAV (top-right) */
-  .main-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-  }
-  
-  .main-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .main-nav ul li a:hover {
-    color: #00ffea;
-  }
-  
-  /* Neon Glow Keyframe (used by .glow-text) */
-  @keyframes neonGlow {
-    from {
-      text-shadow: 
-        0 0 10px #fff, 
-        0 0 20px #fff, 
-        0 0 30px #26d9d9, 
-        0 0 40px #26d9d9;
-    }
-    to {
-      text-shadow: 
-        0 0 5px #fff, 
-        0 0 15px #fff, 
-        0 0 25px #26d9d9, 
-        0 0 35px #26d9d9;
-    }
-  }
-  
-  /* 3) Hero Section (the big banner below the header) */
-  .hero-section {
-    position: relative;
-    height: 50vh; /* Adjust as desired */
+    height: 60vh; /* Make the header taller for a hero section */
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 30px;
-    /* If you want a background color or image, add it here: */
-    background: #156583; 
-  }
-  
-  /* Optional overlay on the hero for a gradient or partial color filter */
-  .hero-overlay {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(
-      45deg,
-      rgba(26, 188, 156, 0.3),
-      rgba(52, 152, 219, 0.3)
-    );
-    z-index: 1;
-  }
-  
-  .hero-inner {
-    position: relative;
-    z-index: 2;
     text-align: center;
+    z-index: 1000;
   }
   
-  .hero-inner h2 {
+  /* This overlay can create a gradient or color filter behind your content */
+  .header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(26, 188, 156, 0.7), rgba(52, 152, 219, 0.7));
+    /* Adjust the colors or use any neon style you prefer */
+    z-index: -1;
+  }
+  
+  /* Ensures the content in the header is laid out properly */
+  .header-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  
+  /* Profile pic for the header (hero area) */
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-bottom: 20px;
+    object-fit: cover;
+  }
+  
+  /* Large name text with a glow effect */
+  .glow-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
+    font-size: 3rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    animation: neonGlow 2.5s ease-in-out infinite alternate;
+  }
+  
+  /* Smaller text just under your name */
+  .current-job {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
     margin-bottom: 10px;
-  }
-  .hero-inner p {
-    font-size: 1rem;
+    color: #f0f0f0;
+    opacity: 0.85;
   }
   
-  /* 4) Main & Sections */
+  /* Navigation in the header */
+  header nav ul {
+    list-style: none;
+  }
+  header nav ul li {
+    display: inline-block;
+    margin: 0 10px;
+    font-weight: 500;
+  }
+  header nav ul li:hover {
+    text-decoration: underline;
+  }
+  
+  /* Neon Glow Keyframe for your name or any text */
+  @keyframes neonGlow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #26d9d9, 0 0 40px #26d9d9;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 15px #fff, 0 0 25px #26d9d9, 0 0 35px #26d9d9;
+    }
+  }
+  
+  /* 3) Main Content Sections */
   main {
-    margin-top: 80px;
+    margin-top: 60vh; /* So your main content appears after the hero header */
+    padding: 20px;
   }
   
-  /* Each section has a subtle fade-in on scroll */
+  /* Generic Section Style - we’ll use a dark background with a translucent panel */
   section {
+    margin-bottom: 40px;
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(8px);
     border-radius: 10px;
     padding: 20px;
-    margin-bottom: 40px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
   }
   
-  /* When script.js sees the section in view, it adds .visible */
+  /* When the section is scrolled into view, we add .visible in JavaScript for the fade-in effect */
   section.visible {
     opacity: 1;
     transform: translateY(0);
   }
   
-  section h2 {
-    margin-bottom: 15px;
-  }
-  
-  /* 5) Portfolio Grid */
+  /* 4) Portfolio Grid */
   .portfolio-grid {
     display: flex;
-    flex-wrap: nowrap; /* horizontal scroll effect */
+    flex-wrap: nowrap; /* horizontal scrolling effect for your items */
     overflow-x: auto;
     gap: 20px;
     padding-bottom: 20px;
@@ -207,18 +148,21 @@
     border: 1px solid rgba(255,255,255,0.1);
     position: relative;
   }
-  
   .portfolio-item h3 {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.1rem;
-    margin-bottom: 5px;
+  }
+  .portfolio-item ul {
+    margin-left: 20px;
+    margin-top: 5px;
   }
   
+  /* Cool divider line between each item (optional) */
   .portfolio-item:not(:last-child)::after {
     content: '';
     position: absolute;
     top: 0;
-    right: -15px;
+    right: -15px; 
     width: 2px;
     height: 100%;
     background-color: rgba(255,255,255,0.1);
@@ -231,22 +175,7 @@
     border-radius: 8px;
   }
   
-  /* 6) Contact & Social Icons */
-  #contact {
-    text-align: center;
-  }
-  
-  #contact img {
-    transition: transform 0.3s;
-    border: 2px solid #fff;
-    border-radius: 50%;
-  }
-  
-  #contact img:hover {
-    transform: scale(1.1);
-  }
-  
-  /* 7) Footer */
+  /* 5) Footer Styles */
   footer {
     font-size: 1rem;
     text-align: center;
@@ -256,35 +185,29 @@
     border-radius: 0;
   }
   
-  /* 8) Media Queries for Responsiveness */
+  /* 6) Contact Icons */
+  #contact img {
+    transition: transform 0.3s;
+    border: 2px solid #fff;
+    border-radius: 50%;
+  }
+  #contact img:hover {
+    transform: scale(1.1);
+  }
+  
+  /* 7) Media Queries for Responsiveness */
   @media (max-width: 768px) {
-    .header-content {
-      flex-wrap: wrap; 
-      justify-content: center;
-      text-align: center;
-      gap: 10px;
-    }
-  
     .glow-text {
-      font-size: 1.4rem;
+      font-size: 2rem;
     }
-  
-    .profile-picture {
-      margin-bottom: 10px;
+    .current-job {
+      font-size: 1rem;
     }
-  
-    .roles-nav ul {
-      flex-wrap: wrap;
-      justify-content: center;
+    header {
+      height: 50vh;
     }
-  
-    .main-nav ul {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .hero-section {
-      height: 40vh;
+    main {
+      margin-top: 50vh;
     }
   }
   
