@@ -5,7 +5,7 @@
     box-sizing: border-box;
   }
   html, body {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     scroll-behavior: smooth;
   }
@@ -24,7 +24,7 @@
     top: 0;
     left: 0;
     height: 60vh; /* Make the header taller for a hero section */
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,10 +204,10 @@
       font-size: 1rem;
     }
     header {
-      height: 50vh;
+      height: auto;
     }
     main {
-      margin-top: 50vh;
+      margin-top: 0vh;
     }
   }
   
