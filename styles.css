@@ -512,6 +512,13 @@ footer {
 /* Media queries for responsive timelines */
 @media (max-width: 768px) {
   /* Education timeline - stack on mobile */
+  header {
+    position: static;
+    height: auto;
+  }
+  main {
+    margin-top: 0;
+  }
   .timeline {
     flex-direction: column;
     overflow-x: visible;
@@ -590,6 +597,22 @@ footer {
   .timeline-date .to,
   .timeline-date .to-present {
     display: inline;
+  }
+  .experience-date {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #26d9d9;
+  }
+  .experience-date .year {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #26d9d9;
+  }
+  .experience-date .to,
+  .experience-date .to-present {
+    font-size: 0.8rem;
+    color: #ccc;
   }
 }
 

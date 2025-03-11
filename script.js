@@ -23,19 +23,28 @@ document.addEventListener('DOMContentLoaded', function() {
 function adjustHeaderSize() {
   const header = document.querySelector('header');
   const profilePicture = document.querySelector('.profile-picture');
-  const headerHeight = header.offsetHeight;
   const scrollTop = window.scrollY;
 
-  if (scrollTop > headerHeight) {
-    header.style.height = '20vh';
-    profilePicture.style.width = '80px';
-    profilePicture.style.height = '80px';
+  // Only run the resizing on desktops/tablets
+  if (window.innerWidth > 768) {
+    const headerHeight = header.offsetHeight;
+    if (scrollTop > headerHeight) {
+      header.style.height = '20vh';
+      profilePicture.style.width = '80px';
+      profilePicture.style.height = '80px';
+    } else {
+      header.style.height = '60vh';
+      profilePicture.style.width = '150px';
+      profilePicture.style.height = '150px';
+    }
   } else {
-    header.style.height = '60vh';
-    profilePicture.style.width = '150px';
-    profilePicture.style.height = '150px';
+    // On mobile, just let the CSS "auto" height take over
+    header.style.height = 'auto';
+    profilePicture.style.width = '100px';
+    profilePicture.style.height = '100px';
   }
 }
+
 // Portfolio Filtering
 document.addEventListener('DOMContentLoaded', function() {
   const filterBtns = document.querySelectorAll('.filter-btn');
