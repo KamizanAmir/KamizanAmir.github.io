@@ -355,7 +355,23 @@ footer {
 .timeline-content ul li {
   margin-bottom: 5px;
 }
-
+/* New: .experience-date */
+.experience-date {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #26d9d9;
+}
+.experience-date .year {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #26d9d9;
+}
+.experience-date .to,
+.experience-date .to-present {
+  font-size: 0.8rem;
+  color: #ccc;
+}
 /* Experience Section - Horizontal Timeline */
 .horizontal-timeline {
   display: flex;
