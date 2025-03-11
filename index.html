@@ -12,38 +12,79 @@
   <!-- Existing CSS -->
   <link rel="stylesheet" href="styles.css">
   
+  <!-- Particle.js for background -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
   <!-- Favicon(s) -->
   <link rel="icon" href="images/icon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
 </head>
 
 <body>
+    <!-- Particles.js container for space-like background -->
+    <div id="particles-js"></div>
+    
     <div id="fb-root"></div>
     <script 
         async defer crossorigin="anonymous" 
         src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787" 
         nonce="BREqFWxC">
     </script>
-    <header>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-        <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
-        <div class="header-text">
-            <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
-            <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
-            <nav>
-            <ul>
-                <li>Network</li>
-                <li>App Developer</li>
-                <li>System Analyst</li>
+
+    <!-- Modern Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="#home">KA</a>
+            </div>
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#certificate" class="nav-link">Certificates</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
-            </nav>
         </div>
+    </nav>
+
+    <!-- Hero Header Section -->
+    <header id="home" class="hero-section">
+        <div class="header-overlay glass-effect"></div>
+        <div class="header-content">
+            <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
+            <div class="header-text">
+                <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
+                <div class="job-title-container">
+                    <span class="job-prefix">I'm a </span>
+                    <span class="typing-text"></span>
+                </div>
+                <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
+                <div class="skills-tags">
+                    <span class="skill-tag">Network</span>
+                    <span class="skill-tag">App Developer</span>
+                    <span class="skill-tag">System Analyst</span>
+                </div>
+            </div>
         </div>
     </header>
-    <main>
-        <section id="about" style="background-color: #156583;">
-            <h2>About Me</h2>
+    <main class="main-content">
+        <!-- Scroll to top button -->
+        <button id="scroll-top" class="scroll-top-btn" aria-label="Scroll to top">
+            <i class="scroll-arrow"></i>
+        </button>
+        
+        <section id="about" class="section-container glass-card">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <div class="section-divider"></div>
+            </div>
             <p>I am a person full of energy, I love to code and learn new things as well as explore new challenges to embrace myself for the next path I will take in the future. My skills are not only limited to:</p>
             <ul>
                 <li style="text-align: left;">Laravel/PHP</li>
@@ -343,5 +384,115 @@
         </footer>             
     </main>      
     <script src="script.js"></script>
+    <script>
+        // Particle.js configuration for space background
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 160,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.8,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 4,
+                            "size_min": 0.3,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": false,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 600
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "bubble"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 400,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 250,
+                            "size": 0,
+                            "duration": 2,
+                            "opacity": 0,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 400,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
 </body>
 </html>

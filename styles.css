@@ -1,20 +1,55 @@
-/* 1) Universal & Body Resets */
+/* 1) CSS Variables for consistent theming */
+:root {
+  --primary-color: #00e5ff;
+  --primary-glow: rgba(0, 229, 255, 0.7);
+  --secondary-color: #7000ff;
+  --secondary-glow: rgba(112, 0, 255, 0.7);
+  --accent-color: #ff0099;
+  --accent-glow: rgba(255, 0, 153, 0.7);
+  --text-color: #e6f2ff;
+  --text-shadow: 0 0 5px rgba(0, 229, 255, 0.7);
+  --glass-bg: rgba(13, 21, 40, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+  --section-border-radius: 16px;
+  --card-border-radius: 12px;
+  --transition-speed: 0.3s;
+  --navbar-height: 80px;
+  --navbar-bg: rgba(5, 10, 24, 0.85);
+  --card-hover-transform: scale(1.03) translateY(-5px);
+}
+
+/* Universal & Body Resets */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  html, body {
-    height: 100%;
-    width: 100%;
-    scroll-behavior: smooth;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #050a18; /* Deep space-like background */
+  color: var(--text-color);
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
   
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #0c0c0c; /* Very dark background */
-    color: #e6e6e6;      /* Light text for better contrast */
-    line-height: 1.6;
+  /* Particles.js container styling */
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -10;
+    background-color: #050a18; /* Match body background */
   }
   
   /* 2) Header Styles */
@@ -39,8 +74,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, rgba(26, 188, 156, 0.7), rgba(52, 152, 219, 0.7));
-    /* Adjust the colors or use any neon style you prefer */
+    background: linear-gradient(45deg, rgba(26, 188, 156, 0.6), rgba(52, 152, 219, 0.6));
+    /* Slightly more transparent to see particles through it */
+    backdrop-filter: blur(3px); /* Creates a slight blur effect to enhance the space-like feeling */
     z-index: -1;
   }
   
@@ -112,16 +148,18 @@
     padding: 20px;
   }
   
-  /* Generic Section Style - we’ll use a dark background with a translucent panel */
+  /* Generic Section Style - we'll use a dark background with a translucent panel */
   section {
     margin-bottom: 40px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(21, 30, 63, 0.4); /* More space-themed blue/purple transparent background */
     backdrop-filter: blur(8px);
     border-radius: 10px;
     padding: 20px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
+    border: 1px solid rgba(86, 176, 209, 0.2); /* Subtle border for futuristic panels */
+    box-shadow: 0 0 15px rgba(77, 213, 255, 0.1); /* Subtle glow */
   }
   
   /* When the section is scrolled into view, we add .visible in JavaScript for the fade-in effect */
