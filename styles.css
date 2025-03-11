@@ -122,12 +122,18 @@ section {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  text-align: center;
 }
 
 /* When the section is scrolled into view, we add .visible in JavaScript for the fade-in effect */
 section.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Section dark variant */
+.section-dark {
+  text-align: center;
 }
 
 /* 4) Portfolio Grid */
@@ -361,6 +367,18 @@ footer {
   margin-bottom: 10px;
   font-weight: 700;
   color: #26d9d9;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 80%; /* Add width to prevent cutoff */
+  max-width: 150px; /* Add max-width for control */
+  margin: 0 auto;
+  z-index: 10; /* Ensure it's above other elements */
 }
 .experience-date .year {
   font-size: 1.2rem;
@@ -406,6 +424,14 @@ footer {
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
   z-index: 2;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.timeline-node:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(38, 217, 217, 0.3);
 }
 
 /* Dot indicator for each node */
@@ -459,7 +485,6 @@ footer {
   font-size: 0.8rem;
   color: #ccc;
 }
-
 .timeline-content-box {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
@@ -467,30 +492,32 @@ footer {
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .timeline-content-box:hover {
-  transform: translateX(10px);
+  transform: translateY(-10px);
   box-shadow: 0 5px 25px rgba(38, 217, 217, 0.3);
 }
-
 .timeline-content h3 {
   font-size: 1.2rem;
   margin-bottom: 5px;
   color: #fff;
+  text-align: center;
 }
-
 .job-title {
   font-size: 1rem;
   color: #26d9d9;
   margin-bottom: 5px;
   font-weight: 600;
+  text-align: center;
 }
 
 .date-range {
   font-size: 0.85rem;
   color: #ccc;
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .job-details h4 {
@@ -503,18 +530,60 @@ footer {
 .job-details ul {
   padding-left: 20px;
   font-size: 0.85rem;
+  text-align: left;
 }
 
 .job-details ul li {
   margin-bottom: 5px;
 }
 
+/* Certificate Section - Horizontal Layout */
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.card {
+  flex: 0 0 calc(33.333% - 20px);
+  min-width: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card-image {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.card-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(38, 217, 217, 0.3);
+}
+
 /* Media queries for responsive timelines */
 @media (max-width: 768px) {
   /* Education timeline - stack on mobile */
   header {
-    position: static;
-    height: auto;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
   main {
     margin-top: 0;
@@ -571,16 +640,25 @@ footer {
   
   /* Experience timeline mobile adjustments */
   .horizontal-timeline {
+    flex-direction: column;
     padding-left: 40px;
+    overflow-x: visible;
+  }
+  
+  .timeline-node {
+    width: calc(100% - 30px);
+    margin-left: 30px;
   }
   
   .timeline-node::before {
     left: -38px;
+    top: 30px;
   }
   
   .timeline-node::after {
     width: 18px;
     left: -18px;
+    top: 30px;
   }
   
   .timeline-date {
@@ -599,10 +677,18 @@ footer {
     display: inline;
   }
   .experience-date {
-    text-align: center;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #26d9d9;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 80%;
+    max-width: 150px;
+    margin: 0 auto;
+    z-index: 10;
   }
   .experience-date .year {
     font-size: 1.2rem;
@@ -613,6 +699,16 @@ footer {
   .experience-date .to-present {
     font-size: 0.8rem;
     color: #ccc;
+  }
+  
+  /* Mobile responsive for certificates */
+  .cards-container {
+    flex-direction: column;
+  }
+  
+  .card {
+    flex: 1 1 100%;
+    min-width: 100%;
   }
 }
 
