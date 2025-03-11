@@ -19,6 +19,29 @@
   
   <!-- Add this stylesheet for the contact form animations -->
   <style>
+    /* Scroll to Top Button Styles */
+    #scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1e77eb; /* adjust as needed */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+    }
+
+    #scrollToTop.show {
+    opacity: 1;
+    visibility: visible;
+    }
+
     /* Contact Form Styles */
     .contact-form-container {
       max-width: 700px;
@@ -182,29 +205,38 @@
     </header>
     <main>
         <section id="about" style="background-color: #156583;">
-            <h2>About Me</h2>
-            <p>I am a person full of energy, I love to code and learn new things as well as explore new challenges to embrace myself for the next path I will take in the future. My skills are not only limited to:</p>
-            <ul>
-                <li style="text-align: left;">Laravel/PHP</li>
-                <li style="text-align: left;">C++</li>
-                <li style="text-align: left;">Javascript</li>
-                <li style="text-align: left;">HTML</li>
-                <li style="text-align: left;">Visual Basic 6.0 and .net</li>
-                <li style="text-align: left;">Android Studio Java/Kotlin</li>
-                <li style="text-align: left;">Dart-Flutter/Swift</li>
-                <li style="text-align: left;">ReactJS</li>
-                <li style="text-align: left;">SQL : MySQL/MSSQL</li>
-                <li style="text-align: left;">NoSQL : MongoDB</li>
-                <li style="text-align: left;">Cisco Devices</li>
-                <li style="text-align: left;">Linux OS</li>
-                <li style="text-align: left;">Windows OS</li>
-                <li style="text-align: left;">Server Management DR/VM Recovery</li>
-                <li style="text-align: left;">Nutanix/Acropolis/Veeam</li>
-                <li style="text-align: left;">VMWare and Vsphere</li>
-                <li style="text-align: left;">Hyper-V</li>
-                <li style="text-align: left;">Google GCP</li>
-                <li style="text-align: left;">Runcloud</li>
-            </ul>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-user-circle"></i> About Me</h3>
+                    <p>Senior Programmer with expertise in various programming languages, app development, and system analysis.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                    <p>Malaysia</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-link"></i> Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#education">Education</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3><i class="fas fa-share-alt"></i> Social</h3>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/kamizan-amirudin"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://m.facebook.com/kamizanamir"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/kamizanamir"><i class="fab fa-instagram"></i></a>
+                        <a href="https://github.com/KamizanAmir"><i class="fab fa-github"></i></a>
+                        <a href="https://wasap.my/60134718690"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
         </section>
         <section id="education" class="section-dark animate__animated animate__fadeIn">
             <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
@@ -605,39 +637,6 @@
             </section>
         </section>
         <footer class="modern-footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-user-circle"></i> About Me</h3>
-                    <p>Senior Programmer with expertise in various programming languages, app development, and system analysis.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
-                    <p>Malaysia</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-link"></i> Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#education">Education</a></li>
-                        <li><a href="#experience">Experience</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-share-alt"></i> Social</h3>
-                    <div class="social-icons">
-                        <a href="https://www.linkedin.com/in/kamizan-amirudin"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://m.facebook.com/kamizanamir"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/kamizanamir"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com/KamizanAmir"><i class="fab fa-github"></i></a>
-                        <a href="https://wasap.my/60134718690"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-            </div>
             
             <div class="footer-bottom">
                 <p>&copy; 2025 Kamizan Amirudin. All rights reserved.</p>
@@ -646,7 +645,7 @@
         </footer>             
     </main>      
     <script src="script.js"></script>
-    
+    <button id="scrollToTop" class="scrollToTop"><i class="fas fa-arrow-up"></i></button>
     <script>
         // Form validation and submission handling
         document.addEventListener('DOMContentLoaded', function() {
@@ -763,6 +762,24 @@
             }
         `;
         document.head.appendChild(style);
+        // Show or hide the scroll-to-top button based on scroll position
+        window.addEventListener('scroll', function() {
+            const scrollBtn = document.getElementById('scrollToTop');
+            if (window.pageYOffset > 300) {  // Adjust threshold as needed
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+        });
+
+        // Scroll smoothly back to the top when the button is clicked
+        document.getElementById('scrollToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
     </script>
 </body>
 </html>
