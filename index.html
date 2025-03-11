@@ -17,6 +17,128 @@
   <!-- Animation library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   
+  <!-- Add this stylesheet for the contact form animations -->
+  <style>
+    /* Contact Form Styles */
+    .contact-form-container {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      background-color: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .contact-form-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+    
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .contact-form h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--secondary-color, #f5a623);
+      font-weight: 600;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .form-group label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-color, #f8f9fa);
+      margin-bottom: 5px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text-color, #f8f9fa);
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color, #f5a623);
+      box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.2);
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      background-color: var(--secondary-color, #f5a623);
+      border: none;
+      color: #000;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .submit-btn:hover {
+      background-color: #ffb84d;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(245, 166, 35, 0.3);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .submit-btn i {
+      font-size: 18px;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .contact-form-container {
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+      
+      .form-group input,
+      .form-group textarea {
+        padding: 10px;
+      }
+      
+      .submit-btn {
+        padding: 10px 20px;
+      }
+    }
+  </style>
+  
   <!-- Existing CSS -->
   <link rel="stylesheet" href="styles.css">
   
@@ -293,26 +415,33 @@
         </section>                     
         <section id="portfolio" style="text-align: center; background-color: #156583;">
             <h2>Portfolio</h2>
+            <!-- Portfolio Filter Buttons -->
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+                <button class="filter-btn" data-filter="mobile">Mobile App</button>
+                <button class="filter-btn" data-filter="documentation">Documentation</button>
+            </div>
             <div class="portfolio-grid">
-                <div class="portfolio-item">
+                <div class="portfolio-item web" data-category="web">
                     <h3>Runcloud Assessment Test</h3>
                     <img style="border-radius: 15px;" src="images/project1.png" alt="Project 1 Image" class="project-image">
                     <p>This is incomplete project of Runcloud Assessment Test for web developer. This project is onhold due to time is not on my side.</p>
-                    <b>Link to source code : <a style="color:red;" href="https://github.com/KamizanAmir/runcloud/">>Source Code<</a></b>
+                    <b>Link to source code : <a style="color:red;" href="https://github.com/KamizanAmir/runcloud/">>Source Code<<</a></b>
                 </div>
-                <div class="portfolio-item">
+                <div class="portfolio-item documentation" data-category="documentation">
                     <h3>Laravel Documentation</h3>
                     <img style="border-radius: 15px;" src="images/project2.png" alt="Project 2 Image" class="project-image">
                     <p>I make Laravel Documentation for my previous company to ease next person who will build or configure this website. All important data and instruction also well included.</p>
                     <b>This is confidental project</b>
                 </div>
-                <div class="portfolio-item">
+                <div class="portfolio-item mobile" data-category="mobile">
                     <h3>Simple splash application</h3>
                     <img style="border-radius: 15px;" src="images/project3.png" alt="Project 4 Image" class="project-image">
                     <p>This is my ongoing project with Flutter. In this application, user can interact with each other via chatting, and also can play game together; under development.</p>
-                    <b>Link to source code :<a style="color: red;" href="https://github.com/KamizanAmir/kamching/">>Source Code<</a></b>
+                    <b>Link to source code :<a style="color: red;" href="https://github.com/KamizanAmir/kamching/">>Source Code<<</a></b>
                 </div>
-                <div class="portfolio-item">
+                <div class="portfolio-item mobile" data-category="mobile">
                     <h3>UITM Application</h3>
                     <img style="border-radius: 15px;" src="images/project4.png" alt="Project 5 Image" class="project-image">
                     <p>I build a simple project for UITM FYP, this app is for learning purpose only. Language included Java with Android Studio IDE.</p>
@@ -352,6 +481,43 @@
         </section>
         <section id="contact" class="section-dark animate__animated animate__fadeIn">      
             <h2 class="section-title"><i class="fas fa-address-card"></i> Get In Touch</h2>
+            
+            <div class="contact-form-container">
+                <form action="https://formsubmit.co/kamizan980505@gmail.com" method="POST" class="contact-form">
+                    <h3><i class="fas fa-paper-plane"></i> Send Me a Message</h3>
+                    
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" placeholder="Your Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" placeholder="Your Email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" name="subject" id="subject" placeholder="Subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    
+                    <!-- FormSubmit.co Specific Options -->
+                    <input type="hidden" name="_next" value="https://kamizanamir.github.io/thanks.html">
+                    <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
+                    <input type="hidden" name="_captcha" value="true">
+                    <input type="hidden" name="_template" value="table">
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+            
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="contact-item">
@@ -467,5 +633,123 @@
         </footer>             
     </main>      
     <script src="script.js"></script>
+    
+    <script>
+        // Form validation and submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.querySelector('.contact-form');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    // Basic form validation
+                    const name = document.getElementById('name');
+                    const email = document.getElementById('email');
+                    const subject = document.getElementById('subject');
+                    const message = document.getElementById('message');
+                    
+                    let valid = true;
+                    
+                    // Check if name is valid
+                    if (name.value.trim().length < 2) {
+                        highlightError(name, 'Please enter a valid name (at least 2 characters)');
+                        valid = false;
+                    } else {
+                        resetField(name);
+                    }
+                    
+                    // Check if email is valid
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email.value.trim())) {
+                        highlightError(email, 'Please enter a valid email address');
+                        valid = false;
+                    } else {
+                        resetField(email);
+                    }
+                    
+                    // Check if subject is valid
+                    if (subject.value.trim().length < 3) {
+                        highlightError(subject, 'Please enter a subject (at least 3 characters)');
+                        valid = false;
+                    } else {
+                        resetField(subject);
+                    }
+                    
+                    // Check if message is valid
+                    if (message.value.trim().length < 10) {
+                        highlightError(message, 'Please enter a message (at least 10 characters)');
+                        valid = false;
+                    } else {
+                        resetField(message);
+                    }
+                    
+                    // If not valid, prevent form submission
+                    if (!valid) {
+                        e.preventDefault();
+                    } else {
+                        // Show sending message
+                        const submitBtn = contactForm.querySelector('.submit-btn');
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
+                        submitBtn.disabled = true;
+                        
+                        // We'll let the form submit normally to FormSubmit.co
+                        // The form will redirect to the _next URL specified in the form
+                    }
+                });
+            }
+            
+            // Helper function to highlight error
+            function highlightError(field, message) {
+                // Remove any existing error message
+                const existingError = field.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                // Add error class and message
+                field.style.borderColor = '#ff4d4d';
+                field.style.backgroundColor = 'rgba(255, 77, 77, 0.05)';
+                
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.style.color = '#ff4d4d';
+                errorDiv.style.fontSize = '12px';
+                errorDiv.style.marginTop = '5px';
+                errorDiv.style.fontWeight = '500';
+                errorDiv.textContent = message;
+                
+                field.parentNode.appendChild(errorDiv);
+                
+                // Shake animation for error feedback
+                field.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+                field.addEventListener('animationend', function() {
+                    field.style.animation = '';
+                });
+            }
+            
+            // Helper function to reset field
+            function resetField(field) {
+                field.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                field.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                
+                const existingError = field.parentNode.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+        });
+        
+        // Add animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                10%, 90% { transform: translate3d(-1px, 0, 0); }
+                20%, 80% { transform: translate3d(2px, 0, 0); }
+                30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+                40%, 60% { transform: translate3d(4px, 0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>

@@ -131,22 +131,61 @@ section.visible {
 }
 
 /* 4) Portfolio Grid */
-.portfolio-grid {
+.portfolio-filter {
   display: flex;
-  flex-wrap: nowrap; /* horizontal scrolling effect for your items */
-  overflow-x: auto;
-  gap: 20px;
-  padding-bottom: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.portfolio-item {
-  flex-shrink: 0;
+.filter-btn {
+  background-color: rgba(255.portfolio-item {
+  flex: 0 0 300px;
   width: 300px;
-  padding: 10px;
+  padding: 15px;
   background: rgba(255, 255, 255, 0.04);
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.1);
   position: relative;
+  transition: all 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+  margin-bottom: 20px;
+}
+
+.portfolio-item.hide {
+  display: none;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.portfolio-item.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.category-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(38, 217, 217, 0.8);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
 }
 .portfolio-item h3 {
   font-family: 'Orbitron', sans-serif;
