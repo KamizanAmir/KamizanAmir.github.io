@@ -35,21 +35,21 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <a href="#home">KA</a>
+                <a href="#home" class="logo-link">KA</a>
             </div>
-            <div class="menu-toggle">
+            <div class="menu-toggle" aria-label="Toggle navigation menu">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
             <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#education" class="nav-link">Education</a></li>
-                <li><a href="#certificate" class="nav-link">Certificates</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#education" class="nav-link">Education</a></li>
+                <li class="nav-item"><a href="#certificate" class="nav-link">Certificates</a></li>
+                <li class="nav-item"><a href="#experience" class="nav-link">Experience</a></li>
+                <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -58,7 +58,9 @@
     <header id="home" class="hero-section">
         <div class="header-overlay glass-effect"></div>
         <div class="header-content">
-            <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
+            <div class="profile-container">
+                <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
+            </div>
             <div class="header-text">
                 <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
                 <div class="job-title-container">
@@ -79,56 +81,77 @@
         <button id="scroll-top" class="scroll-top-btn" aria-label="Scroll to top">
             <i class="scroll-arrow"></i>
         </button>
-        
         <section id="about" class="section-container glass-card">
             <div class="section-header">
                 <h2 class="section-title">About Me</h2>
                 <div class="section-divider"></div>
             </div>
-            <p>I am a person full of energy, I love to code and learn new things as well as explore new challenges to embrace myself for the next path I will take in the future. My skills are not only limited to:</p>
-            <ul>
-                <li style="text-align: left;">Laravel/PHP</li>
-                <li style="text-align: left;">C++</li>
-                <li style="text-align: left;">Javascript</li>
-                <li style="text-align: left;">HTML</li>
-                <li style="text-align: left;">Visual Basic 6.0 and .net</li>
-                <li style="text-align: left;">Android Studio Java/Kotlin</li>
-                <li style="text-align: left;">Dart-Flutter/Swift</li>
-                <li style="text-align: left;">ReactJS</li>
-                <li style="text-align: left;">SQL : MySQL/MSSQL</li>
-                <li style="text-align: left;">NoSQL : MongoDB</li>
-                <li style="text-align: left;">Cisco Devices</li>
-                <li style="text-align: left;">Linux OS</li>
-                <li style="text-align: left;">Windows OS</li>
-                <li style="text-align: left;">Server Management DR/VM Recovery</li>
-                <li style="text-align: left;">Nutanix/Acropolis/Veeam</li>
-                <li style="text-align: left;">VMWare and Vsphere</li>
-                <li style="text-align: left;">Hyper-V</li>
-                <li style="text-align: left;">Google GCP</li>
-                <li style="text-align: left;">Runcloud</li>
-            </ul>
+            <div class="section-content">
+                <p class="about-description">I am a person full of energy, I love to code and learn new things as well as explore new challenges to embrace myself for the next path I will take in the future. My skills are not only limited to:</p>
+                <div class="skills-container">
+                    <ul class="skills-list">
+                        <li class="skill-item">Laravel/PHP</li>
+                        <li class="skill-item">C++</li>
+                        <li class="skill-item">Javascript</li>
+                        <li class="skill-item">HTML</li>
+                        <li class="skill-item">Visual Basic 6.0 and .net</li>
+                        <li class="skill-item">Android Studio Java/Kotlin</li>
+                        <li class="skill-item">Dart-Flutter/Swift</li>
+                        <li class="skill-item">ReactJS</li>
+                        <li class="skill-item">SQL : MySQL/MSSQL</li>
+                        <li class="skill-item">NoSQL : MongoDB</li>
+                        <li class="skill-item">Cisco Devices</li>
+                        <li class="skill-item">Linux OS</li>
+                        <li class="skill-item">Windows OS</li>
+                        <li class="skill-item">Server Management DR/VM Recovery</li>
+                        <li class="skill-item">Nutanix/Acropolis/Veeam</li>
+                        <li class="skill-item">VMWare and Vsphere</li>
+                        <li class="skill-item">Hyper-V</li>
+                        <li class="skill-item">Google GCP</li>
+                        <li class="skill-item">Runcloud</li>
+                    </ul>
+                </div>
+            </div>
         </section>
-        <section id="education" style="background-color: #156583;">
-            <h2>Education</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <h3>Perak Human Capital Development Center </h3>
-                    <b>Data Analyst Certification</b><span> (2022)</span>
-                    <h4>Achievement</h4>
-                    <ul>
-                        <li>Create data linear regression using pyton.</li>
-                        <li>Learn to use PowerBI and Pyton Language.</li>
-                    </ul>
-                </div>
-                <div class="portfolio-item">
-                    <h3>Politeknik Tuanku Syed Sirajuddin</h3>
-                    <b>Diploma in Digital Technology - 3.26 CGPA</b><span> (2016 - 2019)</span>
-                    <h4>Achievement</h4>
-                    <ul>
-                        <li>Join RELASIS PTSS since 2016 as a uniform unit during study</li>
-                        <li>Dean list student during 2nd Semester.</li>
-                    </ul>
-                </div>
+        <section id="education" class="section-container glass-card">
+            <div class="section-header">
+                <h2 class="section-title">Education</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="section-content">
+                <div class="card-grid">
+                    <div class="card education-card glass-effect">
+                        <div class="card-header">
+                            <h3 class="card-title">Perak Human Capital Development Center</h3>
+                            <div class="card-subtitle">
+                                <strong>Data Analyst Certification</strong>
+                                <span class="timeframe">(2022)</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-section-title">Achievement</h4>
+                            <ul class="card-list">
+                                <li class="card-list-item">Create data linear regression using Python.</li>
+                                <li class="card-list-item">Learn to use PowerBI and Python Language.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card education-card glass-effect">
+                        <div class="card-header">
+                            <h3 class="card-title">Politeknik Tuanku Syed Sirajuddin</h3>
+                            <div class="card-subtitle">
+                                <strong>Diploma in Digital Technology - 3.26 CGPA</strong>
+                                <span class="timeframe">(2016 - 2019)</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-section-title">Achievement</h4>
+                            <ul class="card-list">
+                                <li class="card-list-item">Join RELASIS PTSS since 2016 as a uniform unit during study</li>
+                                <li class="card-list-item">Dean list student during 2nd Semester.</li>
+                            </ul>
+                        </div>
+                    </div>
                 <div class="portfolio-item">
                     <h3>Sekolah Menengah Sains Teluk Intan</h3>
                     <b>Sijil Pelajaran Malaysia (SPM)</b><span> (2014 - 2015)</span>
