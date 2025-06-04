@@ -1,13 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Adjust header size on scroll
-  window.addEventListener('scroll', adjustHeaderSize);
+// script.js
 
-  // Fade-in sections on scroll
+document.addEventListener('DOMContentLoaded', function() {
+  /* =========================
+     1) Fade-in sections on scroll
+     ========================= */
   const sections = document.querySelectorAll('section');
   window.addEventListener('scroll', fadeInOnScroll);
 
   function fadeInOnScroll() {
-    const triggerBottom = window.innerHeight * 0.85; 
+    const triggerBottom = window.innerHeight * 0.85;
     sections.forEach(section => {
       const sectionTop = section.getBoundingClientRect().top;
       if (sectionTop < triggerBottom) {
@@ -15,65 +16,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-
-  // Ensure we run once on load to handle any sections in initial view
   fadeInOnScroll();
-});
 
-function adjustHeaderSize() {
-  const header = document.querySelector('header');
-  const profilePicture = document.querySelector('.profile-picture');
-  const scrollTop = window.scrollY;
-
-  // Only run the resizing on desktops/tablets
-  if (window.innerWidth > 768) {
-    const headerHeight = header.offsetHeight;
-    if (scrollTop > headerHeight) {
-      header.style.height = '20vh';
-      profilePicture.style.width = '80px';
-      profilePicture.style.height = '80px';
-    } else {
-      header.style.height = '60vh';
-      profilePicture.style.width = '150px';
-      profilePicture.style.height = '150px';
-    }
-  } else {
-    // On mobile, just let the CSS "auto" height take over
-    header.style.height = 'auto';
-    profilePicture.style.width = '100px';
-    profilePicture.style.height = '100px';
-  }
-}
-
-// Portfolio Filtering
-document.addEventListener('DOMContentLoaded', function() {
+  /* =========================
+     2) Portfolio filtering
+     ========================= */
   const filterBtns = document.querySelectorAll('.filter-btn');
   const portfolioItems = document.querySelectorAll('.portfolio-item');
-  
-  // Add click event to filter buttons
+
   filterBtns.forEach(btn => {
     btn.addEventListener('click', function() {
-      // Remove active class from all buttons
-      filterBtns.forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
+      filterBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
-      
-      // Get filter value
       const filterValue = this.getAttribute('data-filter');
-      
-      // Filter portfolio items
       portfolioItems.forEach(item => {
-        // Remove hide and show classes first
-        item.classList.remove('hide');
-        item.classList.remove('show');
-        
-        // Add appropriate class based on filter
-        if (filterValue === 'all') {
-          item.classList.add('show');
-        } else if (item.classList.contains(filterValue)) {
+        item.classList.remove('hide', 'show');
+        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
           item.classList.add('show');
         } else {
           item.classList.add('hide');
@@ -81,83 +39,119 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
-  
-  // Set all items to show initially
-  portfolioItems.forEach(item => {
-    item.classList.add('show');
-  });
-});
+  // Show all items by default
+  portfolioItems.forEach(item => item.classList.add('show'));
 
-// Add CSS for animations to the head
-document.addEventListener('DOMContentLoaded', function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+  /* =========================
+     3) Scroll-to-top button behavior
+     ========================= */
+  const scrollBtn = document.getElementById('scrollToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      scrollBtn.classList.add('show');
+    } else {
+      scrollBtn.classList.remove('show');
     }
-    
-    .portfolio-filter {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-      gap: 10px;
-    }
-    
-    .filter-btn {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .filter-btn:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    .filter-btn.active {
-      background-color: #f5a623;
-      color: #000;
-    }
-    
-    .portfolio-item {
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      overflow: hidden;
-    }
-    
-    .portfolio-item.show {
-      opacity: 1;
-      transform: scale(1);
-      height: auto;
-    }
-    
-    .portfolio-item.hide {
-      opacity: 0;
-      transform: scale(0.8);
-      height: 0;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-    }
-    
-    @media (max-width: 768px) {
-      .portfolio-grid {
-        grid-template-columns: 1fr;
+  });
+  scrollBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* =========================
+     4) Contact form validation
+     ========================= */
+  const contactForm = document.querySelector('.contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      let valid = true;
+
+      // Field references
+      const nameField = document.getElementById('name');
+      const emailField = document.getElementById('email');
+      const subjectField = document.getElementById('subject');
+      const messageField = document.getElementById('message');
+
+      // Clear any previous error messages
+      resetField(nameField);
+      resetField(emailField);
+      resetField(subjectField);
+      resetField(messageField);
+
+      // Name validation (at least 2 characters)
+      if (nameField.value.trim().length < 2) {
+        highlightError(nameField, 'Please enter a valid name (at least 2 characters)');
+        valid = false;
       }
-      
-      .filter-btn {
-        font-size: 14px;
-        padding: 6px 12px;
+
+      // Email validation (basic regex)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailField.value.trim())) {
+        highlightError(emailField, 'Please enter a valid email address');
+        valid = false;
       }
+
+      // Subject validation (at least 3 characters)
+      if (subjectField.value.trim().length < 3) {
+        highlightError(subjectField, 'Please enter a subject (at least 3 characters)');
+        valid = false;
+      }
+
+      // Message validation (at least 10 characters)
+      if (messageField.value.trim().length < 10) {
+        highlightError(messageField, 'Please enter a message (at least 10 characters)');
+        valid = false;
+      }
+
+      // If not valid, prevent form submission
+      if (!valid) {
+        e.preventDefault();
+      } else {
+        // Show sending state on button
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+        // Let form submit to FormSubmit.co normally
+      }
+    });
+  }
+
+  /* =========================
+     Helper: highlight error on a field
+     ========================= */
+  function highlightError(field, message) {
+    // Remove any existing error message
+    const existingError = field.parentNode.querySelector('.error-message');
+    if (existingError) {
+      existingError.remove();
     }
-  `;
-  document.head.appendChild(style);
+
+    // Style field with error
+    field.style.borderColor = 'var(--red-error)';
+    field.style.backgroundColor = 'rgba(255, 77, 77, 0.05)';
+
+    // Create error message div
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+
+    field.parentNode.appendChild(errorDiv);
+
+    // Shake animation for field
+    field.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+    field.addEventListener('animationend', function() {
+      field.style.animation = '';
+    });
+  }
+
+  /* =========================
+     Helper: reset field to normal state
+     ========================= */
+  function resetField(field) {
+    field.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+    field.style.backgroundColor = 'var(--bg-darker)';
+    const existingError = field.parentNode.querySelector('.error-message');
+    if (existingError) {
+      existingError.remove();
+    }
+  }
 });

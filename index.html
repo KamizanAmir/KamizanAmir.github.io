@@ -1,785 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kamizan Amirudin - Senior Programmer Portfolio">
-  <meta name="keywords" content="software developer, programmer, developer, web development, app development">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kamizan Amirudin – Senior Programmer Portfolio" />
+  <meta name="keywords" content="software developer, programmer, web developer, app developer" />
   <title>Kamizan Amirudin | Senior Programmer</title>
 
-  <!-- Google Fonts (Orbitron for a futuristic vibe, plus a cleaner sans-serif) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Animation library -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  
-  <!-- Add this stylesheet for the contact form animations -->
-  <style>
-    /* Scroll to Top Button Styles */
-    #scrollToTop {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #1e77eb; /* adjust as needed */
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 18px;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 1000;
-    }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 
-    #scrollToTop.show {
-    opacity: 1;
-    visibility: visible;
-    }
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
-    /* Contact Form Styles */
-    .contact-form-container {
-      max-width: 700px;
-      margin: 0 auto 40px;
-      background-color: rgba(255, 255, 255, 0.03);
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .contact-form-container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    }
-    
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .contact-form h3 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: var(--secondary-color, #f5a623);
-      font-weight: 600;
-      text-align: center;
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    
-    .form-group label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-color, #f8f9fa);
-      margin-bottom: 5px;
-    }
-    
-    .form-group input,
-    .form-group textarea {
-      padding: 12px 15px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
-      color: var(--text-color, #f8f9fa);
-      font-family: 'Poppins', sans-serif;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-    
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--secondary-color, #f5a623);
-      box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.2);
-      background-color: rgba(255, 255, 255, 0.08);
-    }
-    
-    .form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-    
-    .submit-btn {
-      background-color: var(--secondary-color, #f5a623);
-      border: none;
-      color: #000;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    
-    .submit-btn:hover {
-      background-color: #ffb84d;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(245, 166, 35, 0.3);
-    }
-    
-    .submit-btn:active {
-      transform: translateY(0);
-    }
-    
-    .submit-btn i {
-      font-size: 18px;
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 768px) {
-      .contact-form-container {
-        padding: 20px;
-        margin-bottom: 30px;
-      }
-      
-      .form-group input,
-      .form-group textarea {
-        padding: 10px;
-      }
-      
-      .submit-btn {
-        padding: 10px 20px;
-      }
-    }
-  </style>
-  
-  <!-- Existing CSS -->
-  <link rel="stylesheet" href="styles.css">
-  
-  <!-- Favicon(s) -->
-  <link rel="icon" href="images/icon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
+  <!-- Animate.css for fade-in effects -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 
-  <!-- Google Analytics 4 (GA4) -->
+  <!-- Your updated CSS -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Facebook SDK (for comments plugin) -->
+  <div id="fb-root"></div>
+  <script 
+    async 
+    defer 
+    crossorigin="anonymous" 
+    src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787" 
+    nonce="BREqFWxC">
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="images/icon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon" />
+
+  <!-- (Optional) GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-XXXXXXXXXX');
   </script>
 </head>
 
 <body>
-    <div id="fb-root"></div>
-    <script 
-        async defer crossorigin="anonymous" 
-        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v19.0&appId=2112997068921787" 
-        nonce="BREqFWxC">
-    </script>
-    <header>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-        <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture">
-        <div class="header-text">
-            <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
-            <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
-            <!-- <nav>
-            <ul>
-                <li>Network</li>
-                <li>App Developer</li>
-                <li>System Analyst</li>
+  <!-- ======= HEADER (static “hero” section) ======= -->
+  <header>
+    <div class="header-overlay"></div>
+    <div class="header-content">
+      <!-- Profile image -->
+      <img src="images/icon.jpg" alt="Profile Picture" class="profile-picture" />
+
+      <!-- Name & job -->
+      <div class="header-text">
+        <h1 class="glow-text">KAMIZAN AMIRUDIN</h1>
+        <p class="current-job">Senior Programmer @ YHCM Sdn Bhd</p>
+      </div>
+
+      <!-- Centered nav -->
+      <nav class="header-nav">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#certificate">Certification</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#resume">Resume</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======= MAIN CONTENT ======= -->
+  <main>
+    <!-- ======= ABOUT SECTION ======= -->
+    <section id="about" class="section-colored">
+      <div class="section-inner about-inner">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3><i class="fas fa-user-circle"></i> About Me</h3>
+            <p>
+              Senior Programmer with expertise in various programming languages,
+              app development, and system analysis.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+            <p>Malaysia</p>
+          </div>
+
+          <div class="footer-section">
+            <h3><i class="fas fa-link"></i> Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="#education">Education</a></li>
+              <li><a href="#experience">Experience</a></li>
+              <li><a href="#certificate">Certification</a></li>
+              <li><a href="#portfolio">Portfolio</a></li>
+              <li><a href="#resume">Resume</a></li>
+              <li><a href="#contact">Contact</a></li>
             </ul>
-            </nav> -->
-        </div>
-        </div>
-    </header>
-    <main>
-        <section id="about" style="background-color: #156583;">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-user-circle"></i> About Me</h3>
-                    <p>Senior Programmer with expertise in various programming languages, app development, and system analysis.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
-                    <p>Malaysia</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-link"></i> Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#education">Education</a></li>
-                        <li><a href="#experience">Experience</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3><i class="fas fa-share-alt"></i> Social</h3>
-                    <div class="social-icons">
-                        <a href="https://www.linkedin.com/in/kamizan-amirudin"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://m.facebook.com/kamizanamir"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.instagram.com/kamizanamir"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com/KamizanAmir"><i class="fab fa-github"></i></a>
-                        <a href="https://wasap.my/60134718690"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="education" class="section-dark animate__animated animate__fadeIn">
-            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
-            <div class="timeline horizontal-timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022</div>
-                        <h3>Perak Human Capital Development Center</h3>
-                        <div class="timeline-subtitle">Data Analyst Certification</div>
-                        <h4>Achievement</h4>
-                        <ul>
-                            <li>Create data linear regression using Python.</li>
-                            <li>Learn to use PowerBI and Python Language.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2016 - 2019</div>
-                        <h3>Politeknik Tuanku Syed Sirajuddin</h3>
-                        <div class="timeline-subtitle">Diploma in Digital Technology - 3.26 CGPA</div>
-                        <h4>Achievement</h4>
-                        <ul>
-                            <li>Join RELASIS PTSS since 2016 as a uniform unit during study</li>
-                            <li>Dean list student during 2nd Semester.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2014 - 2015</div>
-                        <h3>Sekolah Menengah Sains Teluk Intan</h3>
-                        <div class="timeline-subtitle">Sijil Pelajaran Malaysia (SPM)</div>
-                        <h4>Achievement</h4>
-                        <ul>
-                            <li>Become additional mathematics Guru Muda during trip to MOZAC(Sekolah Menengah Sains Muzaffar Syah, Melaka).</li>
-                            <li>Get 2nd Place in Silat Olahraga among area school competition.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2011 - 2013</div>
-                        <h3>Sekolah Menengah Kebangsaan Pengkalan Hulu</h3>
-                        <div class="timeline-subtitle">Pelajaran Menengah Rendah (7A 1B)</div>
-                        <h4>Achievement</h4>
-                        <ul>
-                            <li>Active in school sport tournament.</li>
-                            <li>Compete in silat school competition.</li>
-                            <li>AJK Computer Club.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2006 - 2010</div>
-                        <h3>Sekolah Kebangsaan Kuak Luar</h3>
-                        <div class="timeline-subtitle">Ujian Pelajaran Sekolah Rendah (4A 1B)</div>
-                        <h4>Achievement</h4>
-                        <ul>
-                            <li>Become Library Prefect.</li>
-                            <li>Active school sport tournament.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        
-        <section id="experience" class="section-dark animate__animated animate__fadeIn">
-            <h2 class="section-title"><i class="fas fa-graduation-cap"></i>Experience</h2>
-            <div class="timeline horizontal-timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025 - Present</div>
-                        <h3>YHCM Sdn Bhd</h3>
-                        <div class="timeline-subtitle">Senior Programmer</div>
-                        <h4>Job Description</h4>
-                        <ul>
-                            <li>Development: Involve in projects development and brainstorming sessions.</li>
-                            <li>Leadership: Manage programmer team and provide proper guidelines and programming etique while completing projects.</li>
-                            <li>Consulting: Work closely with Project Manager on consultations with end-user.</li>
-                            <li>Analyzing: Analyze and data gathering for requirements on the projects.</li>
-                        </ul>
-                        <h4>Skills Acquired</h4>
-                        <ul>
-                            <li>Using Visual Basic 6.0 to manage current program in the manifacturing</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022 - Present</div>
-                        <h3>Freelance Developer</h3>
-                        <div class="timeline-subtitle">Freelance</div>
-                        <h4>Job Description</h4>
-                                <ul>
-                                    <li>Create simple app using Android Studio with Java/Kotlin.</li>
-                                    <li>Once hired by UiTM Student to create simple application for learning purpose</li>
-                                </ul>
-                                <h4>Skills Acquired</h4>
-                                <ul>
-                                    <li>Learn to communicate with client and provide proper documentation for user.</li>
-                                </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 - 2024</div>
-                        <h3>AIC Semiconductor Sdn Bhd</h3>
-                        <div class="timeline-subtitle">System Analyst</div>
-                        <h4>Job Description</h4>
-                        <ul>
-                            <li>Analysis: Assessing current organizational systems and processes.</li>
-                            <li>Requirements Gathering: Identifying and documenting user and business requirements.</li>
-                            <li>Design: Creating system solutions to meet organizational needs.</li>
-                            <li>Communication: Collaborating with stakeholders, including users and developers.</li>
-                            <li>Implementation: Overseeing the integration of new systems and improvements.</li>
-                            <li>Testing: Ensuring developed systems meet specified requirements.</li>
-                            <li>Evaluation: Assessing the effectiveness of implemented solutions.</li>
-                            <li>Documentation: Recording and maintaining system-related information.</li>
-                            <li>Problem-solving: Addressing issues and optimizing system performance.</li>
-                        </ul>
-                        <h4>Skills Acquired</h4>
-                                <ul>
-                                    <li>Using Visual Basic 6.0 to manage current program in the manifacturing</li>
-                                    <li>Manage Microsoft SQL Database</li>
-                                    <li>Use SAP Business One to acquire PO and invoice</li>
-                                    <li>Use crytal report</li>
-                                    <li>Learn ERP and production flow</li>
-                                    <li>Learn to communicate with user to achieve company goals and ensure smooth production process</li>
-                                    <li>Enhancement of previous software to ease user</li>
-                                </ul>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023</div>
-                        <h3>Risau IO Sdn Bhd</h3>
-                        <div class="timeline-subtitle">Software Developer</div>
-                        <h4>Job Description</h4>
-                        <ul>
-                            <li>Maintain company application, documentation, enhancement and involved in new products or project by this company.</li>
-                            <li>Familiar with Yii2/Laravel framework with side-server API implementation.</li>
-                            <li>Working with Flutter/Dart language for pre-existing app for debugging and updating current app.</li>
-                            <li>Prepare documentation for whitelabel/cloning for pre-sales program</li>
-                            <li>Involve with internal events which is Malakat Mall itself.</li>
-                            <li>Using mongodb and mysql for database management and data analysis.</li>
-                            <li>Work with Visual Studio IDE and CD/CI GitLab for pipeline working.</li>
-                            <li>Cloud management with RunCloud and GCP, sometime work with DigitalOcean for web application management.</li>
-                        </ul>
-                        <h4>Skills Acquired</h4>
-                        <ul>
-                            <li>Learn to use API Secret function with JWT.</li>
-                            <li>Learn pipeline control(fork, pull, commit, etc) using Gitlab.</li>
-                            <li>Learn to manage VM Instance in GCP.</li>
-                            <li>Manage to recover lost file in GCP database Linux.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2021 - 2022</div>
-                        <h3>Mesiniaga Berhad - Northern Region</h3>
-                        <div class="timeline-subtitle">Solution Engineer</div>
-                        <h4>Job Description</h4>
-                                <ul>
-                                    <li>Lead as the site engineer for Lembaga Air Perak(LAP).</li>
-                                    <li>Assist site engineers under Tenaga Nasional Berhad(TNB) managed contract with Mesiniaga as the Service Provider.</li>
-                                    <li>Conduct monthly maintenance and reporting for network, servers, and security appliances.</li>
-                                    <li>Configure network to suit customer needs, including OSPF and BGP routing protocols.</li>
-                                    <li>Lead the team for DR test in TNB to ensure data is secure and redundancy is applied well.</li>
-                                    <li>Part of the KL10 migration team for migration of IBM products.</li>
-                                    <li>Prepare documentation, logs, and reporting for TNB project work.</li>
-                                    <li>Project coordinator for mini-projects, ensuring they are delivered on time with high quality.</li>
-                                </ul>
-                                <h4>Skills Acquired</h4>
-                                <ul>
-                                    <li>Learned routing protocols configuration.</li>
-                                    <li>Learned how to configure DR/VM devices using Nutanix/Veeam/Acropolis.</li>
-                                    <li>Learned how IBM works with its component products (Tivoli, IIB, MQ, WebSphere, etc.)</li>
-                                    <li>Learned to repair problems due to outages very fast; MTTR less than 3 minutes.</li>
-                                </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="certificate" class="section-dark animate__animated animate__fadeIn">
-            <h2 class="section-title"><i class="fas fa-certificate"></i> Certification</h2>
-            <div class="cards-container">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="images/cert1.png" alt="Comptia Security+ Certificate">
-                    </div>
-                    <div class="card-content">
-                        <h3>Comptia Security+ Certificate</h3>
-                        <p>Comptia Security+ Certification in 2021</p>
-                        <div class="card-badge">Security</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">
-                        <img src="images/cert2.png" alt="Windows Server Administration Certificate">
-                    </div>
-                    <div class="card-content">
-                        <h3>Introduction to Windows Server Administration</h3>
-                        <p>Obtain this certificate while working in Mesiniaga Sdn Bhd Northern</p>
-                        <div class="card-badge">Server Admin</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">
-                        <img src="images/cert3.png" alt="Cloud Computing Certificate">
-                    </div>
-                    <div class="card-content">
-                        <h3>Cloud Computing Fundamentals</h3>
-                        <p>Obtain this certificate under runcloud</p>
-                        <div class="card-badge">Cloud</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="portfolio" style="text-align: center; background-color: #156583;">
-            <h2>Portfolio</h2>
-            <!-- Portfolio Filter Buttons -->
-            <div class="portfolio-filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="web">Web Development</button>
-                <button class="filter-btn" data-filter="mobile">Mobile App</button>
-                <button class="filter-btn" data-filter="documentation">Documentation</button>
-            </div>
-            <div class="portfolio-grid">
-                <div class="portfolio-item web" data-category="web">
-                    <h3>Runcloud Assessment Test</h3>
-                    <img style="border-radius: 15px;" src="images/project1.png" alt="Project 1 Image" class="project-image">
-                    <p>This is incomplete project of Runcloud Assessment Test for web developer. This project is onhold due to time is not on my side.</p>
-                    <b>Link to source code : <a style="color:red;" href="https://github.com/KamizanAmir/runcloud/">>Source Code<<</a></b>
-                </div>
-                <div class="portfolio-item documentation" data-category="documentation">
-                    <h3>Laravel Documentation</h3>
-                    <img style="border-radius: 15px;" src="images/project2.png" alt="Project 2 Image" class="project-image">
-                    <p>I make Laravel Documentation for my previous company to ease next person who will build or configure this website. All important data and instruction also well included.</p>
-                    <b>This is confidental project</b>
-                </div>
-                <div class="portfolio-item mobile" data-category="mobile">
-                    <h3>Simple splash application</h3>
-                    <img style="border-radius: 15px;" src="images/project3.png" alt="Project 4 Image" class="project-image">
-                    <p>This is my ongoing project with Flutter. In this application, user can interact with each other via chatting, and also can play game together; under development.</p>
-                    <b>Link to source code :<a style="color: red;" href="https://github.com/KamizanAmir/kamching/">>Source Code<<</a></b>
-                </div>
-                <div class="portfolio-item mobile" data-category="mobile">
-                    <h3>UITM Application</h3>
-                    <img style="border-radius: 15px;" src="images/project4.png" alt="Project 5 Image" class="project-image">
-                    <p>I build a simple project for UITM FYP, this app is for learning purpose only. Language included Java with Android Studio IDE.</p>
-                    <b>This is confidental project (Client request)</b>
-                </div>
-            </div>
-        </section>
-        <section id="resume" class="section-dark animate__animated animate__fadeIn">
-            <h2 class="section-title"><i class="fas fa-file-alt"></i> Resume & CV</h2>
-            <div class="resume-container">
-                <div class="resume-card">
-                    <div class="resume-icon">
-                        <i class="fas fa-file-pdf fa-3x"></i>
-                    </div>
-                    <div class="resume-content">
-                        <h3>Professional Resume</h3>
-                        <p>Download my comprehensive resume detailing my professional experience, skills, and achievements.</p>
-                        <a href="resume/resume.pdf" download class="btn-download">
-                            <i class="fas fa-download"></i> Download Resume
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="resume-card">
-                    <div class="resume-icon">
-                        <i class="fas fa-file-word fa-3x"></i>
-                    </div>
-                    <div class="resume-content">
-                        <h3>Curriculum Vitae</h3>
-                        <p>Get my complete CV with detailed information about my education, work history, and professional qualifications.</p>
-                        <a href="resume/cv.docx" download class="btn-download">
-                            <i class="fas fa-download"></i> Download CV
-                        </a>
-                    </div>
-                </div>
-            </div>                                    
-        </section>
-        <section id="contact" class="section-dark animate__animated animate__fadeIn">      
-            <h2 class="section-title"><i class="fas fa-address-card"></i> Get In Touch</h2>
-            
-            <div class="contact-form-container">
-                <form action="https://formsubmit.co/kamizan980505@gmail.com" method="POST" class="contact-form">
-                    <h3><i class="fas fa-paper-plane"></i> Send Me a Message</h3>
-                    
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" placeholder="Your Name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Your Email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" name="subject" id="subject" placeholder="Subject" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea name="message" id="message" rows="5" placeholder="Your Message" required></textarea>
-                    </div>
-                    
-                    <!-- FormSubmit.co Specific Options -->
-                    <input type="hidden" name="_next" value="https://kamizanamir.github.io/thanks.html">
-                    <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
-                    <input type="hidden" name="_captcha" value="true">
-                    <input type="hidden" name="_template" value="table">
-                    
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
-                    </button>
-                </form>
-            </div>
-            
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Email</h3>
-                            <a href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself">kamizan980505@gmail.com</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>WhatsApp</h3>
-                            <a href="https://wasap.my/60134718690">+6013-471 8690</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>LinkedIn</h3>
-                            <a href="https://www.linkedin.com/in/kamizan-amirudin">Kamizan Amirudin</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Facebook</h3>
-                            <a href="https://m.facebook.com/kamizanamir">Kamizan Amirudin</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Instagram</h3>
-                            <a href="https://www.instagram.com/kamizanamir">kamizanamir</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>GitHub</h3>
-                            <a href="https://github.com/KamizanAmir">KamizanAmir</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <section id="comment" class="comment-section">
-                <h2 class="section-subtitle"><i class="fas fa-comments"></i> Leave a comment</h2>
-                <div class="fb-comments" data-href="https://github.com/KamizanAmir/KamizanAmir.github.io/blob/main/index.html" data-width="" data-numposts="10"></div>
-            </section>
-        </section>
-        <footer class="modern-footer">
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Kamizan Amirudin. All rights reserved.</p>
-                <p>Designed with <i class="fas fa-heart"></i></p>
-            </div>
-        </footer>             
-    </main>      
-    <script src="script.js"></script>
-    <button id="scrollToTop" class="scrollToTop"><i class="fas fa-arrow-up"></i></button>
-    <script>
-        // Form validation and submission handling
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.querySelector('.contact-form');
-            
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    // Basic form validation
-                    const name = document.getElementById('name');
-                    const email = document.getElementById('email');
-                    const subject = document.getElementById('subject');
-                    const message = document.getElementById('message');
-                    
-                    let valid = true;
-                    
-                    // Check if name is valid
-                    if (name.value.trim().length < 2) {
-                        highlightError(name, 'Please enter a valid name (at least 2 characters)');
-                        valid = false;
-                    } else {
-                        resetField(name);
-                    }
-                    
-                    // Check if email is valid
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(email.value.trim())) {
-                        highlightError(email, 'Please enter a valid email address');
-                        valid = false;
-                    } else {
-                        resetField(email);
-                    }
-                    
-                    // Check if subject is valid
-                    if (subject.value.trim().length < 3) {
-                        highlightError(subject, 'Please enter a subject (at least 3 characters)');
-                        valid = false;
-                    } else {
-                        resetField(subject);
-                    }
-                    
-                    // Check if message is valid
-                    if (message.value.trim().length < 10) {
-                        highlightError(message, 'Please enter a message (at least 10 characters)');
-                        valid = false;
-                    } else {
-                        resetField(message);
-                    }
-                    
-                    // If not valid, prevent form submission
-                    if (!valid) {
-                        e.preventDefault();
-                    } else {
-                        // Show sending message
-                        const submitBtn = contactForm.querySelector('.submit-btn');
-                        const originalText = submitBtn.innerHTML;
-                        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
-                        submitBtn.disabled = true;
-                        
-                        // We'll let the form submit normally to FormSubmit.co
-                        // The form will redirect to the _next URL specified in the form
-                    }
-                });
-            }
-            
-            // Helper function to highlight error
-            function highlightError(field, message) {
-                // Remove any existing error message
-                const existingError = field.parentNode.querySelector('.error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
-                
-                // Add error class and message
-                field.style.borderColor = '#ff4d4d';
-                field.style.backgroundColor = 'rgba(255, 77, 77, 0.05)';
-                
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-message';
-                errorDiv.style.color = '#ff4d4d';
-                errorDiv.style.fontSize = '12px';
-                errorDiv.style.marginTop = '5px';
-                errorDiv.style.fontWeight = '500';
-                errorDiv.textContent = message;
-                
-                field.parentNode.appendChild(errorDiv);
-                
-                // Shake animation for error feedback
-                field.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
-                field.addEventListener('animationend', function() {
-                    field.style.animation = '';
-                });
-            }
-            
-            // Helper function to reset field
-            function resetField(field) {
-                field.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                field.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                
-                const existingError = field.parentNode.querySelector('.error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
-            }
-        });
-        
-        // Add animation keyframes
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                10%, 90% { transform: translate3d(-1px, 0, 0); }
-                20%, 80% { transform: translate3d(2px, 0, 0); }
-                30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-                40%, 60% { transform: translate3d(4px, 0, 0); }
-            }
-        `;
-        document.head.appendChild(style);
-        // Show or hide the scroll-to-top button based on scroll position
-        window.addEventListener('scroll', function() {
-            const scrollBtn = document.getElementById('scrollToTop');
-            if (window.pageYOffset > 300) {  // Adjust threshold as needed
-                scrollBtn.classList.add('show');
-            } else {
-                scrollBtn.classList.remove('show');
-            }
-        });
+          </div>
 
-        // Scroll smoothly back to the top when the button is clicked
-        document.getElementById('scrollToTop').addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+          <div class="footer-section">
+            <h3><i class="fas fa-share-alt"></i> Social</h3>
+            <div class="social-icons">
+              <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+              <a href="https://m.facebook.com/kamizanamir" target="_blank"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="https://www.instagram.com/kamizanamir" target="_blank"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://github.com/KamizanAmir" target="_blank"
+                ><i class="fab fa-github"></i
+              ></a>
+              <a href="https://wasap.my/60134718690" target="_blank"
+                ><i class="fab fa-whatsapp"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    </script>
+    <!-- ======= EDUCATION SECTION ======= -->
+    <section id="education" class="section-dark animate__animated animate__fadeIn">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+        <div class="timeline horizontal-timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2022</div>
+              <h3>Perak Human Capital Development Center</h3>
+              <div class="timeline-subtitle">Data Analyst Certification</div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Create data linear regression using Python.</li>
+                <li>Learn to use PowerBI and Python Language.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2016 - 2019</div>
+              <h3>Politeknik Tuanku Syed Sirajuddin</h3>
+              <div class="timeline-subtitle">
+                Diploma in Digital Technology - 3.26 CGPA
+              </div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Join RELASIS PTSS since 2016 as a uniform unit during study.</li>
+                <li>Dean’s list student during 2nd Semester.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2014 - 2015</div>
+              <h3>Sekolah Menengah Sains Teluk Intan</h3>
+              <div class="timeline-subtitle">Sijil Pelajaran Malaysia (SPM)</div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>
+                  Became additional mathematics Guru Muda during trip to
+                  MOZAC (Sekolah Menengah Sains Muzaffar Syah, Melaka).
+                </li>
+                <li>
+                  Got 2nd Place in Silat Olahraga among area school competition.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2011 - 2013</div>
+              <h3>Sekolah Menengah Kebangsaan Pengkalan Hulu</h3>
+              <div class="timeline-subtitle">Pelajaran Menengah Rendah (7A 1B)</div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Active in school sport tournaments.</li>
+                <li>Competed in silat school competition.</li>
+                <li>AJK Computer Club member.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2006 - 2010</div>
+              <h3>Sekolah Kebangsaan Kuak Luar</h3>
+              <div class="timeline-subtitle">
+                Ujian Pelajaran Sekolah Rendah (4A 1B)
+              </div>
+              <h4>Achievement</h4>
+              <ul>
+                <li>Became Library Prefect.</li>
+                <li>Active in school sport tournaments.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= EXPERIENCE SECTION ======= -->
+    <section id="experience" class="section-dark animate__animated animate__fadeIn">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-briefcase"></i> Experience</h2>
+        <div class="timeline horizontal-timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2025 – Present</div>
+              <h3>YHCM Sdn Bhd</h3>
+              <div class="timeline-subtitle">Senior Programmer</div>
+              <h4>Job Description</h4>
+              <ul>
+                <li>Development: Involved in projects development and brainstorming sessions.</li>
+                <li>
+                  Leadership: Manage programmer team and provide proper guidelines
+                  and programming etiquette while completing projects.
+                </li>
+                <li>Consulting: Work closely with Project Manager on consultations with end-user.</li>
+                <li>Analyzing: Analyze and gather data for requirements on the projects.</li>
+              </ul>
+              <h4>Skills Acquired</h4>
+              <ul>
+                <li>Using Visual Basic 6.0 to manage current program in manufacturing.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2022 – Present</div>
+              <h3>Freelance Developer</h3>
+              <div class="timeline-subtitle">Freelance</div>
+              <h4>Job Description</h4>
+              <ul>
+                <li>Create simple apps using Android Studio with Java/Kotlin.</li>
+                <li>
+                  Developed simple learning-purpose applications for UiTM students.
+                </li>
+              </ul>
+              <h4>Skills Acquired</h4>
+              <ul>
+                <li>Learned to communicate with clients and provide proper documentation for users.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2023 – 2024</div>
+              <h3>AIC Semiconductor Sdn Bhd</h3>
+              <div class="timeline-subtitle">System Analyst</div>
+              <h4>Job Description</h4>
+              <ul>
+                <li>Assessing current organizational systems and processes.</li>
+                <li>Identifying and documenting user and business requirements.</li>
+                <li>Creating system solutions to meet organizational needs.</li>
+                <li>Collaborating with stakeholders, including users and developers.</li>
+                <li>Overseeing integration of new systems and improvements.</li>
+                <li>Ensuring developed systems meet specified requirements (testing).</li>
+                <li>Assessing effectiveness of implemented solutions.</li>
+                <li>Recording and maintaining system-related documentation.</li>
+                <li>Addressing issues and optimizing system performance.</li>
+              </ul>
+              <h4>Skills Acquired</h4>
+              <ul>
+                <li>Using Visual Basic 6.0 to manage current programs in manufacturing.</li>
+                <li>Managing Microsoft SQL Databases.</li>
+                <li>Using SAP Business One for POs and invoices.</li>
+                <li>Generating Crystal Reports.</li>
+                <li>Understanding ERP and production flow.</li>
+                <li>Communicating with users to achieve company goals and ensure smooth production.</li>
+                <li>Enhancing existing software to improve user experience.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2023</div>
+              <h3>Risau IO Sdn Bhd</h3>
+              <div class="timeline-subtitle">Software Developer</div>
+              <h4>Job Description</h4>
+              <ul>
+                <li>Maintained company applications, documentation, enhancements, and participated in new product development.</li>
+                <li>Worked with Yii2/Laravel framework for side-server API implementation.</li>
+                <li>Used Flutter/Dart for pre-existing app debugging and updates.</li>
+                <li>Prepared documentation for whitelabel/cloning pre-sales programs.</li>
+                <li>Participated in internal events connected to Malakat Mall.</li>
+                <li>Managed MongoDB and MySQL for database management and data analysis.</li>
+                <li>Worked with Visual Studio IDE and CI/CD via GitLab pipelines.</li>
+                <li>Managed cloud servers via RunCloud and GCP, and occasionally DigitalOcean.</li>
+              </ul>
+              <h4>Skills Acquired</h4>
+              <ul>
+                <li>Using API Secret functions with JWT.</li>
+                <li>GitLab pipeline control (fork, pull, commit, etc.).</li>
+                <li>Managing VM Instances on GCP.</li>
+                <li>Recovering lost files in GCP database on Linux.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-date">2021 – 2022</div>
+              <h3>Mesiniaga Berhad – Northern Region</h3>
+              <div class="timeline-subtitle">Solution Engineer</div>
+              <h4>Job Description</h4>
+              <ul>
+                <li>Led as site engineer for Lembaga Air Perak (LAP).</li>
+                <li>Assisted TNB site engineers under Mesiniaga contract as the service provider.</li>
+                <li>Conducted monthly maintenance and reporting for network, servers, and security appliances.</li>
+                <li>Configured network protocols including OSPF and BGP.</li>
+                <li>Led Disaster Recovery (DR) tests to ensure data security and redundancy.</li>
+                <li>Participated in KL10 migration team for IBM product migration.</li>
+                <li>Prepared documentation, logs, and reports for TNB projects.</li>
+                <li>Acted as project coordinator for mini-projects, ensuring timely, high-quality delivery.</li>
+              </ul>
+              <h4>Skills Acquired</h4>
+              <ul>
+                <li>Configured routing protocols (OSPF, BGP).</li>
+                <li>Configured DR/VM devices using Nutanix/Veeam/Acropolis.</li>
+                <li>Learned IBM ecosystem components (Tivoli, IIB, MQ, WebSphere, etc.).</li>
+                <li>Reduced Mean Time to Repair (MTTR) to under 3 minutes during outages.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= CERTIFICATION SECTION ======= -->
+    <section id="certificate" class="section-dark animate__animated animate__fadeIn">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-certificate"></i> Certification</h2>
+        <div class="cards-container">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/cert1.png" alt="Comptia Security+ Certificate" />
+            </div>
+            <div class="card-content">
+              <h3>Comptia Security+ Certificate</h3>
+              <p>Comptia Security+ Certification in 2021</p>
+              <div class="card-badge">Security</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image">
+              <img src="images/cert2.png" alt="Windows Server Administration Certificate" />
+            </div>
+            <div class="card-content">
+              <h3>Introduction to Windows Server Administration</h3>
+              <p>Obtained this certificate while working at Mesiniaga Sdn Bhd Northern Region</p>
+              <div class="card-badge">Server Admin</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-image">
+              <img src="images/cert3.png" alt="Cloud Computing Certificate" />
+            </div>
+            <div class="card-content">
+              <h3>Cloud Computing Fundamentals</h3>
+              <p>Obtained this certificate under RunCloud</p>
+              <div class="card-badge">Cloud</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= PORTFOLIO SECTION ======= -->
+    <section id="portfolio" class="section-colored">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-folder-open"></i> Portfolio</h2>
+
+        <!-- Portfolio Filter Buttons -->
+        <div class="portfolio-filter">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="web">Web Development</button>
+          <button class="filter-btn" data-filter="mobile">Mobile App</button>
+          <button class="filter-btn" data-filter="documentation">Documentation</button>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="portfolio-grid">
+          <div class="portfolio-item web show" data-category="web">
+            <h3>RunCloud Assessment Test</h3>
+            <img
+              src="images/project1.png"
+              alt="Project 1 Image"
+              class="project-image"
+            />
+            <p>
+              This is an incomplete project of the RunCloud Assessment Test for web
+              developers. This project is on hold due to time constraints.
+            </p>
+            <b>
+              Link to source code :
+              <a style="color: red;" href="https://github.com/KamizanAmir/runcloud/" target="_blank"
+                >>Source Code<<</a
+              >
+            </b>
+          </div>
+
+          <div class="portfolio-item documentation show" data-category="documentation">
+            <h3>Laravel Documentation</h3>
+            <img
+              src="images/project2.png"
+              alt="Project 2 Image"
+              class="project-image"
+            />
+            <p>
+              I created Laravel Documentation for my previous company to ease future
+              maintenance. All important data and instructions are included.
+            </p>
+            <b>This is a confidential project</b>
+          </div>
+
+          <div class="portfolio-item mobile show" data-category="mobile">
+            <h3>Simple Splash Application</h3>
+            <img
+              src="images/project3.png"
+              alt="Project 3 Image"
+              class="project-image"
+            />
+            <p>
+              Ongoing Flutter project: users can interact via chat and play games
+              together. Currently under development.
+            </p>
+            <b>
+              Link to source code :
+              <a style="color: red;" href="https://github.com/KamizanAmir/kamching/" target="_blank"
+                >>Source Code<<</a
+              >
+            </b>
+          </div>
+
+          <div class="portfolio-item mobile show" data-category="mobile">
+            <h3>UiTM Application</h3>
+            <img
+              src="images/project4.png"
+              alt="Project 4 Image"
+              class="project-image"
+            />
+            <p>
+              Built a simple learning-purpose Android app for UiTM FYP using Java
+              (Android Studio). Client requested confidentiality.
+            </p>
+            <b>This is a confidential project (Client request)</b>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= RESUME & CV SECTION ======= -->
+    <section id="resume" class="section-dark animate__animated animate__fadeIn">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-file-alt"></i> Resume & CV</h2>
+        <div class="resume-container">
+          <div class="resume-card">
+            <div class="resume-icon">
+              <i class="fas fa-file-pdf fa-3x"></i>
+            </div>
+            <div class="resume-content">
+              <h3>Professional Resume</h3>
+              <p>
+                Download my comprehensive resume detailing my professional
+                experience, skills, and achievements.
+              </p>
+              <a href="resume/resume.pdf" download class="btn-download">
+                <i class="fas fa-download"></i> Download Resume
+              </a>
+            </div>
+          </div>
+
+          <div class="resume-card">
+            <div class="resume-icon">
+              <i class="fas fa-file-word fa-3x"></i>
+            </div>
+            <div class="resume-content">
+              <h3>Curriculum Vitae</h3>
+              <p>
+                Get my complete CV with detailed information about my education,
+                work history, and professional qualifications.
+              </p>
+              <a href="resume/cv.docx" download class="btn-download">
+                <i class="fas fa-download"></i> Download CV
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= CONTACT SECTION ======= -->
+    <section id="contact" class="section-dark animate__animated animate__fadeIn">
+      <div class="section-inner">
+        <h2 class="section-title"><i class="fas fa-address-card"></i> Get In Touch</h2>
+
+        <div class="contact-form-container">
+          <form
+            action="https://formsubmit.co/kamizan980505@gmail.com"
+            method="POST"
+            class="contact-form"
+          >
+            <h3><i class="fas fa-paper-plane"></i> Send Me a Message</h3>
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" placeholder="Your Name" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" placeholder="Your Email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input
+                type="text"
+                name="subject"
+                id="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                name="message"
+                id="message"
+                rows="5"
+                placeholder="Your Message"
+                required
+              ></textarea>
+            </div>
+
+            <!-- FormSubmit.co Specific Options -->
+            <input type="hidden" name="_next" value="https://kamizanamir.github.io/thanks.html" />
+            <input
+              type="hidden"
+              name="_subject"
+              value="New Portfolio Contact Form Submission"
+            />
+            <input type="hidden" name="_captcha" value="true" />
+            <input type="hidden" name="_template" value="table" />
+
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
+
+        <div class="contact-container">
+          <div class="contact-info-group">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Email</h3>
+                  <a
+                    href="mailto:kamizan980505@gmail.com?subject=Tell%20me%20about%20yourself%20Kamizan&body=I%20really%20like%20your%20resume%2C%20can%20you%20tell%20me%20more%20about%20yourself"
+                    >kamizan980505@gmail.com</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>WhatsApp</h3>
+                  <a href="https://wasap.my/60134718690" target="_blank"
+                    >+6013-471 8690</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-group">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fab fa-linkedin-in"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>LinkedIn</h3>
+                  <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank"
+                    >Kamizan Amirudin</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Facebook</h3>
+                  <a href="https://m.facebook.com/kamizanamir" target="_blank"
+                    >Kamizan Amirudin</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-group">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fab fa-instagram"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Instagram</h3>
+                  <a href="https://www.instagram.com/kamizanamir" target="_blank"
+                    >kamizanamir</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fab fa-github"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>GitHub</h3>
+                  <a href="https://github.com/KamizanAmir" target="_blank"
+                    >KamizanAmir</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======= COMMENTS SECTION ======= -->
+        <section id="comment" class="comment-section">
+          <h2 class="section-subtitle"><i class="fas fa-comments"></i> Leave a Comment</h2>
+          <div
+            class="fb-comments"
+            data-href="https://github.com/KamizanAmir/KamizanAmir.github.io/blob/main/index.html"
+            data-width=""
+            data-numposts="10"
+          ></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ======= FOOTER ======= -->
+    <footer class="modern-footer">
+      <div class="footer-bottom">
+        <p>&copy; 2025 Kamizan Amirudin. All rights reserved.</p>
+        <p>Designed with <i class="fas fa-heart"></i></p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ======= SCRIPT ======= -->
+  <script src="script.js"></script>
+
+  <!-- Scroll‐to‐Top Button -->
+  <button id="scrollToTop" class="scrollToTop">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 </body>
 </html>
