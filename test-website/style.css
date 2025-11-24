@@ -1,0 +1,411 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Reusable Classes */
+.container {
+    /* Increased from 1100px to 1250px for better spacing with 4 columns */
+    max-width: 1250px; 
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 50px;
+    font-weight: 300;
+}
+
+.bg-light {
+    background-color: #f9f9f9;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 30px;
+    transition: background 0.3s;
+    font-weight: 600;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    z-index: 1001; /* Keep logo above menu overlay */
+}
+
+.nav-links {
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #3498db;
+}
+
+.btn-contact {
+    border: 2px solid #3498db;
+    padding: 8px 20px;
+    border-radius: 20px;
+    color: #3498db !important;
+}
+
+.btn-contact:hover {
+    background: #3498db;
+    color: #fff !important;
+}
+
+/* Burger Menu Icon */
+.burger {
+    display: none;
+    cursor: pointer;
+    z-index: 1001; /* Keep burger above menu overlay */
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Hero Slider */
+header {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-container {
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    touch-action: pan-y; /* Adds better touch support */
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.hero-content {
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Dots */
+.dots-container {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+.dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- GRIDS LAYOUT --- */
+.services-grid, .portfolio-grid {
+    display: grid;
+    /* Changed minmax from 260px to 220px so 4 items fit in one line */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    padding: 20px 10px;
+}
+
+/* --- SERVICE CARD STYLING (Modern Light Tech Theme) --- */
+.service-card {
+    background: linear-gradient(145deg, #ffffff, #f0f4f8);
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid transparent;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(52, 152, 219, 0.2);
+    border-bottom: 4px solid #3498db;
+}
+
+/* Icon styling for Services */
+.icon-wrapper {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: rgba(52, 152, 219, 0.1);
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    transition: all 0.4s ease;
+}
+
+.service-card:hover .icon-wrapper {
+    background: #3498db;
+    color: #fff;
+    transform: rotateY(180deg);
+}
+
+.service-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+/* --- PORTFOLIO ITEM STYLING (Bold IT Gradient) --- */
+.portfolio-item {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: #fff;
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Subtle overlay effect on hover */
+.portfolio-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    border-radius: 15px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.4s ease;
+}
+
+.portfolio-item:hover::before {
+    opacity: 1;
+}
+
+.portfolio-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(52, 152, 219, 0.4);
+}
+
+.portfolio-icon {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: rgba(255,255,255, 0.8);
+}
+
+.portfolio-item h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.portfolio-item p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Contact & Footer */
+.contact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.contact-info, .contact-form {
+    flex: 1;
+    min-width: 300px;
+}
+
+.footer-section {
+    background: #2c3e50;
+    color: #fff;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: none;
+}
+
+.copyright {
+    text-align: center;
+    border-top: 1px solid #3e5871;
+    padding-top: 20px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+}
+
+/* --- MOBILE RESPONSIVE FIX --- */
+@media (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        right: 0px;
+        height: 92vh; /* Viewport height minus navbar */
+        top: 70px; /* Navbar height */
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 60%; /* Width of the sidebar */
+        transform: translateX(100%); /* Start hidden to the right */
+        transition: transform 0.4s ease-in;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        padding-top: 50px;
+    }
+
+    /* This class is added via JS to show the menu */
+    .nav-active {
+        transform: translateX(0%);
+    }
+
+    .nav-links li {
+        margin: 30px 0;
+        opacity: 1;
+    }
+
+    .burger {
+        display: block; /* Show burger on mobile */
+    }
+    
+    .hero-content h1 { font-size: 2.5rem; }
+}
