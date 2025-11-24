@@ -520,6 +520,41 @@ header {
     transform: translateY(-3px);
 }
 
+/* --- CONTACT LINKS & MAP --- */
+
+/* Clickable Phone & Email Styling */
+.contact-link {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.contact-link:hover {
+    color: #3b82f6;
+    /* Brand Blue */
+    transform: translateX(5px);
+    /* Subtle slide effect */
+}
+
+/* Map Container Styling */
+.map-container {
+    margin-top: 30px;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    /* Rounds the corners of the map */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map-container iframe {
+    display: block;
+    /* Removes bottom spacing bug */
+    filter: invert(90%) hue-rotate(180deg);
+    /* Optional: Makes map look "Dark Mode" */
+}
+
 /* Mobile */
 @media (max-width: 480px) {
     .logo-main {
