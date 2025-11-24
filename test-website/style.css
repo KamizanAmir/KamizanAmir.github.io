@@ -3,14 +3,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #fff;
-    overflow-x: hidden; /* Prevents horizontal scroll */
+    color: #e2e8f0;
+    /* Light grey text for dark mode */
+    background-color: #0f172a;
+    /* Deep Tech Blue */
+    /* Optional: Subtle grid pattern for IT feel */
+    background-image: linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px);
+    background-size: 40px 40px;
+    overflow-x: hidden;
 }
 
 a {
@@ -24,60 +30,65 @@ ul {
 
 /* Reusable Classes */
 .container {
-    /* Increased from 1100px to 1250px for better spacing with 4 columns */
-    max-width: 1250px; 
+    max-width: 1250px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
 .section {
-    padding: 80px 0;
+    padding: 100px 0;
 }
 
 .section-title {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 10px;
-    color: #2c3e50;
+    color: #f8fafc;
+    font-weight: 700;
 }
 
 .section-subtitle {
     text-align: center;
-    color: #7f8c8d;
-    margin-bottom: 50px;
+    color: #94a3b8;
+    margin-bottom: 60px;
     font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.bg-light {
-    background-color: #f9f9f9;
-}
-
+/* Buttons */
 .btn-primary {
     display: inline-block;
-    padding: 12px 30px;
-    background-color: #3498db;
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: #fff;
-    border-radius: 30px;
-    transition: background 0.3s;
+    border-radius: 50px;
+    transition: all 0.3s ease;
     font-weight: 600;
     margin-top: 20px;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .btn-primary:hover {
-    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
 }
 
-/* Navbar */
+/* Navbar (Glassmorphism) */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: rgba(15, 23, 42, 0.85);
+    /* Semi-transparent dark */
+    backdrop-filter: blur(10px);
+    /* Blur effect */
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
-    height: 70px;
+    height: 80px;
     display: flex;
     align-items: center;
 }
@@ -90,10 +101,11 @@ ul {
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #2c3e50;
-    z-index: 1001; /* Keep logo above menu overlay */
+    color: #fff;
+    letter-spacing: 1px;
+    z-index: 1001;
 }
 
 .nav-links {
@@ -101,43 +113,48 @@ ul {
 }
 
 .nav-links li {
-    margin-left: 30px;
+    margin-left: 35px;
 }
 
 .nav-links a {
-    color: #2c3e50;
+    color: #cbd5e1;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: color 0.3s;
+    position: relative;
 }
 
 .nav-links a:hover {
-    color: #3498db;
+    color: #3b82f6;
 }
 
+/* Contact Button in Nav */
 .btn-contact {
-    border: 2px solid #3498db;
-    padding: 8px 20px;
-    border-radius: 20px;
-    color: #3498db !important;
+    border: 1px solid #3b82f6;
+    padding: 10px 25px;
+    border-radius: 50px;
+    color: #3b82f6 !important;
+    transition: all 0.3s ease;
 }
 
 .btn-contact:hover {
-    background: #3498db;
+    background: #3b82f6;
     color: #fff !important;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
 /* Burger Menu Icon */
 .burger {
     display: none;
     cursor: pointer;
-    z-index: 1001; /* Keep burger above menu overlay */
+    z-index: 1001;
 }
 
 .burger div {
     width: 25px;
-    height: 3px;
-    background-color: #333;
-    margin: 5px;
+    height: 2px;
+    background-color: #fff;
+    margin: 6px;
     transition: all 0.3s ease;
 }
 
@@ -152,7 +169,6 @@ header {
     height: 100%;
     position: relative;
     z-index: 1;
-    touch-action: pan-y; /* Adds better touch support */
 }
 
 .slide {
@@ -175,12 +191,15 @@ header {
     z-index: 1;
 }
 
+/* Darker overlay for better text readability */
 .slide::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.7);
     z-index: -1;
 }
 
@@ -189,23 +208,28 @@ header {
     color: #fff;
     z-index: 2;
     padding: 20px;
+    animation: fadeInUp 1s ease forwards;
 }
 
 .hero-content h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-content p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    color: #cbd5e1;
 }
 
 /* Dots */
 .dots-container {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -214,198 +238,263 @@ header {
 }
 
 .dot {
-    width: 15px;
-    height: 15px;
-    background-color: rgba(255, 255, 255, 0.5);
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .dot.active {
-    background-color: #fff;
+    background-color: #3b82f6;
+    box-shadow: 0 0 10px #3b82f6;
     transform: scale(1.2);
 }
 
-.dot:hover {
-    background-color: rgba(255, 255, 255, 0.8);
+/* --- ABOUT SECTION --- */
+.about-text p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* --- GRIDS LAYOUT --- */
-.services-grid, .portfolio-grid {
+.about-text strong {
+    color: #3b82f6;
+}
+
+/* --- SERVICES GRID (Dark Cards) --- */
+.services-grid {
     display: grid;
-    /* Changed minmax from 260px to 220px so 4 items fit in one line */
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
-    padding: 20px 10px;
 }
 
-/* --- SERVICE CARD STYLING (Modern Light Tech Theme) --- */
 .service-card {
-    background: linear-gradient(145deg, #ffffff, #f0f4f8);
+    background: #1e293b;
+    /* Slate 800 */
     padding: 40px 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     text-align: center;
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
-    border-bottom: 4px solid transparent;
 }
 
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(52, 152, 219, 0.2);
-    border-bottom: 4px solid #3498db;
+    border-color: #3b82f6;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Icon styling for Services */
+/* Glowing Icon */
 .icon-wrapper {
     font-size: 2.5rem;
-    color: #3498db;
-    margin-bottom: 20px;
-    display: inline-block;
-    background: rgba(52, 152, 219, 0.1);
+    color: #3b82f6;
+    margin-bottom: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 80px;
     height: 80px;
-    line-height: 80px;
+    background: rgba(59, 130, 246, 0.1);
     border-radius: 50%;
     transition: all 0.4s ease;
 }
 
 .service-card:hover .icon-wrapper {
-    background: #3498db;
+    background: #3b82f6;
     color: #fff;
-    transform: rotateY(180deg);
+    box-shadow: 0 0 20px #3b82f6;
 }
 
 .service-card h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: #2c3e50;
-}
-
-/* --- PORTFOLIO ITEM STYLING (Bold IT Gradient) --- */
-.portfolio-item {
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
     color: #fff;
-    padding: 40px 30px;
-    border-radius: 15px;
+}
+
+.service-card p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+/* --- PORTFOLIO (Gradient Mesh) --- */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.portfolio-item {
+    background: linear-gradient(160deg, #1e293b, #0f172a);
+    padding: 40px;
+    border-radius: 20px;
     text-align: center;
-    transition: all 0.4s ease;
-    box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-}
-
-/* Subtle overlay effect on hover */
-.portfolio-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-    border-radius: 15px;
-    opacity: 0;
-    z-index: -1;
-    transition: opacity 0.4s ease;
-}
-
-.portfolio-item:hover::before {
-    opacity: 1;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .portfolio-item:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(52, 152, 219, 0.4);
+    transform: translateY(-5px);
+    border-color: #3b82f6;
 }
 
 .portfolio-icon {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 20px;
-    color: rgba(255,255,255, 0.8);
+    background: -webkit-linear-gradient(#3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .portfolio-item h4 {
     font-size: 1.3rem;
     margin-bottom: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    color: #fff;
 }
 
 .portfolio-item p {
-    font-size: 0.95rem;
-    opacity: 0.9;
+    color: #94a3b8;
+    font-size: 0.9rem;
 }
 
-/* Contact & Footer */
+/* --- CONTACT & FOOTER --- */
+.footer-section {
+    background: #020617;
+    /* Very dark slate */
+    border-top: 1px solid #1e293b;
+}
+
 .contact-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 60px;
 }
 
-.contact-info, .contact-form {
+.contact-info {
     flex: 1;
     min-width: 300px;
 }
 
-.footer-section {
-    background: #2c3e50;
+.contact-info h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
     color: #fff;
 }
 
-.contact-form input, .contact-form textarea {
+.contact-info ul li {
+    margin-bottom: 15px;
+    color: #cbd5e1;
+}
+
+.contact-form {
+    flex: 1;
+    min-width: 300px;
+    background: #1e293b;
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
     width: 100%;
     padding: 15px;
     margin-bottom: 15px;
-    border-radius: 5px;
-    border: none;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #fff;
+    font-family: inherit;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
 }
 
 .copyright {
     text-align: center;
-    border-top: 1px solid #3e5871;
-    padding-top: 20px;
-    margin-top: 20px;
+    border-top: 1px solid #1e293b;
+    padding-top: 30px;
+    margin-top: 50px;
     font-size: 0.9rem;
-    color: #bdc3c7;
+    color: #64748b;
 }
 
-/* --- MOBILE RESPONSIVE FIX --- */
+/* --- ANIMATIONS --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     .nav-links {
-        position: absolute;
+        position: fixed;
+        /* Fixed to cover screen */
         right: 0px;
-        height: 92vh; /* Viewport height minus navbar */
-        top: 70px; /* Navbar height */
-        background-color: #fff;
+        height: 100vh;
+        top: 0;
+        background: rgba(15, 23, 42, 0.95);
+        /* Dark solid background for menu */
+        backdrop-filter: blur(15px);
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 60%; /* Width of the sidebar */
-        transform: translateX(100%); /* Start hidden to the right */
-        transition: transform 0.4s ease-in;
-        box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-        padding-top: 50px;
+        justify-content: center;
+        /* Center items vertically */
+        width: 75%;
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        z-index: 999;
     }
 
-    /* This class is added via JS to show the menu */
     .nav-active {
         transform: translateX(0%);
     }
 
     .nav-links li {
-        margin: 30px 0;
-        opacity: 1;
+        margin: 25px 0;
+        margin-left: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
     }
 
     .burger {
-        display: block; /* Show burger on mobile */
+        display: block;
     }
-    
-    .hero-content h1 { font-size: 2.5rem; }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    /* Burger Animation Toggle */
+    .toggle .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .toggle .line2 {
+        opacity: 0;
+    }
+
+    .toggle .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
 }
