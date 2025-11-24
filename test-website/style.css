@@ -10,13 +10,22 @@ body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     color: #e2e8f0;
-    /* Light grey text for dark mode */
     background-color: #0f172a;
-    /* Deep Tech Blue */
-    /* Optional: Subtle grid pattern for IT feel */
-    background-image: linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px);
-    background-size: 40px 40px;
     overflow-x: hidden;
+    position: relative;
+    /* Needed for canvas layering */
+}
+
+/* --- PARTICLE CANVAS --- */
+#canvas1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Behind everything */
+    background: radial-gradient(circle at center, #1e293b, #0f172a);
 }
 
 a {
@@ -36,7 +45,16 @@ ul {
 }
 
 .section {
-    padding: 100px 0;
+    padding: 80px 0;
+}
+
+/* Adjusting the top section since About is now first */
+.first-section {
+    padding-top: 140px;
+    /* Account for navbar height + spacing */
+    padding-bottom: 60px;
+    background: transparent;
+    /* Show particles behind */
 }
 
 .section-title {
@@ -56,7 +74,6 @@ ul {
     text-transform: uppercase;
 }
 
-/* Buttons */
 .btn-primary {
     display: inline-block;
     padding: 14px 35px;
@@ -76,16 +93,13 @@ ul {
     box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
 }
 
-/* Navbar (Glassmorphism) */
+/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.85);
-    /* Semi-transparent dark */
+    background: rgba(15, 23, 42, 0.9);
     backdrop-filter: blur(10px);
-    /* Blur effect */
-    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
     height: 80px;
@@ -121,14 +135,12 @@ ul {
     font-weight: 500;
     font-size: 0.95rem;
     transition: color 0.3s;
-    position: relative;
 }
 
 .nav-links a:hover {
     color: #3b82f6;
 }
 
-/* Contact Button in Nav */
 .btn-contact {
     border: 1px solid #3b82f6;
     padding: 10px 25px;
@@ -143,7 +155,7 @@ ul {
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
-/* Burger Menu Icon */
+/* Burger */
 .burger {
     display: none;
     cursor: pointer;
@@ -158,11 +170,15 @@ ul {
     transition: all 0.3s ease;
 }
 
-/* Hero Slider */
+/* --- MODIFIED HERO SLIDER --- */
 header {
-    height: 100vh;
+    /* Reduced height to make it not take full screen immediately */
+    height: 65vh;
+    min-height: 400px;
     position: relative;
     overflow: hidden;
+    margin-bottom: 50px;
+    /* Space after slider */
 }
 
 .slider-container {
@@ -191,7 +207,6 @@ header {
     z-index: 1;
 }
 
-/* Darker overlay for better text readability */
 .slide::before {
     content: '';
     position: absolute;
@@ -199,7 +214,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.6);
     z-index: -1;
 }
 
@@ -208,11 +223,10 @@ header {
     color: #fff;
     z-index: 2;
     padding: 20px;
-    animation: fadeInUp 1s ease forwards;
 }
 
 .hero-content h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 20px;
     background: linear-gradient(to right, #fff, #94a3b8);
     -webkit-background-clip: text;
@@ -220,16 +234,15 @@ header {
 }
 
 .hero-content p {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     max-width: 700px;
     margin: 0 auto 30px auto;
     color: #cbd5e1;
 }
 
-/* Dots */
 .dots-container {
     position: absolute;
-    bottom: 40px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -252,9 +265,9 @@ header {
     transform: scale(1.2);
 }
 
-/* --- ABOUT SECTION --- */
+/* About Text */
 .about-text p {
-    color: #94a3b8;
+    color: #cbd5e1;
     margin-bottom: 20px;
     font-size: 1.1rem;
     text-align: center;
@@ -267,7 +280,7 @@ header {
     color: #3b82f6;
 }
 
-/* --- SERVICES GRID (Dark Cards) --- */
+/* Services */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -275,15 +288,14 @@ header {
 }
 
 .service-card {
-    background: #1e293b;
-    /* Slate 800 */
+    background: rgba(30, 41, 59, 0.6);
+    /* Transparent for particles */
     padding: 40px 30px;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     text-align: center;
     transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
+    backdrop-filter: blur(5px);
 }
 
 .service-card:hover {
@@ -292,7 +304,6 @@ header {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Glowing Icon */
 .icon-wrapper {
     font-size: 2.5rem;
     color: #3b82f6;
@@ -324,7 +335,7 @@ header {
     font-size: 0.95rem;
 }
 
-/* --- PORTFOLIO (Gradient Mesh) --- */
+/* Portfolio */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -332,7 +343,7 @@ header {
 }
 
 .portfolio-item {
-    background: linear-gradient(160deg, #1e293b, #0f172a);
+    background: rgba(30, 41, 59, 0.8);
     padding: 40px;
     border-radius: 20px;
     text-align: center;
@@ -364,10 +375,9 @@ header {
     font-size: 0.9rem;
 }
 
-/* --- CONTACT & FOOTER --- */
+/* Contact */
 .footer-section {
-    background: #020617;
-    /* Very dark slate */
+    background: rgba(2, 6, 23, 0.95);
     border-top: 1px solid #1e293b;
 }
 
@@ -377,7 +387,8 @@ header {
     gap: 60px;
 }
 
-.contact-info {
+.contact-info,
+.contact-form {
     flex: 1;
     min-width: 300px;
 }
@@ -394,8 +405,6 @@ header {
 }
 
 .contact-form {
-    flex: 1;
-    min-width: 300px;
     background: #1e293b;
     padding: 40px;
     border-radius: 20px;
@@ -413,12 +422,6 @@ header {
     font-family: inherit;
 }
 
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-}
-
 .copyright {
     text-align: center;
     border-top: 1px solid #1e293b;
@@ -428,40 +431,91 @@ header {
     color: #64748b;
 }
 
-/* --- ANIMATIONS --- */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* --- FLOATING WIDGET (WhatsApp + ScrollUp) --- */
+.floating-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 2000;
 }
 
-/* --- RESPONSIVE --- */
+/* WhatsApp Button */
+.whatsapp-btn {
+    display: flex;
+    align-items: center;
+    background-color: #25D366;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-btn i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+/* Scroll Top Button */
+.scroll-top-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Hidden by default, shown via JS */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.scroll-top-btn.show {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+    background: #2563eb;
+    transform: translateY(-3px);
+}
+
+/* Mobile */
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
-        /* Fixed to cover screen */
         right: 0px;
         height: 100vh;
         top: 0;
-        background: rgba(15, 23, 42, 0.95);
-        /* Dark solid background for menu */
+        background: rgba(15, 23, 42, 0.98);
         backdrop-filter: blur(15px);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        /* Center items vertically */
         width: 75%;
         transform: translateX(100%);
         transition: transform 0.4s ease-in-out;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-        z-index: 999;
     }
 
     .nav-active {
@@ -473,10 +527,6 @@ header {
         margin-left: 0;
     }
 
-    .nav-links a {
-        font-size: 1.2rem;
-    }
-
     .burger {
         display: block;
     }
@@ -485,16 +535,23 @@ header {
         font-size: 2.5rem;
     }
 
-    /* Burger Animation Toggle */
-    .toggle .line1 {
-        transform: rotate(-45deg) translate(-5px, 6px);
+    /* Adjust Widget for mobile */
+    .floating-widget {
+        bottom: 20px;
+        right: 20px;
+        flex-direction: column-reverse;
+        /* Stack arrow on top of whatsapp if needed, or keep row */
+        align-items: flex-end;
     }
 
-    .toggle .line2 {
-        opacity: 0;
+    .whatsapp-btn span {
+        display: none;
+        /* Hide text on very small screens if needed, or keep it */
     }
 
-    .toggle .line3 {
-        transform: rotate(45deg) translate(-5px, -6px);
+    /* Show text on mobile but maybe smaller font */
+    .whatsapp-btn span {
+        display: inline-block;
+        font-size: 0.9rem;
     }
 }
