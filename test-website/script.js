@@ -12,15 +12,15 @@ function createDots() {
     slides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.classList.add('dot');
-        if (index === 0) dot.classList.add('active'); 
-        
+        if (index === 0) dot.classList.add('active');
+
         // Click dot to jump to slide
         dot.addEventListener('click', () => {
             currentSlide = index;
             updateSlider();
             resetTimer(); // Reset timer so it doesn't auto-skip immediately after click
         });
-        
+
         dotsContainer.appendChild(dot);
     });
 }
@@ -73,12 +73,12 @@ sliderContainer.addEventListener('touchend', e => {
 
 function handleSwipe() {
     const threshold = 50; // Minimum distance (px) to count as a swipe
-    
+
     if (touchEndX < touchStartX - threshold) {
         // Swiped Left -> Next Slide
         nextSlide();
     }
-    
+
     if (touchEndX > touchStartX + threshold) {
         // Swiped Right -> Previous Slide
         prevSlide();
@@ -98,14 +98,39 @@ function resetTimer() {
 // --- 5. MOBILE MENU LOGIC ---
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav-links');
+const navLinks = document.querySelectorAll('.nav-links li');
 
 if (burger) {
-    burger.addEventListener('click', () => {
+    // Toggle Menu on Burger Click
+    burger.addEventListener('click', (e) => {
+        // Prevent the click from immediately triggering the document listener
+        e.stopPropagation();
         nav.classList.toggle('nav-active');
         burger.classList.toggle('toggle');
     });
+
+    // Close Menu when clicking ANYWHERE on the document (body)
+    document.addEventListener('click', (e) => {
+        // If the menu is open...
+        if (nav.classList.contains('nav-active')) {
+            // AND the click was NOT inside the nav menu...
+            // AND the click was NOT on the burger icon...
+            if (!nav.contains(e.target) && !burger.contains(e.target)) {
+                nav.classList.remove('nav-active');
+                burger.classList.remove('toggle');
+            }
+        }
+    });
+
+    // Close Menu when a specific link is clicked
+    navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+        });
+    });
 }
 
-// --- START EVERYTHING ---
 createDots();
+updateSlider(); // <--- Added this to sync image with the dot immediately on load
 startTimer();
