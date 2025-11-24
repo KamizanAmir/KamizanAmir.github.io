@@ -115,11 +115,32 @@ ul {
 }
 
 .logo {
-    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    /* Stacks name and reg number */
+    justify-content: center;
+    z-index: 1001;
+    cursor: default;
+}
+
+.logo-main {
+    font-size: 1.4rem;
+    /* Slightly smaller to accommodate long name */
     font-weight: 700;
     color: #fff;
     letter-spacing: 1px;
-    z-index: 1001;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.logo-reg {
+    font-size: 0.75rem;
+    /* Small and subtle */
+    color: #94a3b8;
+    /* Muted slate color */
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
 }
 
 .nav-links {
@@ -500,6 +521,16 @@ header {
 }
 
 /* Mobile */
+@media (max-width: 480px) {
+    .logo-main {
+        font-size: 1.1rem;
+    }
+
+    .logo-reg {
+        font-size: 0.65rem;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
