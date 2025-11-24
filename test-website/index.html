@@ -12,12 +12,14 @@
 
 <body>
 
+    <canvas id="canvas1"></canvas>
+
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">SHAN JIREH</div>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
+                <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#contact" class="btn-contact">Contact Us</a></li>
@@ -30,37 +32,7 @@
         </div>
     </nav>
 
-    <header id="home">
-        <div class="slider-container">
-            <div class="slide active" style="background-image: url('img2.jpeg');">
-                <div class="hero-content">
-                    <h1>Next-Gen Security</h1>
-                    <p>Robust IT strategies enabling you to scale safely in a digital world.</p>
-                    <a href="#services" class="btn-primary">Explore Services</a>
-                </div>
-            </div>
-
-            <div class="slide" style="background-image: url('img1.jpeg');">
-                <div class="hero-content">
-                    <h1>Secure. Connect. Optimize.</h1>
-                    <p>Your trusted partner in Network Infrastructure and Cybersecurity.</p>
-                    <a href="#services" class="btn-primary">Explore Services</a>
-                </div>
-            </div>
-
-            <div class="slide" style="background-image: url('img3.jpg');">
-                <div class="hero-content">
-                    <h1>Powerful Cloud Solutions</h1>
-                    <p>We build trust through skills, ensuring full user experience and security.</p>
-                    <a href="#contact" class="btn-primary">Get a Quote</a>
-                </div>
-            </div>
-
-            <div class="dots-container" id="dotsContainer"></div>
-        </div>
-    </header>
-
-    <section id="about" class="section">
+    <section id="about" class="section first-section">
         <div class="container">
             <h2 class="section-title">About Us</h2>
             <p class="section-subtitle">Who We Are</p>
@@ -71,13 +43,41 @@
                         and implementing advanced cybersecurity measures that protect businesses in an increasingly
                         digital world.</p>
                     <p>Established with a vision to deliver excellence, our mission is to empower organizations with
-                        secure connectivity and automated IT solutions. Whether you need robust firewall protection,
-                        cloud security, or managed IT services, our team is committed to ensuring your business
-                        operations run smoothly and securely.</p>
+                        secure connectivity and automated IT solutions.</p>
                 </div>
             </div>
         </div>
     </section>
+
+    <header id="home">
+        <div class="slider-container">
+            <div class="slide active" style="background-image: url('img2.jpeg');">
+                <div class="hero-content">
+                    <h1>Next-Gen Security</h1>
+                    <p>Robust IT strategies enabling you to scale safely.</p>
+                    <a href="#services" class="btn-primary">Explore Services</a>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('img1.jpeg');">
+                <div class="hero-content">
+                    <h1>Secure. Connect. Optimize.</h1>
+                    <p>Your trusted partner in Network Infrastructure.</p>
+                    <a href="#services" class="btn-primary">Explore Services</a>
+                </div>
+            </div>
+
+            <div class="slide" style="background-image: url('img3.jpg');">
+                <div class="hero-content">
+                    <h1>Powerful Cloud Solutions</h1>
+                    <p>Ensuring full user experience and security.</p>
+                    <a href="#contact" class="btn-primary">Get a Quote</a>
+                </div>
+            </div>
+
+            <div class="dots-container" id="dotsContainer"></div>
+        </div>
+    </header>
 
     <section id="services" class="section">
         <div class="container">
@@ -85,73 +85,44 @@
             <p class="section-subtitle">Comprehensive IT Solutions</p>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-network-wired"></i></div>
                     <h3>Network Infrastructure</h3>
-                    <p>Design and implementation of robust LAN/WAN networks, cabling, and switching solutions for
-                        seamless connectivity.</p>
+                    <p>Robust LAN/WAN networks, cabling, and switching solutions.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-shield-halved"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-shield-halved"></i></div>
                     <h3>Cybersecurity & Firewalls</h3>
-                    <p>Advanced threat protection, firewall configuration, and intrusion detection systems to safeguard
-                        your perimeter.</p>
+                    <p>Advanced threat protection and intrusion detection systems.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-laptop-medical"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-laptop-medical"></i></div>
                     <h3>Endpoint Security</h3>
-                    <p>Comprehensive protection for all devices (laptops, mobiles) against malware, ransomware, and
-                        zero-day threats.</p>
+                    <p>Protection for all devices against malware and ransomware.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-user-lock"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-user-lock"></i></div>
                     <h3>Identity & Access</h3>
-                    <p>Secure IAM solutions, Multi-Factor Authentication (MFA), and privileged access management.</p>
+                    <p>Secure IAM solutions and Multi-Factor Authentication (MFA).</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-server"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-server"></i></div>
                     <h3>Server & Virtualization</h3>
-                    <p>Deployment and maintenance of physical servers and virtualization technologies (VMware, Hyper-V).
-                    </p>
+                    <p>Deployment of physical servers and VMware/Hyper-V.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-cloud"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-cloud"></i></div>
                     <h3>Cloud & Email Security</h3>
-                    <p>Securing cloud workloads and protecting your communication channels from phishing and spam.</p>
+                    <p>Securing cloud workloads and anti-phishing solutions.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-robot"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-robot"></i></div>
                     <h3>Security Automation</h3>
-                    <p>Automating routine network tasks and security responses to improve efficiency and reaction times.
-                    </p>
+                    <p>Automating routine network tasks and security responses.</p>
                 </div>
-
                 <div class="service-card">
-                    <div class="icon-wrapper">
-                        <i class="fas fa-headset"></i>
-                    </div>
+                    <div class="icon-wrapper"><i class="fas fa-headset"></i></div>
                     <h3>Managed IT Services</h3>
-                    <p>Proactive 24/7 monitoring, helpdesk support, and IT maintenance to keep your business running.
-                    </p>
+                    <p>Proactive 24/7 monitoring and helpdesk support.</p>
                 </div>
             </div>
         </div>
@@ -212,6 +183,16 @@
             </div>
         </div>
     </section>
+
+    <div class="floating-widget">
+        <a href="https://wasap.my/60177611050" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            <span>How can I help you?</span>
+        </a>
+        <button id="scrollToTop" class="scroll-top-btn">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
 
     <script src="script.js"></script>
 </body>
