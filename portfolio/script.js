@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const obstacles = document.querySelectorAll('.obstacle');
     const restartBtn = document.getElementById('restart-btn');
     const balloonVehicle = document.getElementById('balloon-vehicle');
+    const startBtn = document.getElementById('start-btn');
 
     // Controls
     const btnRight = document.getElementById('btn-right');
@@ -57,6 +58,16 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'Space': if (gameMode !== 'FLYING') performJump(); break;
         }
     });
+    if (startBtn) {
+        startBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startGame();
+        });
+        startBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            startGame();
+        });
+    }
 
     const startMoving = (dir) => {
         if (!isGameStarted) startGame();
