@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Thank you for contacting Kamizan Amirudin">
+  <meta name="keywords" content="thank you, contact, message sent">
+  <title>Thank You | Kamizan Amirudin</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Existing CSS -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Favicon(s) -->
+  <link rel="icon" href="images/icon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
+
+  <!-- Google Analytics 4 (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <style>
+    .thank-you-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .thank-you-container h1 {
+      color: var(--secondary-color, #f5a623);
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+    
+    .thank-you-container p {
+      max-width: 600px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--secondary-color, #f5a623);
+      color: #000;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .back-button:hover {
+      background-color: #ffb84d;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(245, 166, 35, 0.3);
+    }
+    
+    .check-circle {
+      font-size: 5rem;
+      color: var(--secondary-color, #f5a623);
+      margin-bottom: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">Kamizan Amirudin</a>
+      <div class="theme-toggle">
+        <i class="fas fa-sun"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Thank You Section -->
+  <section class="thank-you-container">
+    <i class="fas fa-check-circle check-circle"></i>
+    <h1>Thank You!</h1>
+    <p>Your message has been successfully sent. I appreciate your interest and will get back to you as soon as possible.</p>
+    <a href="index.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Back to Homepage
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="year"></span> Kamizan Amirudin. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://github.com/KamizanAmir" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/kamizan-amir-6a7b55137/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.facebook.com/kamizan.amir" target="_blank"><i class="fab fa-facebook"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Theme toggle functionality
+    const themeToggle = document.querySelector('.theme-toggle');
+    
+    // Check for saved theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+    
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    });
+  </script>
+</body>
+</html>
+
