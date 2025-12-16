@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MTECH GLOBAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container navbar">
+            <div class="brand">
+                <a href="index.html">
+                    <h1>MTECH <span>GLOBAL</span></h1>
+                </a>
+            </div>
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="service.html">Services & Products</a></li>
+                    <li><a href="contact.html" class="active btn-nav">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb-area">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="current">Contact Us</li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="contact-header center">
+                <h2 class="section-title">Get In Touch</h2>
+                <p>Have a question about our products or machinery? We are here to help.</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-details">
+                    <div class="info-card">
+                        <h3>Contact Information</h3>
+                        <ul class="info-list">
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <strong>Headquarters</strong>
+                                    <p>No. G-1 Enigma Square Complex, Jalan Puteri 3A/5, Bandar Puteri Bangi, 43000
+                                        Kajang, Selangor.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone-alt"></i>
+                                <div>
+                                    <strong>Phone</strong>
+                                    <p><a href="tel:+60178075537">+6017-807 5537</a></p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <strong>Email</strong>
+                                    <p><a href="mailto:mtechglobalsolution@gmail.com">mtechglobalsolution@gmail.com</a>
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Business Hours</strong>
+                                    <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Enigma%20Square%20Complex%2C%20Jalan%20Puteri%203A%2F5%2C%20Bandar%20Puteri%20Bangi&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="contact-form-box">
+                    <h3>Send Us a Message</h3>
+                    <form action="https://formsubmit.co/mtechglobalsolution@gmail.com" method="POST">
+
+                        <input type="hidden" name="_subject" value="New Enquiry from MTECH Website">
+                        <input type="hidden" name="_next" value="https://your-website-domain.com/thanks.html">
+
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <input type="hidden" name="_autoresponse"
+                            value="Thank you for contacting MTECH Global. We have received your message and will get back to you shortly.">
+
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="email@company.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+60 1x-xxx xxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5"
+                                placeholder="Please describe your requirements (e.g., Quotation for ESD Gloves)..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary full-width">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h3>MTECH GLOBAL SOLUTION SDN. BHD.</h3>
+                <p>Reg. No: 202301022846 (1516769-P)</p>
+            </div>
+            <div class="footer-col">
+                <p>&copy; 2025 MTECH GLOBAL SOLUTION SDN. BHD. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-widget">
+        <a href="https://wasap.my/60178075537" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            <span class="tooltip">Chat with us!</span>
+        </a>
+        <button id="scrollToTop" class="scroll-top-btn">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
