@@ -771,3 +771,77 @@ footer {
 
     /* Hide "Chat with us" text on mobile */
 }
+
+/* =========================================
+   NEW: CATALOGUE SECTION STYLES
+   ========================================= */
+.catalogue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.catalogue-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.catalogue-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.icon-wrapper {
+    font-size: 3rem;
+    color: #e74c3c;
+    /* PDF Red color */
+    background: #fff5f5;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.cat-info h3 {
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.cat-info p {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.btn-download {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.btn-download:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .catalogue-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
