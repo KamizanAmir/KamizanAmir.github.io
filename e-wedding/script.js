@@ -1,11 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // --- 1. Audio & Door Animation ---
+    // --- 1. Audio & Door Animation with Fade-in ---
     const openBtn = document.getElementById('open-btn');
     const doorOverlay = document.getElementById('door-overlay');
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('music-toggle');
     let isPlaying = false;
+
+    function fadeInAudio(audioElement, duration) {
+        audioElement.volume = 0; // Start at volume 0
+        audioElement.play().then(() => {
+            isPlaying = true;
+            musicToggle.classList.remove('hidden');
+
+            let currentVolume = 0;
+            const targetVolume = 1;
+            const intervalTime = 50; // Update every 50ms
+            const volumeStep = targetVolume / (duration / intervalTime);
+
+            const fadeInterval = setInterval(() => {
+                if (currentVolume < targetVolume) {
+                    currentVolume += volumeStep;
+                    // Ensure volume doesn't exceed 1 to prevent errors
+                    audioElement.volume = Math.min(1, currentVolume);
+                } else {
+                    clearInterval(fadeInterval);
+                }
+            }, intervalTime);
+
+        }).catch(e => console.log("Audio play failed:", e));
+    }
 
     if (openBtn && doorOverlay) {
         openBtn.addEventListener('click', function () {
@@ -13,10 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.remove('locked');
 
             if (bgMusic) {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    musicToggle.classList.remove('hidden');
-                }).catch(e => console.log("Audio play failed:", e));
+                // Call the fade-in function with a 2000ms (2 seconds) duration
+                fadeInAudio(bgMusic, 2000);
             }
 
             setTimeout(() => {
