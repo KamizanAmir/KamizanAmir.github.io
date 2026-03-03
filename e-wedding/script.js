@@ -143,54 +143,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchWishes();
 
-    // --- 5. Bulletproof Hidden Iframe Submissions ---
-    let rsvpSubmitted = false;
-    let wishSubmitted = false;
-
+    // --- 5. Modern Background Form Submissions (Fetch API) ---
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
-    const wishForm = document.getElementById('wish-form');
-    const wishBtn = document.getElementById('wish-btn');
-    const hiddenIframe = document.getElementById('hidden_iframe');
 
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function () {
-            rsvpSubmitted = true;
+        rsvpForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // This completely STOPS the page from refreshing
+
             rsvpBtn.innerText = "Menghantar...";
             rsvpBtn.disabled = true;
-        });
-    }
 
-    if (wishForm) {
-        wishForm.addEventListener('submit', function () {
-            wishSubmitted = true;
-            wishBtn.innerText = "Menghantar...";
-            wishBtn.disabled = true;
-        });
-    }
+            const rsvpURL = "https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse";
 
-    if (hiddenIframe) {
-        hiddenIframe.addEventListener('load', function () {
-            if (rsvpSubmitted) {
+            // Extract data and format it exactly how Google wants it
+            const formData = new FormData(rsvpForm);
+            const data = new URLSearchParams();
+            for (const pair of formData) {
+                data.append(pair[0], pair[1]);
+            }
+
+            fetch(rsvpURL, {
+                method: 'POST',
+                mode: 'no-cors', // Bypasses the strict browser security blocks
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            }).then(() => {
                 alert('Terima kasih! RSVP anda telah disimpan.');
                 rsvpForm.reset();
                 rsvpBtn.innerText = "Hantar RSVP";
                 rsvpBtn.disabled = false;
-                rsvpSubmitted = false;
+            }).catch(error => {
+                alert('Ralat. Sila cuba lagi.');
+                rsvpBtn.innerText = "Hantar RSVP";
+                rsvpBtn.disabled = false;
+            });
+        });
+    }
+
+    const wishForm = document.getElementById('wish-form');
+    const wishBtn = document.getElementById('wish-btn');
+
+    if (wishForm) {
+        wishForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // This completely STOPS the page from refreshing
+
+            wishBtn.innerText = "Menghantar...";
+            wishBtn.disabled = true;
+
+            const ucapanURL = "https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse";
+
+            // Extract data and format it exactly how Google wants it
+            const formData = new FormData(wishForm);
+            const data = new URLSearchParams();
+            for (const pair of formData) {
+                data.append(pair[0], pair[1]);
             }
 
-            if (wishSubmitted) {
+            fetch(ucapanURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
                 wishForm.reset();
                 wishBtn.innerText = "Hantar Ucapan";
                 wishBtn.disabled = false;
-                wishSubmitted = false;
 
-                // Reload the slider to show the new wish
                 setTimeout(() => {
                     fetchWishes();
                 }, 2000);
-            }
+            }).catch(error => {
+                alert('Ralat. Sila cuba lagi.');
+                wishBtn.innerText = "Hantar Ucapan";
+                wishBtn.disabled = false;
+            });
         });
     }
 });
