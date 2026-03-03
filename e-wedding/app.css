@@ -202,7 +202,7 @@ body.locked {
     backdrop-filter: blur(5px);
     background-image: url('images/flower-corner.png');
     background-repeat: no-repeat;
-    background-position: bottom right;
+    background-position: bottom left;
     background-size: 100px;
 }
 
@@ -294,7 +294,7 @@ section {
     max-width: 500px;
     background-image: url('images/flower-corner.png');
     background-repeat: no-repeat;
-    background-position: top left;
+    background-position: bottom left;
     background-size: 80px;
 }
 
@@ -484,7 +484,7 @@ section {
     height: fit-content;
     background-image: url('images/flower-corner.png');
     background-repeat: no-repeat;
-    background-position: top left;
+    background-position: bottom left;
     background-size: 70px;
 }
 
