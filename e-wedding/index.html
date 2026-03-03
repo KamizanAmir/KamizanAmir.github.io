@@ -92,9 +92,7 @@
         <div class="container">
             <h3>RSVP</h3>
             <p class="intro-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
-            <form id="rsvp-form"
-                action="https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=700668432&single=true&output=csv"
-                method="POST" target="hidden_iframe_rsvp" class="custom-form">
+            <form id="rsvp-form" class="custom-form">
                 <input type="text" name="entry.1048162770" placeholder="Nama Penuh Anda" required>
                 <select name="entry.1401933726" required>
                     <option value="" disabled selected>Kehadiran Anda?</option>
@@ -104,7 +102,6 @@
                 <input type="number" name="entry.164546154" placeholder="Jumlah Kehadiran (Pax)" min="1" max="10">
                 <button type="submit" class="btn" id="rsvp-btn">Hantar RSVP</button>
             </form>
-            <iframe name="hidden_iframe_rsvp" id="hidden_iframe_rsvp" style="display:none;"></iframe>
         </div>
     </section>
 
@@ -121,15 +118,12 @@
             </div>
 
             <p class="intro-text">Tinggalkan ucapan buat pasangan pengantin.</p>
-            <form id="wish-form"
-                action="https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse"
-                method="POST" target="hidden_iframe_wishes" class="custom-form">
+            <form id="wish-form" class="custom-form">
                 <input type="text" name="entry.637633759" id="wish-name" placeholder="Nama Anda" required>
                 <textarea name="entry.1766576802" id="wish-message" placeholder="Tulis ucapan manis anda di sini..."
                     rows="4" required></textarea>
                 <button type="submit" class="btn" id="wish-btn">Hantar Ucapan</button>
             </form>
-            <!-- <iframe name="hidden_iframe_wishes" id="hidden_iframe_wishes" style="display:none;"></iframe> -->
         </div>
     </section>
 
