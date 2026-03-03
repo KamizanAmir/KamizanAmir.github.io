@@ -8,20 +8,19 @@ document.addEventListener("DOMContentLoaded", function () {
     let isPlaying = false;
 
     function fadeInAudio(audioElement, duration) {
-        audioElement.volume = 0; // Start at volume 0
+        audioElement.volume = 0;
         audioElement.play().then(() => {
             isPlaying = true;
             musicToggle.classList.remove('hidden');
 
             let currentVolume = 0;
             const targetVolume = 1;
-            const intervalTime = 50; // Update every 50ms
+            const intervalTime = 50;
             const volumeStep = targetVolume / (duration / intervalTime);
 
             const fadeInterval = setInterval(() => {
                 if (currentVolume < targetVolume) {
                     currentVolume += volumeStep;
-                    // Ensure volume doesn't exceed 1 to prevent errors
                     audioElement.volume = Math.min(1, currentVolume);
                 } else {
                     clearInterval(fadeInterval);
@@ -37,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.remove('locked');
 
             if (bgMusic) {
-                // Call the fade-in function with a 2000ms (2 seconds) duration
                 fadeInAudio(bgMusic, 2000);
             }
 
@@ -95,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.text())
             .then(csvText => {
                 if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('pageUrl:')) {
-                    slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div>`;
+                    slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div></div>`;
                     return;
                 }
 
@@ -128,8 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (name && message) {
                             html += `
                             <div class="slide">
-                                <p class="wish-text">"${message}"</p>
-                                <p class="wish-author">- ${name}</p>
+                                <div class="wish-card">
+                                    <p class="wish-text">"${message}"</p>
+                                    <p class="wish-author">- ${name}</p>
+                                </div>
                             </div>`;
                         }
                     }
@@ -139,12 +139,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     slider.innerHTML = html;
                     startSlider();
                 } else {
-                    slider.innerHTML = `<div class="slide"><p class="wish-text">Belum ada ucapan.</p></div>`;
+                    slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Belum ada ucapan.</p></div></div>`;
                 }
             })
             .catch(error => {
                 console.error('Error fetching wishes:', error);
-                slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat memuat turun ucapan.</p></div>`;
+                slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat memuat turun ucapan.</p></div></div>`;
             });
     }
 
@@ -232,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
 
-                // Force page to scroll to top and refresh back to beginning state
                 window.scrollTo(0, 0);
                 window.location.reload();
 
