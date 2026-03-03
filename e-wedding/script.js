@@ -143,67 +143,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchWishes();
 
-    // --- 5. Modern Background Form Submissions (For GitHub Hosting) ---
+    // --- 5. Bulletproof Hidden Iframe Submissions ---
+    let rsvpSubmitted = false;
+    let wishSubmitted = false;
+
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
+    const wishForm = document.getElementById('wish-form');
+    const wishBtn = document.getElementById('wish-btn');
+    const hiddenIframe = document.getElementById('hidden_iframe');
 
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // Stop standard form submission
+        rsvpForm.addEventListener('submit', function () {
+            rsvpSubmitted = true;
             rsvpBtn.innerText = "Menghantar...";
             rsvpBtn.disabled = true;
+        });
+    }
 
-            const rsvpURL = "https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse";
-            const formData = new FormData(rsvpForm);
+    if (wishForm) {
+        wishForm.addEventListener('submit', function () {
+            wishSubmitted = true;
+            wishBtn.innerText = "Menghantar...";
+            wishBtn.disabled = true;
+        });
+    }
 
-            fetch(rsvpURL, {
-                method: "POST",
-                mode: "no-cors",
-                body: new URLSearchParams(formData)
-            }).then(() => {
+    if (hiddenIframe) {
+        hiddenIframe.addEventListener('load', function () {
+            if (rsvpSubmitted) {
                 alert('Terima kasih! RSVP anda telah disimpan.');
                 rsvpForm.reset();
                 rsvpBtn.innerText = "Hantar RSVP";
                 rsvpBtn.disabled = false;
-            }).catch(error => {
-                alert('Ralat. Sila cuba lagi.');
-                rsvpBtn.innerText = "Hantar RSVP";
-                rsvpBtn.disabled = false;
-            });
-        });
-    }
+                rsvpSubmitted = false;
+            }
 
-    const wishForm = document.getElementById('wish-form');
-    const wishBtn = document.getElementById('wish-btn');
-
-    if (wishForm) {
-        wishForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // Stop standard form submission
-            wishBtn.innerText = "Menghantar...";
-            wishBtn.disabled = true;
-
-            const ucapanURL = "https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse";
-            const formData = new FormData(wishForm);
-
-            fetch(ucapanURL, {
-                method: "POST",
-                mode: "no-cors",
-                body: new URLSearchParams(formData)
-            }).then(() => {
+            if (wishSubmitted) {
                 alert('Terima kasih atas ucapan manis anda!');
                 wishForm.reset();
                 wishBtn.innerText = "Hantar Ucapan";
                 wishBtn.disabled = false;
+                wishSubmitted = false;
 
                 // Reload the slider to show the new wish
                 setTimeout(() => {
                     fetchWishes();
                 }, 2000);
-            }).catch(error => {
-                alert('Ralat. Sila cuba lagi.');
-                wishBtn.innerText = "Hantar Ucapan";
-                wishBtn.disabled = false;
-            });
+            }
         });
     }
 });

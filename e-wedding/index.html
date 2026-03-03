@@ -92,7 +92,9 @@
         <div class="container">
             <h3>RSVP</h3>
             <p class="intro-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
-            <form id="rsvp-form" class="custom-form">
+            <form id="rsvp-form" class="custom-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse"
+                method="POST" target="hidden_iframe">
                 <input type="text" name="entry.1048162770" placeholder="Nama Penuh Anda" required>
                 <select name="entry.1401933726" required>
                     <option value="" disabled selected>Kehadiran Anda?</option>
@@ -118,7 +120,9 @@
             </div>
 
             <p class="intro-text">Tinggalkan ucapan buat pasangan pengantin.</p>
-            <form id="wish-form" class="custom-form">
+            <form id="wish-form" class="custom-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse"
+                method="POST" target="hidden_iframe">
                 <input type="text" name="entry.637633759" id="wish-name" placeholder="Nama Anda" required>
                 <textarea name="entry.1766576802" id="wish-message" placeholder="Tulis ucapan manis anda di sini..."
                     rows="4" required></textarea>
@@ -126,6 +130,8 @@
             </form>
         </div>
     </section>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script src="script.js"></script>
 </body>
