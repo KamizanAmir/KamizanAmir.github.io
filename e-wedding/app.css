@@ -6,8 +6,10 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #fdfaf6;
-    color: #4a4a4a;
+    background-color: #fbf5f3;
+    /* Softer blush background */
+    color: #5a4b4e;
+    /* Romantic darker tone for text */
     line-height: 1.6;
     overflow-x: hidden;
 }
@@ -22,7 +24,8 @@ body.locked {
     bottom: 20px;
     right: 20px;
     background-color: #fff;
-    border: 2px solid #d4a373;
+    border: 2px solid #c88691;
+    /* Dusty rose */
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -54,27 +57,29 @@ body.locked {
     z-index: 9999;
     display: flex;
     pointer-events: all;
+    background-color: #fbf5f3;
 }
 
 .door {
     width: 50%;
     height: 100%;
-    background-color: #faedeb;
+    background-color: #f6e6e4;
+    /* Soft pink-cream for doors */
     transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
     position: relative;
     z-index: 1;
-    border-left: 1px solid #e8d0cc;
-    border-right: 1px solid #e8d0cc;
+    border-left: 1px solid #ecc9c7;
+    border-right: 1px solid #ecc9c7;
 }
 
 .door-left {
     transform-origin: left;
-    border-right: 2px solid #d4a373;
+    border-right: 2px solid #c88691;
 }
 
 .door-right {
     transform-origin: right;
-    border-left: 2px solid #d4a373;
+    border-left: 2px solid #c88691;
 }
 
 .heart-btn {
@@ -82,29 +87,36 @@ body.locked {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
     z-index: 2;
     cursor: pointer;
     animation: pulse 1.5s infinite;
     transition: opacity 0.5s ease;
     text-align: center;
-    background: #fff;
+    background: #ffffff;
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(193, 134, 145, 0.3);
+    border: 2px solid #f2d1d5;
+}
+
+.open-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 5px;
 }
 
 .open-text {
     font-size: 0.8rem;
     font-family: 'Montserrat', sans-serif;
-    color: #d4a373;
+    color: #c88691;
     font-weight: 600;
-    margin-top: 5px;
+    letter-spacing: 1px;
 }
 
 .door-open .door-left {
@@ -138,8 +150,16 @@ body.locked {
     width: 90%;
     max-width: 600px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 3rem 2rem;
     text-align: center;
+}
+
+.elegant-box {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+    border: 1px solid #f2d1d5;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(5px);
 }
 
 /* Typography */
@@ -151,44 +171,57 @@ h3 {
 
 h3 {
     margin-bottom: 1rem;
-    color: #d4a373;
+    color: #c88691;
     font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.divider {
+    width: 50px;
+    height: 2px;
+    background-color: #c88691;
+    margin: 1.5rem auto;
+    opacity: 0.5;
 }
 
 .title {
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 3px;
-    font-size: 1.2rem;
+    letter-spacing: 4px;
+    font-size: 1.1rem;
     text-transform: uppercase;
     margin-bottom: 1rem;
+    color: #8c7377;
 }
 
 .names {
     font-family: 'Great Vibes', cursive;
-    font-size: 3.5rem;
-    color: #d4a373;
+    font-size: 4rem;
+    color: #b06d78;
     margin-bottom: 1rem;
     line-height: 1.2;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .full-names {
     font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
-    color: #d4a373;
-    margin: 2rem 0;
+    font-size: 2.8rem;
+    color: #b06d78;
+    margin: 1.5rem 0;
     line-height: 1.3;
 }
 
 .arabic {
     font-size: 2rem;
     margin-bottom: 1rem;
-    color: #4a4a4a;
+    color: #5a4b4e;
     font-weight: 400;
 }
 
 .date {
-    font-size: 1.2rem;
-    letter-spacing: 2px;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    font-weight: 500;
+    color: #8c7377;
 }
 
 /* Sections */
@@ -203,111 +236,119 @@ section {
 }
 
 .hero {
-    background: linear-gradient(rgba(253, 250, 246, 0.6), rgba(253, 250, 246, 0.8)), url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    background: linear-gradient(rgba(251, 245, 243, 0.5), rgba(251, 245, 243, 0.9)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
     text-align: center;
 }
 
 .hero-content {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 3rem 1.5rem;
-    border-radius: 15px;
+    padding: 3rem 2rem;
+    border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f2d1d5;
     width: 90%;
     max-width: 500px;
 }
 
 .quote {
-    background-color: #faedeb;
-    min-height: 50vh;
+    background-color: #fdfaf9;
+    min-height: 60vh;
 }
 
 .quran-quote {
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 1rem;
+    color: #8c7377;
 }
 
 .surah {
     font-weight: 600;
+    color: #c88691;
 }
 
 .invitation {
-    background-color: #fff;
+    background-color: #fbf5f3;
 }
 
 .parents {
     font-weight: 600;
-    margin-bottom: 2rem;
     letter-spacing: 1px;
+    color: #5a4b4e;
 }
 
 .intro-text {
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: #7a6a6d;
 }
 
 .event-details {
-    background-color: #faedeb;
+    background-color: #fdfaf9;
     padding: 2rem;
-    border-radius: 10px;
-    margin-top: 2rem;
+    border-radius: 15px;
+    margin-top: 1rem;
+    border: 1px solid #f2d1d5;
 }
 
 .bold-text {
     font-weight: 600;
     font-size: 1.2rem;
     margin: 1rem 0 0.5rem 0;
+    color: #5a4b4e;
 }
 
 .time {
     font-size: 1.1rem;
+    color: #8c7377;
 }
 
 .location-contact {
-    background-color: #fdfaf6;
+    background-color: #fdfaf9;
 }
 
 .location,
 .contact {
     margin-bottom: 2rem;
-    background-color: #fff;
-    padding: 2rem 1rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    padding: 2.5rem 1.5rem;
 }
 
 .address {
     margin-top: 1rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
+    color: #5a4b4e;
 }
 
 /* Map and Button */
 .map-container {
-    border-radius: 10px;
+    border-radius: 15px;
     overflow: hidden;
     margin-bottom: 1.5rem;
-    border: 2px solid #faedeb;
+    border: 3px solid #f6e6e4;
 }
 
 .btn {
     display: inline-block;
-    background-color: #d4a373;
+    background-color: #c88691;
     color: #fff;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 1.5rem;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 30px;
     font-weight: 600;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
     width: 100%;
     margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(200, 134, 145, 0.3);
 }
 
 .btn:hover {
-    background-color: #bc8f63;
+    background-color: #b06d78;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(176, 109, 120, 0.4);
 }
 
 .contact-list {
@@ -316,42 +357,48 @@ section {
 }
 
 .contact-list li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
     font-weight: 600;
+    color: #5a4b4e;
 }
 
 /* Forms (RSVP & Wishes) */
 .rsvp,
 .wishes {
-    background-color: #fff;
+    background-color: #fbf5f3;
 }
 
 .custom-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    background-color: #faedeb;
-    padding: 1.5rem;
-    border-radius: 10px;
+    gap: 1.2rem;
+    background-color: #fdfaf9;
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
     text-align: left;
+    border: 1px solid #f2d1d5;
 }
 
 .custom-form input,
 .custom-form select,
 .custom-form textarea {
     padding: 1rem;
-    border: 1px solid #e8d0cc;
-    border-radius: 5px;
+    border: 1px solid #ecc9c7;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     width: 100%;
+    background-color: #fff;
+    color: #5a4b4e;
+    transition: border-color 0.3s ease;
 }
 
 .custom-form input:focus,
 .custom-form select:focus,
 .custom-form textarea:focus {
     outline: none;
-    border-color: #d4a373;
+    border-color: #c88691;
+    box-shadow: 0 0 5px rgba(200, 134, 145, 0.2);
 }
 
 /* Wishes Slider */
@@ -359,10 +406,11 @@ section {
     overflow: hidden;
     width: 100%;
     margin: 2rem 0;
-    background: #fdfaf6;
-    padding: 2rem 1rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    background: #fff;
+    padding: 2.5rem 1rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+    border: 1px solid #f2d1d5;
 }
 
 .slider {
@@ -381,12 +429,12 @@ section {
     font-style: italic;
     font-size: 1.1rem;
     margin-bottom: 1rem;
-    color: #4a4a4a;
+    color: #7a6a6d;
 }
 
 .wish-author {
     font-weight: 600;
-    color: #d4a373;
+    color: #c88691;
 }
 
 /* Animations */
@@ -412,15 +460,16 @@ section {
 .scroll-indicator p {
     font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     margin-bottom: 0.5rem;
+    color: #8c7377;
 }
 
 .arrow {
     width: 10px;
     height: 10px;
-    border-right: 2px solid #4a4a4a;
-    border-bottom: 2px solid #4a4a4a;
+    border-right: 2px solid #8c7377;
+    border-bottom: 2px solid #8c7377;
     transform: rotate(45deg);
     margin: 0 auto;
 }
@@ -428,15 +477,15 @@ section {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .names {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
 
     .full-names {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     .hero-content {
-        padding: 2rem 1rem;
+        padding: 2.5rem 1.5rem;
     }
 
     .arabic {
@@ -453,6 +502,6 @@ section {
     }
 
     .container {
-        padding: 1.5rem 1rem;
+        padding: 2rem 1.5rem;
     }
 }

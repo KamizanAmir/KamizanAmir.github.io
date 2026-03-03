@@ -149,14 +149,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // This completely STOPS the page from refreshing
+            e.preventDefault();
 
             rsvpBtn.innerText = "Menghantar...";
             rsvpBtn.disabled = true;
 
             const rsvpURL = "https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse";
 
-            // Extract data and format it exactly how Google wants it
             const formData = new FormData(rsvpForm);
             const data = new URLSearchParams();
             for (const pair of formData) {
@@ -165,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             fetch(rsvpURL, {
                 method: 'POST',
-                mode: 'no-cors', // Bypasses the strict browser security blocks
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -188,14 +187,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (wishForm) {
         wishForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // This completely STOPS the page from refreshing
+            e.preventDefault();
 
             wishBtn.innerText = "Menghantar...";
             wishBtn.disabled = true;
 
             const ucapanURL = "https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse";
 
-            // Extract data and format it exactly how Google wants it
             const formData = new FormData(wishForm);
             const data = new URLSearchParams();
             for (const pair of formData) {
@@ -211,13 +209,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: data
             }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
-                wishForm.reset();
-                wishBtn.innerText = "Hantar Ucapan";
-                wishBtn.disabled = false;
 
-                setTimeout(() => {
-                    fetchWishes();
-                }, 2000);
+                // Force page to scroll to top and refresh back to beginning state
+                window.scrollTo(0, 0);
+                window.location.reload();
+
             }).catch(error => {
                 alert('Ralat. Sila cuba lagi.');
                 wishBtn.innerText = "Hantar Ucapan";
