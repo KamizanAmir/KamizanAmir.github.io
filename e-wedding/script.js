@@ -165,6 +165,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchWishes();
 
+    // --- 4. Sparkling/Love Animation on Scroll ---
+    const particlesContainer = document.getElementById('particles-container');
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', function () {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+        // Generate a particle every 30 pixels scrolled
+        if (Math.abs(st - lastScrollTop) > 30) {
+            createParticle();
+            lastScrollTop = st;
+        }
+    });
+
+    function createParticle() {
+        if (!particlesContainer) return;
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Randomly choose an emoji for the particle
+        const items = ['💖', '✨', '🌸', '💕'];
+        particle.innerText = items[Math.floor(Math.random() * items.length)];
+
+        // Randomize the starting position, speed, and size
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3 to 5 seconds
+        particle.style.fontSize = (Math.random() * 1 + 1) + 'rem'; // 1rem to 2rem
+
+        particlesContainer.appendChild(particle);
+
+        // Clean up the DOM after the animation completes
+        setTimeout(() => {
+            particle.remove();
+        }, 5000);
+    }
+
     // --- 5. Modern Background Form Submissions (Fetch API) ---
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
