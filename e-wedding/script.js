@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(rsvpURL, {
                 method: "POST",
                 mode: "no-cors",
-                body: formData
+                body: new URLSearchParams(formData)
             }).then(() => {
                 alert('Terima kasih! RSVP anda telah disimpan.');
                 rsvpForm.reset();
@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(ucapanURL, {
                 method: "POST",
                 mode: "no-cors",
-                body: formData
+                body: new URLSearchParams(formData)
             }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
                 wishForm.reset();
