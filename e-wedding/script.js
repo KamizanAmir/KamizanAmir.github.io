@@ -1,18 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
-
+document.addEventListener("DOMContentLoaded", function() {
+    
     // --- 1. Audio & Door Animation ---
     const openBtn = document.getElementById('open-btn');
     const doorOverlay = document.getElementById('door-overlay');
     const bgMusic = document.getElementById('bg-music');
     const musicToggle = document.getElementById('music-toggle');
     let isPlaying = false;
-
+    
     if (openBtn && doorOverlay) {
-        openBtn.addEventListener('click', function () {
+        openBtn.addEventListener('click', function() {
             doorOverlay.classList.add('door-open');
             document.body.classList.remove('locked');
-
-            if (bgMusic) {
+            
+            if(bgMusic) {
                 bgMusic.play().then(() => {
                     isPlaying = true;
                     musicToggle.classList.remove('hidden');
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (musicToggle && bgMusic) {
-        musicToggle.addEventListener('click', function () {
+        musicToggle.addEventListener('click', function() {
             if (isPlaying) {
                 bgMusic.pause();
                 musicToggle.innerHTML = "🔇";
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     animatedElements.forEach(element => observer.observe(element));
-
+    
     setTimeout(() => {
         animatedElements.forEach(element => {
             const rect = element.getBoundingClientRect();
@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 100);
 
     // --- 3. Fetch Real Wishes from Google Sheets (Published as CSV) ---
-    const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pubhtml";
+    // This is your new, published Respond 2 link!
+    const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv"; 
     const slider = document.getElementById('wishes-slider');
     let sliderInterval;
 
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     let quote = false;
                     let col, c;
                     for (let row = col = c = 0; c < str.length; c++) {
-                        let cc = str[c], nc = str[c + 1];
+                        let cc = str[c], nc = str[c+1];
                         arr[row] = arr[row] || [];
                         arr[row][col] = arr[row][col] || '';
                         if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
@@ -93,12 +94,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const rows = parseCSV(csvText).slice(1);
                 let html = '';
-
+                
                 rows.forEach(columns => {
-                    if (columns.length >= 3) {
+                    if (columns.length >= 3) { 
                         const name = columns[1].trim();
                         const message = columns[2].trim();
-                        if (name && message) {
+                        if(name && message) {
                             html += `
                             <div class="slide">
                                 <p class="wish-text">"${message}"</p>
@@ -117,14 +118,14 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error('Error fetching wishes:', error);
-                slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat memuat turun ucapan. Pastikan Google Sheet ditetapkan kepada "Anyone with the link".</p></div>`;
+                slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat memuat turun ucapan.</p></div>`;
             });
     }
 
     // --- 4. Auto-Sliding Logic ---
     function startSlider() {
         if (sliderInterval) clearInterval(sliderInterval);
-
+        
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
         let currentIndex = 0;
@@ -133,20 +134,20 @@ document.addEventListener("DOMContentLoaded", function () {
             sliderInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % totalSlides;
                 slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }, 3500);
+            }, 3500); 
         }
     }
 
     fetchWishes();
 
-    // --- 5. Background Form Submissions (Iframe Fallback) ---
+    // --- 5. Background Form Submissions (Iframe Fallback to bypass local testing blocks) ---
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
-
+    
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function () {
+        rsvpForm.addEventListener('submit', function() {
             rsvpBtn.innerText = "Menghantar...";
-
+            
             setTimeout(() => {
                 alert('Terima kasih! RSVP anda telah disimpan.');
                 rsvpForm.reset();
@@ -159,15 +160,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const wishBtn = document.getElementById('wish-btn');
 
     if (wishForm) {
-        wishForm.addEventListener('submit', function () {
+        wishForm.addEventListener('submit', function() {
             wishBtn.innerText = "Menghantar...";
-
+            
             setTimeout(() => {
                 alert('Terima kasih atas ucapan manis anda!');
                 wishForm.reset();
                 wishBtn.innerText = "Hantar Ucapan";
-                fetchWishes(); // Cuba refresh slider
-            }, 1500);
+                
+                // Fetch the new wish from the published CSV so it shows up on the slider
+                fetchWishes(); 
+            }, 2500); // Give Google Sheets a tiny bit longer to process the new row before fetching
         });
     }
 });
