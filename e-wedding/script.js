@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- 3. Fetch Real Wishes from Google Sheets (Published as CSV) ---
     // PASTE YOUR NEWLY PUBLISHED CSV LINK HERE:
-    const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=700668432&single=true&output=csv";
+    const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv";
     const slider = document.getElementById('wishes-slider');
     let sliderInterval;
 
