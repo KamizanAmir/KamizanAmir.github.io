@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walimatul Urus - Faridah & Adam</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="locked">
+
+    <audio id="bg-music" loop>
+        <source
+            src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=romantic-piano-114422.mp3"
+            type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" class="hidden">🔊</button>
+
+    <div id="door-overlay">
+        <div class="door door-left"></div>
+        <div class="door door-right"></div>
+        <div class="heart-btn" id="open-btn">
+            ❤️<br>
+            <span class="open-text">Buka Kad</span>
+        </div>
+    </div>
+
+    <section class="hero animate-on-scroll">
+        <div class="hero-content">
+            <h3 class="arabic">وليمة العروس</h3>
+            <h1 class="title">Walimatul Urus</h1>
+            <h2 class="names">Teh Faridah <br> & <br> Adam Safwan</h2>
+            <p class="date">26 APRIL 2026</p>
+            <div class="scroll-indicator">
+                <p>Scroll Down</p>
+                <div class="arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quote animate-on-scroll">
+        <div class="container">
+            <p class="quran-quote">"dan kami menciptakan kamu berpasang-pasangan"</p>
+            <p class="surah">- An-naba'</p>
+        </div>
+    </section>
+
+    <section class="invitation animate-on-scroll">
+        <div class="container">
+            <p class="parents">MAT ZIN BIN SAARI<br>&<br>AZIZAH ΒΙΝΤΙ HAMAD</p>
+            <p class="intro-text">DENGAN PENUH KESYUKURAN, KAMI MENJEMPUT<br>TUAN/PUAN/ENCIK/CIK<br>KE MAJLIS
+                PERKAHWINAN PUTERI KAMI</p>
+            <h2 class="full-names">Teh Faridah binti Mat Zin <br>&<br> Adam Safwan bin Shahabuddin</h2>
+            <div class="event-details">
+                <h3>PADA</h3>
+                <p class="bold-text">26 APRIL 2026, AHAD</p>
+                <p class="time">11.30 AM - 4.00 PM</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-contact animate-on-scroll">
+        <div class="container">
+            <div class="location">
+                <h3>LOKASI MAJLIS</h3>
+                <p>BERTEMPAT DI</p>
+                <p class="address">ΝΟ 147, KG. SG. STAR, 34140<br>RANTAU PANJANG, SELAMA<br>PERAK.</p>
+                <div class="map-container">
+                    <iframe src="https://maps.google.com/maps?q=5.279250,100.780194&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=5.279250,100.780194" target="_blank"
+                    class="btn map-btn">Dapatkan Arah Lokasi (Directions)</a>
+            </div>
+
+            <div class="contact">
+                <h3>HUBUNGI:</h3>
+                <ul class="contact-list">
+                    <li>ΚΑΚΑΚ: 011-4010 6154</li>
+                    <li>ADIK: 013-616 6203</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="rsvp animate-on-scroll">
+        <div class="container">
+            <h3>RSVP</h3>
+            <p class="intro-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
+            <form id="rsvp-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse"
+                method="POST" target="hidden_iframe_rsvp" class="custom-form">
+                <input type="text" name="entry.1048162770" placeholder="Nama Penuh Anda" required>
+                <select name="entry.1401933726" required>
+                    <option value="" disabled selected>Kehadiran Anda?</option>
+                    <option value="Hadir">Ya, saya akan hadir</option>
+                    <option value="Tidak Hadir">Maaf, saya tidak dapat hadir</option>
+                </select>
+                <input type="number" name="entry.164546154" placeholder="Jumlah Kehadiran (Pax)" min="1" max="10">
+                <button type="submit" class="btn" id="rsvp-btn">Hantar RSVP</button>
+            </form>
+            <iframe name="hidden_iframe_rsvp" id="hidden_iframe_rsvp" style="display:none;"></iframe>
+        </div>
+    </section>
+
+    <section class="wishes animate-on-scroll">
+        <div class="container">
+            <h3>Ucapan Tetamu</h3>
+
+            <div class="slider-container">
+                <div class="slider" id="wishes-slider">
+                    <div class="slide">
+                        <p class="wish-text">"Memuat turun ucapan..."</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="intro-text">Tinggalkan ucapan buat pasangan pengantin.</p>
+            <form id="wish-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse"
+                method="POST" target="hidden_iframe_wishes" class="custom-form">
+                <input type="text" name="entry.637633759" id="wish-name" placeholder="Nama Anda" required>
+                <textarea name="entry.1766576802" id="wish-message" placeholder="Tulis ucapan manis anda di sini..."
+                    rows="4" required></textarea>
+                <button type="submit" class="btn" id="wish-btn">Hantar Ucapan</button>
+            </form>
+            <iframe name="hidden_iframe_wishes" id="hidden_iframe_wishes" style="display:none;"></iframe>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
