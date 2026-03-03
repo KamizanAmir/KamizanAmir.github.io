@@ -63,8 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }, 100);
 
-    // --- 3. Fetch Real Wishes from Google Sheets (Published as CSV) ---
-    // PASTE YOUR NEWLY PUBLISHED CSV LINK HERE:
+    // --- 3. Fetch Real Wishes from Google Sheets ---
     const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv";
     const slider = document.getElementById('wishes-slider');
     let sliderInterval;
@@ -73,10 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(googleSheetCSVUrl)
             .then(response => response.text())
             .then(csvText => {
-
-                // SAFETY SHIELD: Check if Google sent an HTML page instead of CSV data
                 if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('pageUrl:')) {
-                    slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat: Google menghantar format Web Page. Sila 'Stop Publishing' dan 'Publish' semula sebagai CSV.</p></div>`;
+                    slider.innerHTML = `<div class="slide"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div>`;
                     return;
                 }
 
@@ -129,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // --- 4. Auto-Sliding Logic ---
     function startSlider() {
         if (sliderInterval) clearInterval(sliderInterval);
 
@@ -147,19 +143,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchWishes();
 
-    // --- 5. Background Form Submissions (Iframe Fallback) ---
+    // --- 5. Modern Background Form Submissions (For GitHub Hosting) ---
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
 
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function () {
+        rsvpForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Stop standard form submission
             rsvpBtn.innerText = "Menghantar...";
+            rsvpBtn.disabled = true;
 
-            setTimeout(() => {
+            const rsvpURL = "https://docs.google.com/forms/d/e/1FAIpQLSdWogh4C8y7hR5Uif-gODe0IK9s92VFaj9WD2E3t3GLXF3Z2w/formResponse";
+            const formData = new FormData(rsvpForm);
+
+            fetch(rsvpURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
                 alert('Terima kasih! RSVP anda telah disimpan.');
                 rsvpForm.reset();
                 rsvpBtn.innerText = "Hantar RSVP";
-            }, 1500);
+                rsvpBtn.disabled = false;
+            }).catch(error => {
+                alert('Ralat. Sila cuba lagi.');
+                rsvpBtn.innerText = "Hantar RSVP";
+                rsvpBtn.disabled = false;
+            });
         });
     }
 
@@ -167,16 +177,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const wishBtn = document.getElementById('wish-btn');
 
     if (wishForm) {
-        wishForm.addEventListener('submit', function () {
+        wishForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Stop standard form submission
             wishBtn.innerText = "Menghantar...";
+            wishBtn.disabled = true;
 
-            setTimeout(() => {
+            const ucapanURL = "https://docs.google.com/forms/d/e/1FAIpQLSe9x94PBLCzKXAcSVr2XNW3ZzDrIGBIyiUFgtVlIAryH4QINw/formResponse";
+            const formData = new FormData(wishForm);
+
+            fetch(ucapanURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
                 wishForm.reset();
                 wishBtn.innerText = "Hantar Ucapan";
+                wishBtn.disabled = false;
 
-                fetchWishes();
-            }, 2500);
+                // Reload the slider to show the new wish
+                setTimeout(() => {
+                    fetchWishes();
+                }, 2000);
+            }).catch(error => {
+                alert('Ralat. Sila cuba lagi.');
+                wishBtn.innerText = "Hantar Ucapan";
+                wishBtn.disabled = false;
+            });
         });
     }
 });
