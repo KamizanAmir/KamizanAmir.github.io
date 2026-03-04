@@ -105,15 +105,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- 4. Fetch Real Wishes from Google Sheets ---
     const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv";
-    const sliderContainer = document.getElementById('wishes-slider');
-    let sliderInterval;
 
     function fetchWishes() {
+        const commentsContainer = document.getElementById('wishes-container');
         fetch(googleSheetCSVUrl)
             .then(response => response.text())
             .then(csvText => {
                 if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('pageUrl:')) {
-                    sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div></div>`;
+                    commentsContainer.innerHTML = `<div class="comment-item"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div>`;
                     return;
                 }
 
@@ -126,26 +125,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         const message = columns[2].trim();
                         if (name && message) {
                             html += `
-                            <div class="slide">
-                                <div class="wish-card">
-                                    <p class="wish-text">"${message}"</p>
-                                    <p class="wish-author">- ${name}</p>
-                                </div>
+                            <div class="comment-item">
+                                <p class="wish-author">${name}</p>
+                                <p class="wish-text">${message}</p>
                             </div>`;
                         }
                     }
                 });
 
                 if (html !== '') {
-                    sliderContainer.innerHTML = html;
-                    startSlider();
+                    commentsContainer.innerHTML = html;
                 } else {
-                    sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Belum ada ucapan.</p></div></div>`;
+                    commentsContainer.innerHTML = `<div class="comment-item"><p class="wish-text">Belum ada ucapan.</p></div>`;
                 }
             })
             .catch(error => {
                 console.error('Error fetching wishes:', error);
-                sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat memuat turun ucapan.</p></div></div>`;
+                commentsContainer.innerHTML = `<div class="comment-item"><p class="wish-text">Ralat memuat turun ucapan.</p></div>`;
             });
     }
 
