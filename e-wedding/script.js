@@ -83,7 +83,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }, 100);
 
-    // --- 3. Fetch Real Wishes from Google Sheets ---
+    // --- 3. CSV Parser Helper Function ---
+    function parseCSV(str) {
+        const arr = [];
+        let quote = false;
+        let col, c;
+        for (let row = col = c = 0; c < str.length; c++) {
+            let cc = str[c], nc = str[c + 1];
+            arr[row] = arr[row] || [];
+            arr[row][col] = arr[row][col] || '';
+            if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+            if (cc == '"') { quote = !quote; continue; }
+            if (cc == ',' && !quote) { ++col; continue; }
+            if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+            if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+            if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+            arr[row][col] += cc;
+        }
+        return arr;
+    }
+
+    // --- 4. Fetch Real Wishes from Google Sheets ---
     const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv";
     const slider = document.getElementById('wishes-slider');
     let sliderInterval;
@@ -95,25 +115,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('pageUrl:')) {
                     slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div></div>`;
                     return;
-                }
-
-                function parseCSV(str) {
-                    const arr = [];
-                    let quote = false;
-                    let col, c;
-                    for (let row = col = c = 0; c < str.length; c++) {
-                        let cc = str[c], nc = str[c + 1];
-                        arr[row] = arr[row] || [];
-                        arr[row][col] = arr[row][col] || '';
-                        if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
-                        if (cc == '"') { quote = !quote; continue; }
-                        if (cc == ',' && !quote) { ++col; continue; }
-                        if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
-                        if (cc == '\n' && !quote) { ++row; col = 0; continue; }
-                        if (cc == '\r' && !quote) { ++row; col = 0; continue; }
-                        arr[row][col] += cc;
-                    }
-                    return arr;
                 }
 
                 const rows = parseCSV(csvText).slice(1);
@@ -165,13 +166,106 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchWishes();
 
-    // --- 4. Sparkling/Love Animation on Scroll ---
+    // --- 5. Countdown and Total Pax Calculation ---
+    function startCountdown() {
+        // Set event date (April 26, 2026, 11:30 AM)
+        const eventDate = new Date("April 26, 2026 11:30:00").getTime();
+
+        const countdownInterval = setInterval(function () {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+    }
+
+    startCountdown();
+
+    // GANTI LINK DI BAWAH DENGAN LINK CSV RSVP ANDA
+    const rsvpSheetCSVUrl = "YOUR_RSVP_SHEET_CSV_URL_HERE";
+
+    function fetchRSVPPax() {
+        if (rsvpSheetCSVUrl === "YOUR_RSVP_SHEET_CSV_URL_HERE") return; // Skip if user hasn't replaced the URL
+
+        fetch(rsvpSheetCSVUrl)
+            .then(response => response.text())
+            .then(csvText => {
+                const rows = parseCSV(csvText).slice(1); // Remove header
+                let hadirTotal = 0;
+                let tidakHadirTotal = 0;
+
+                rows.forEach(columns => {
+                    if (columns.length >= 4) { // Assumes Column C (index 2) is Kehadiran, Column D (index 3) is Pax
+                        const kehadiran = columns[2] ? columns[2].trim().toLowerCase() : "";
+                        const pax = parseInt(columns[3], 10) || 0;
+
+                        if (kehadiran === "hadir") {
+                            hadirTotal += pax;
+                        } else if (kehadiran === "tidak hadir") {
+                            tidakHadirTotal += (pax > 0 ? pax : 1);
+                        }
+                    }
+                });
+
+                document.getElementById('total-hadir').innerText = hadirTotal;
+                document.getElementById('total-tidak-hadir').innerText = tidakHadirTotal;
+            })
+            .catch(err => console.error("Error fetching RSVP totals:", err));
+    }
+
+    fetchRSVPPax();
+
+    // --- 6. Modal and Menu Logic ---
+    window.openModal = function (id) {
+        document.getElementById(id).style.display = 'flex';
+    };
+
+    window.closeModal = function (id) {
+        document.getElementById(id).style.display = 'none';
+    };
+
+    // Close modal when clicking outside of the content box
+    window.onclick = function (event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+        }
+    }
+
+    // Download Apple/Outlook Calendar Event (.ics)
+    window.downloadICS = function () {
+        const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Walimatul Urus Faridah & Adam\nDTSTART:20260426T033000Z\nDTEND:20260426T080000Z\nLOCATION:No 147, Kg. Sg. Star, 34140 Rantau Panjang, Selama, Perak\nDESCRIPTION:Majlis Perkahwinan Teh Faridah & Adam Safwan\nEND:VEVENT\nEND:VCALENDAR";
+        const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.setAttribute('download', 'majlis_perkahwinan.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // --- 7. Sparkling/Love Animation on Scroll ---
     const particlesContainer = document.getElementById('particles-container');
     let lastScrollTop = 0;
 
     window.addEventListener('scroll', function () {
         let st = window.pageYOffset || document.documentElement.scrollTop;
-        // Generate a particle every 30 pixels scrolled
         if (Math.abs(st - lastScrollTop) > 30) {
             createParticle();
             lastScrollTop = st;
@@ -183,24 +277,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const particle = document.createElement('div');
         particle.classList.add('particle');
 
-        // Randomly choose an emoji for the particle
         const items = ['💖', '✨', '🌸', '💕'];
         particle.innerText = items[Math.floor(Math.random() * items.length)];
 
-        // Randomize the starting position, speed, and size
         particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3 to 5 seconds
-        particle.style.fontSize = (Math.random() * 1 + 1) + 'rem'; // 1rem to 2rem
+        particle.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        particle.style.fontSize = (Math.random() * 1 + 1) + 'rem';
 
         particlesContainer.appendChild(particle);
 
-        // Clean up the DOM after the animation completes
         setTimeout(() => {
             particle.remove();
         }, 5000);
     }
 
-    // --- 5. Modern Background Form Submissions (Fetch API) ---
+    // --- 8. Modern Background Form Submissions (Fetch API) ---
     const rsvpForm = document.getElementById('rsvp-form');
     const rsvpBtn = document.getElementById('rsvp-btn');
 
@@ -231,6 +322,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 rsvpForm.reset();
                 rsvpBtn.innerText = "Hantar RSVP";
                 rsvpBtn.disabled = false;
+                closeModal('modal-rsvp');
+                // Refresh pax count if link is ready
+                fetchRSVPPax();
             }).catch(error => {
                 alert('Ralat. Sila cuba lagi.');
                 rsvpBtn.innerText = "Hantar RSVP";
@@ -267,8 +361,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
 
-                window.scrollTo(0, 0);
-                window.location.reload();
+                wishForm.reset();
+                wishBtn.innerText = "Hantar Ucapan";
+                wishBtn.disabled = false;
+
+                fetchWishes();
 
             }).catch(error => {
                 alert('Ralat. Sila cuba lagi.');

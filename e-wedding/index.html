@@ -43,6 +43,40 @@
         </div>
     </section>
 
+    <section class="info-stats animate-on-scroll">
+        <div class="container elegant-box">
+            <h3>Menghitung Hari</h3>
+            <div id="countdown" class="countdown-container">
+                <div class="time-box"><span id="days">00</span>
+                    <p>Hari</p>
+                </div>
+                <div class="time-box"><span id="hours">00</span>
+                    <p>Jam</p>
+                </div>
+                <div class="time-box"><span id="minutes">00</span>
+                    <p>Minit</p>
+                </div>
+                <div class="time-box"><span id="seconds">00</span>
+                    <p>Saat</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3>Kehadiran Tetamu</h3>
+            <div class="pax-container">
+                <div class="pax-box present">
+                    <span id="total-hadir">0</span>
+                    <p>Hadir</p>
+                </div>
+                <div class="pax-box absent">
+                    <span id="total-tidak-hadir">0</span>
+                    <p>Tidak Hadir</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="quote animate-on-scroll">
         <div class="container elegant-box">
             <p class="quran-quote">"dan kami menciptakan kamu berpasang-pasangan"</p>
@@ -66,33 +100,73 @@
         </div>
     </section>
 
-    <section class="location-contact animate-on-scroll">
-        <div class="container">
-            <div class="location elegant-box">
-                <h3>LOKASI MAJLIS</h3>
-                <p>BERTEMPAT DI</p>
-                <p class="address">NO 147, KG. SG. STAR, 34140<br>RANTAU PANJANG, SELAMA<br>PERAK.</p>
-                <div class="map-container">
-                    <iframe src="https://maps.google.com/maps?q=5.279250,100.780194&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
-                    </iframe>
+    <section class="wishes animate-on-scroll">
+        <div class="container elegant-box">
+            <h3>Ucapan Tetamu</h3>
+            <div class="slider-container">
+                <div class="slider" id="wishes-slider">
+                    <div class="slide">
+                        <div class="wish-card">
+                            <p class="wish-text">"Memuat turun ucapan..."</p>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://www.google.com/maps/dir/?api=1&destination=5.279250,100.780194" target="_blank"
-                    class="btn map-btn">Dapatkan Arah Lokasi</a>
             </div>
+        </div>
 
-            <div class="contact elegant-box">
-                <h3>HUBUNGI:</h3>
-                <ul class="contact-list">
-                    <li>KAKAK: 011-4010 6154</li>
-                    <li>ADIK: 013-616 6203</li>
-                </ul>
-            </div>
+        <div class="container elegant-box" style="margin-top: 2rem;">
+            <h3>Tinggalkan Ucapan</h3>
+            <p class="intro-text">Tinggalkan ucapan buat pasangan pengantin.</p>
+            <form id="wish-form" class="custom-form">
+                <input type="text" name="entry.637633759" id="wish-name" placeholder="Nama Anda" required>
+                <textarea name="entry.1766576802" id="wish-message" placeholder="Tulis ucapan manis anda di sini..."
+                    rows="4" required></textarea>
+                <button type="submit" class="btn" id="wish-btn">Hantar Ucapan</button>
+            </form>
         </div>
     </section>
 
-    <section class="rsvp animate-on-scroll">
-        <div class="container elegant-box">
+    <nav class="bottom-menu">
+        <div class="menu-item" onclick="openModal('modal-hubungi')">
+            <img src="https://cdn-icons-png.flaticon.com/512/126/126523.png" alt="Hubungi">
+            <span>Hubungi</span>
+        </div>
+        <div class="menu-item" onclick="openModal('modal-kalendar')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2838/2838779.png" alt="Kalendar">
+            <span>Kalendar</span>
+        </div>
+        <div class="menu-item" onclick="openModal('modal-rsvp')">
+            <img src="https://cdn-icons-png.flaticon.com/512/5667/5667029.png" alt="RSVP">
+            <span>RSVP</span>
+        </div>
+        <div class="menu-item" onclick="openModal('modal-lokasi')">
+            <img src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="Lokasi">
+            <span>Lokasi</span>
+        </div>
+    </nav>
+
+    <div id="modal-hubungi" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-hubungi')">&times;</span>
+            <h3>Hubungi</h3>
+            <a href="https://wasap.my/601140106154" class="btn whatsapp-btn" target="_blank">Kakak (011-4010 6154)</a>
+            <a href="https://wasap.my/60136166203" class="btn whatsapp-btn" target="_blank">Adik (013-616 6203)</a>
+        </div>
+    </div>
+
+    <div id="modal-kalendar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-kalendar')">&times;</span>
+            <h3>Kalendar</h3>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Walimatul+Urus+Faridah+%26+Adam&dates=20260426T033000Z/20260426T080000Z&details=Majlis+Perkahwinan+Teh+Faridah+%26+Adam+Safwan&location=No+147,+Kg.+Sg.+Star,+34140+Rantau+Panjang,+Selama,+Perak"
+                target="_blank" class="btn">Simpan ke Google Calendar</a>
+            <button onclick="downloadICS()" class="btn" style="margin-top: 15px;">Simpan ke Apple Calendar</button>
+        </div>
+    </div>
+
+    <div id="modal-rsvp" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-rsvp')">&times;</span>
             <h3>RSVP</h3>
             <p class="intro-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
             <form id="rsvp-form" class="custom-form">
@@ -106,31 +180,24 @@
                 <button type="submit" class="btn" id="rsvp-btn">Hantar RSVP</button>
             </form>
         </div>
-    </section>
+    </div>
 
-    <section class="wishes animate-on-scroll">
-        <div class="container elegant-box">
-            <h3>Ucapan Tetamu</h3>
-
-            <div class="slider-container">
-                <div class="slider" id="wishes-slider">
-                    <div class="slide">
-                        <div class="wish-card">
-                            <p class="wish-text">"Memuat turun ucapan..."</p>
-                        </div>
-                    </div>
-                </div>
+    <div id="modal-lokasi" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-lokasi')">&times;</span>
+            <h3>LOKASI MAJLIS</h3>
+            <p>BERTEMPAT DI</p>
+            <p class="address">NO 147, KG. SG. STAR, 34140<br>RANTAU PANJANG, SELAMA<br>PERAK.</p>
+            <div class="map-container">
+                <iframe
+                    src="https://maps.google.com/maps?q=147,KG.SG.STAR,34140,RANTAUPANJANG,SELAMA,PERAK&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
             </div>
-
-            <p class="intro-text">Tinggalkan ucapan buat pasangan pengantin.</p>
-            <form id="wish-form" class="custom-form">
-                <input type="text" name="entry.637633759" id="wish-name" placeholder="Nama Anda" required>
-                <textarea name="entry.1766576802" id="wish-message" placeholder="Tulis ucapan manis anda di sini..."
-                    rows="4" required></textarea>
-                <button type="submit" class="btn" id="wish-btn">Hantar Ucapan</button>
-            </form>
+            <a href="https://maps.google.com/maps?q=147,KG.SG.STAR,34140,RANTAUPANJANG,SELAMA,PERAK" target="_blank"
+                class="btn map-btn">Dapatkan Arah Lokasi</a>
         </div>
-    </section>
+    </div>
 
     <script src="script.js"></script>
 </body>
