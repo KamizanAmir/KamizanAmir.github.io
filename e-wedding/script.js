@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- 4. Fetch Real Wishes from Google Sheets ---
     const googleSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=300194188&single=true&output=csv";
-    const slider = document.getElementById('wishes-slider');
+    const sliderContainer = document.getElementById('wishes-slider');
     let sliderInterval;
 
     function fetchWishes() {
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.text())
             .then(csvText => {
                 if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('pageUrl:')) {
-                    slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div></div>`;
+                    sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat: Sila pastikan Sheet diterbitkan sebagai CSV.</p></div></div>`;
                     return;
                 }
 
@@ -137,21 +137,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 if (html !== '') {
-                    slider.innerHTML = html;
+                    sliderContainer.innerHTML = html;
                     startSlider();
                 } else {
-                    slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Belum ada ucapan.</p></div></div>`;
+                    sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Belum ada ucapan.</p></div></div>`;
                 }
             })
             .catch(error => {
                 console.error('Error fetching wishes:', error);
-                slider.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat memuat turun ucapan.</p></div></div>`;
+                sliderContainer.innerHTML = `<div class="slide"><div class="wish-card"><p class="wish-text">Ralat memuat turun ucapan.</p></div></div>`;
             });
     }
 
     function startSlider() {
         if (sliderInterval) clearInterval(sliderInterval);
 
+        const slider = document.getElementById('wishes-slider');
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
         let currentIndex = 0;
@@ -159,8 +160,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (totalSlides > 1) {
             sliderInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % totalSlides;
-                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                const slideWidth = slider.clientWidth;
+                slider.scrollTo({
+                    left: currentIndex * slideWidth,
+                    behavior: 'smooth'
+                });
             }, 3500);
+
+            // Stop auto-slide if user manually touches or clicks the slider
+            slider.addEventListener('touchstart', () => { clearInterval(sliderInterval); }, { passive: true });
+            slider.addEventListener('mousedown', () => { clearInterval(sliderInterval); });
         }
     }
 
@@ -168,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- 5. Countdown and Total Pax Calculation ---
     function startCountdown() {
-        // Set event date (April 26, 2026, 11:30 AM)
         const eventDate = new Date("April 26, 2026 11:30:00").getTime();
+        const countdownContainer = document.getElementById("countdown");
 
         const countdownInterval = setInterval(function () {
             const now = new Date().getTime();
@@ -193,32 +202,38 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
             document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            // Set to urgent state (red and bold) if 49 days (7 weeks) or less remaining
+            if (days <= 49) {
+                countdownContainer.classList.add("countdown-urgent");
+            } else {
+                countdownContainer.classList.remove("countdown-urgent");
+            }
         }, 1000);
     }
 
     startCountdown();
 
-    // GANTI LINK DI BAWAH DENGAN LINK CSV RSVP ANDA
-    const rsvpSheetCSVUrl = "YOUR_RSVP_SHEET_CSV_URL_HERE";
-
     function fetchRSVPPax() {
-        if (rsvpSheetCSVUrl === "YOUR_RSVP_SHEET_CSV_URL_HERE") return; // Skip if user hasn't replaced the URL
+        const rsvpSheetCSVUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlYvA3WnmjaEHiRdVmX9-5BoZnoffaJdKlto_vDdc0Pc9-mDulKpsgX_gILSKDtvHfH4RSpen0r_6S/pub?gid=700668432&single=true&output=csv";
 
         fetch(rsvpSheetCSVUrl)
             .then(response => response.text())
             .then(csvText => {
-                const rows = parseCSV(csvText).slice(1); // Remove header
+                const rows = parseCSV(csvText).slice(1);
                 let hadirTotal = 0;
                 let tidakHadirTotal = 0;
 
                 rows.forEach(columns => {
-                    if (columns.length >= 4) { // Assumes Column C (index 2) is Kehadiran, Column D (index 3) is Pax
+                    if (columns.length >= 4) {
+                        // Index 2 is Kehadiran, Index 3 is Jumlah Pax
                         const kehadiran = columns[2] ? columns[2].trim().toLowerCase() : "";
-                        const pax = parseInt(columns[3], 10) || 0;
+                        const paxStr = columns[3] ? columns[3].trim() : "0";
+                        const pax = parseInt(paxStr, 10) || 0;
 
                         if (kehadiran === "hadir") {
                             hadirTotal += pax;
-                        } else if (kehadiran === "tidak hadir") {
+                        } else if (kehadiran === "tidak hadir" || kehadiran === "tidak") {
                             tidakHadirTotal += (pax > 0 ? pax : 1);
                         }
                     }
@@ -323,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 rsvpBtn.innerText = "Hantar RSVP";
                 rsvpBtn.disabled = false;
                 closeModal('modal-rsvp');
-                // Refresh pax count if link is ready
+                // Refresh pax count after submission
                 fetchRSVPPax();
             }).catch(error => {
                 alert('Ralat. Sila cuba lagi.');
