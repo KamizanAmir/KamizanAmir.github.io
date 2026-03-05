@@ -109,7 +109,25 @@ document.addEventListener("DOMContentLoaded", function () {
     function fetchWishes() {
         const commentsContainer = document.getElementById('wishes-container');
 
-        if (!commentsContainer) return; // Prevents the null error if the HTML hasn't loaded properly yet
+        if (!commentsContainer) return;
+
+        // Helper function to format the timestamp cleanly
+        function formatTimestamp(rawTimestamp) {
+            const parts = rawTimestamp.split(' ');
+            if (parts.length < 2) return ""; // Invalid date format
+            const datePart = parts[0]; // e.g., "3/3/2026"
+            const timePart = parts[1]; // e.g., "12:57:55"
+            const dateParts = datePart.split('/');
+            if (dateParts.length < 3) return ""; // Invalid date part format
+            const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const formattedDate = `${dateParts[0]} ${monthNames[parseInt(dateParts[1])]} ${dateParts[2]}`;
+            let [hours, minutes] = timePart.split(':');
+            hours = parseInt(hours);
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Handle '0' hour as '12'
+            return `${formattedDate}, ${hours}:${minutes} ${ampm}`;
+        }
 
         fetch(googleSheetCSVUrl)
             .then(response => response.text())
@@ -126,10 +144,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (columns.length >= 3) {
                         const name = columns[1].trim();
                         const message = columns[2].trim();
+                        const rawTime = columns[0].trim();
+                        const formattedTime = formatTimestamp(rawTime);
+                        const initial = name.charAt(0).toUpperCase(); // Extract first initial
+
                         if (name && message) {
                             html += `
                             <div class="comment-item">
-                                <p class="wish-author">${name}</p>
+                                <div class="comment-header"> <div class="profile-icon"><span>${initial}</span></div> <div class="comment-details">
+                                        <p class="wish-author">${name}</p>
+                                        <p class="comment-timestamp">${formattedTime}</p>
+                                    </div>
+                                </div>
                                 <p class="wish-text">${message}</p>
                             </div>`;
                         }
