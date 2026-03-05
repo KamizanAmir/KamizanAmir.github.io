@@ -108,6 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function fetchWishes() {
         const commentsContainer = document.getElementById('wishes-container');
+
+        if (!commentsContainer) return; // Prevents the null error if the HTML hasn't loaded properly yet
+
         fetch(googleSheetCSVUrl)
             .then(response => response.text())
             .then(csvText => {
@@ -141,32 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error('Error fetching wishes:', error);
-                commentsContainer.innerHTML = `<div class="comment-item"><p class="wish-text">Ralat memuat turun ucapan.</p></div>`;
+                if (commentsContainer) {
+                    commentsContainer.innerHTML = `<div class="comment-item"><p class="wish-text">Ralat memuat turun ucapan.</p></div>`;
+                }
             });
-    }
-
-    function startSlider() {
-        if (sliderInterval) clearInterval(sliderInterval);
-
-        const slider = document.getElementById('wishes-slider');
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        let currentIndex = 0;
-
-        if (totalSlides > 1) {
-            sliderInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % totalSlides;
-                const slideWidth = slider.clientWidth;
-                slider.scrollTo({
-                    left: currentIndex * slideWidth,
-                    behavior: 'smooth'
-                });
-            }, 3500);
-
-            // Stop auto-slide if user manually touches or clicks the slider
-            slider.addEventListener('touchstart', () => { clearInterval(sliderInterval); }, { passive: true });
-            slider.addEventListener('mousedown', () => { clearInterval(sliderInterval); });
-        }
     }
 
     fetchWishes();
