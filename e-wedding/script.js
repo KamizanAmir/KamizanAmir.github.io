@@ -387,4 +387,60 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    // --- 9. Pre-Wedding Gallery Slider ---
+    function initGallerySlider() {
+        const slides = document.querySelectorAll('.gallery-slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentSlide = 0;
+        let slideInterval;
+
+        if (slides.length === 0) return;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Reset interval when user clicks manually so it doesn't double-skip
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 4000); // Auto slide every 4 seconds
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                nextSlide();
+                resetInterval();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                prevSlide();
+                resetInterval();
+            });
+        }
+
+        // Start auto slide
+        slideInterval = setInterval(nextSlide, 4000);
+    }
+
+    initGallerySlider();
+
 });
