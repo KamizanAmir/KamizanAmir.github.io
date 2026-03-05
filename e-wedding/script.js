@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                const rows = parseCSV(csvText).slice(1);
+                const rows = parseCSV(csvText).slice(1).reverse();
                 let html = '';
 
                 rows.forEach(columns => {
@@ -378,12 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: data
             }).then(() => {
                 alert('Terima kasih atas ucapan manis anda!');
-
-                wishForm.reset();
-                wishBtn.innerText = "Hantar Ucapan";
-                wishBtn.disabled = false;
-
-                fetchWishes();
+                window.location.reload();
 
             }).catch(error => {
                 alert('Ralat. Sila cuba lagi.');
