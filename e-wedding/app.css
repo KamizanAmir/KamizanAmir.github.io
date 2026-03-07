@@ -872,3 +872,90 @@ section {
 .next-btn {
     right: 15px;
 }
+
+/* --- Hadiah Modal Styles & Animations --- */
+.blur-bg {
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeInModal 0.5s ease forwards;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.pop-out {
+    animation: popOut 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popOut {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.fade-text {
+    opacity: 0;
+    animation: textFadeIn 1s ease forwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes textFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.qr-box {
+    background-color: #fdfaf9;
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid #ecc9c7;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.qr-img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 0.8rem;
+    border-radius: 10px;
+    border: 2px solid #f2d1d5;
+}
+
+.bank-name {
+    color: #5a4b4e;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.bank-acc {
+    color: #c88691;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+/* Scroll Animation inside Modal */
+.scroll-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.is-visible-scroll {
+    opacity: 1;
+    transform: translateY(0);
+}
