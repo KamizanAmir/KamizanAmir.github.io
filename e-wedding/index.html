@@ -157,6 +157,10 @@
             <img src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="Lokasi">
             <span>Lokasi</span>
         </div>
+        <div class="menu-item" onclick="openModal('modal-hadiah')">
+            <img src="https://cdn-icons-png.flaticon.com/512/3024/3024608.png" alt="Hadiah">
+            <span>Hadiah</span>
+        </div>
     </nav>
 
     <div id="modal-hubungi" class="modal">
@@ -209,6 +213,29 @@
             </div>
             <a href="https://www.google.com/maps/dir/?api=1&destination=5.279250,100.780194" target="_blank"
                 class="btn map-btn">Dapatkan Arah Lokasi</a>
+        </div>
+    </div>
+
+    <div id="modal-hadiah" class="modal blur-bg">
+        <div class="modal-content pop-out">
+            <span class="close" onclick="closeModal('modal-hadiah')">×</span>
+            <h3 class="fade-text">HADIAH</h3>
+            <p class="fade-text intro-text">Seikhlas hati, terima kasih atas sumbangan anda.</p>
+            
+            <div class="qr-container">
+                <div class="qr-box scroll-fade-in">
+                    <img src="images/qr.png" alt="Maybank QR" class="qr-img">
+                    <p class="bold-text">Maybank</p>
+                    <p class="bank-name">Adam Safwan</p>
+                    <p class="bank-acc">152031828434</p>
+                </div>
+                <div class="qr-box scroll-fade-in">
+                    <img src="images/qr2.png" alt="GX Bank QR" class="qr-img">
+                    <p class="bold-text">GX Bank</p>
+                    <p class="bank-name">Adam Safwan</p>
+                    <p class="bank-acc">8888008458044</p>
+                </div>
+            </div>
         </div>
     </div>
 
