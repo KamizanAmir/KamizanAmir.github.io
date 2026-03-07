@@ -255,6 +255,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById(id);
         modal.style.display = 'flex';
 
+        // Re-trigger fade-in animation for modal contents
+        const popOutContent = modal.querySelector('.modal-content');
+        if (popOutContent) {
+            popOutContent.style.animation = 'none';
+            popOutContent.offsetHeight; // trigger reflow
+            popOutContent.style.animation = null;
+        }
+
+        const fadeTexts = modal.querySelectorAll('.fade-text');
+        fadeTexts.forEach(text => {
+            text.style.animation = 'none';
+            text.offsetHeight; // trigger reflow
+            text.style.animation = null;
+        });
+
         const modalContent = modal.querySelector('.modal-content');
         const scrollElements = modal.querySelectorAll('.scroll-fade-in');
 
