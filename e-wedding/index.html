@@ -158,36 +158,36 @@
             <span>Lokasi</span>
         </div>
         <div class="menu-item" onclick="openModal('modal-hadiah')">
-            <img src="https://cdn-icons-png.flaticon.com/512/3024/3024608.png" alt="Hadiah">
+            <img src="https://cdn-icons-png.flaticon.com/512/261/261291.png" alt="Hadiah">
             <span>Hadiah</span>
         </div>
     </nav>
 
-    <div id="modal-hubungi" class="modal">
-        <div class="modal-content">
+    <div id="modal-hubungi" class="modal blur-bg">
+        <div class="modal-content pop-out">
             <span class="close" onclick="closeModal('modal-hubungi')">×</span>
-            <h3>Hubungi</h3>
-            <a href="https://wasap.my/601140106154" class="btn whatsapp-btn" target="_blank">Kakak (011-4010 6154)</a>
-            <a href="https://wasap.my/60136166203" class="btn whatsapp-btn" target="_blank">Adik (013-616 6203)</a>
+            <h3 class="fade-text">Hubungi</h3>
+            <a href="https://wasap.my/601140106154" class="btn whatsapp-btn fade-text" target="_blank">Kakak (011-4010 6154)</a>
+            <a href="https://wasap.my/60136166203" class="btn whatsapp-btn fade-text" target="_blank">Adik (013-616 6203)</a>
         </div>
     </div>
 
-    <div id="modal-kalendar" class="modal">
-        <div class="modal-content">
+    <div id="modal-kalendar" class="modal blur-bg">
+        <div class="modal-content pop-out">
             <span class="close" onclick="closeModal('modal-kalendar')">×</span>
-            <h3>Kalendar</h3>
+            <h3 class="fade-text">Kalendar</h3>
             <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Walimatul+Urus+Faridah+%26+Adam&dates=20260426T033000Z/20260426T080000Z&details=Majlis+Perkahwinan+Teh+Faridah+%26+Adam+Safwan&location=No+147,+Kg.+Sg.+Star,+34140+Rantau+Panjang,+Selama,+Perak"
-                target="_blank" class="btn">Simpan ke Google Calendar</a>
-            <button onclick="downloadICS()" class="btn" style="margin-top: 15px;">Simpan ke Apple Calendar</button>
+                target="_blank" class="btn fade-text">Simpan ke Google Calendar</a>
+            <button onclick="downloadICS()" class="btn fade-text" style="margin-top: 15px;">Simpan ke Apple Calendar</button>
         </div>
     </div>
 
-    <div id="modal-rsvp" class="modal">
-        <div class="modal-content">
+    <div id="modal-rsvp" class="modal blur-bg">
+        <div class="modal-content pop-out">
             <span class="close" onclick="closeModal('modal-rsvp')">×</span>
-            <h3>RSVP</h3>
-            <p class="intro-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
-            <form id="rsvp-form" class="custom-form">
+            <h3 class="fade-text">RSVP</h3>
+            <p class="intro-text fade-text">Sila sahkan kehadiran anda untuk memudahkan urusan majlis.</p>
+            <form id="rsvp-form" class="custom-form fade-text">
                 <input type="text" name="entry.1048162770" placeholder="Nama Penuh Anda" required>
                 <select name="entry.1401933726" required>
                     <option value="" disabled selected>Kehadiran Anda?</option>
@@ -200,19 +200,19 @@
         </div>
     </div>
 
-    <div id="modal-lokasi" class="modal">
-        <div class="modal-content">
+    <div id="modal-lokasi" class="modal blur-bg">
+        <div class="modal-content pop-out">
             <span class="close" onclick="closeModal('modal-lokasi')">×</span>
-            <h3>LOKASI MAJLIS</h3>
-            <p>BERTEMPAT DI</p>
-            <p class="address">NO 147, KG. SG. STAR, 34140<br>RANTAU PANJANG, SELAMA<br>PERAK.</p>
-            <div class="map-container">
+            <h3 class="fade-text">LOKASI MAJLIS</h3>
+            <p class="fade-text">BERTEMPAT DI</p>
+            <p class="address fade-text">NO 147, KG. SG. STAR, 34140<br>RANTAU PANJANG, SELAMA<br>PERAK.</p>
+            <div class="map-container fade-text">
                 <iframe src="https://maps.google.com/maps?q=5.279250,100.780194&t=&z=15&ie=UTF8&iwloc=&output=embed"
                     width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy">
                 </iframe>
             </div>
             <a href="https://www.google.com/maps/dir/?api=1&destination=5.279250,100.780194" target="_blank"
-                class="btn map-btn">Dapatkan Arah Lokasi</a>
+                class="btn map-btn fade-text">Dapatkan Arah Lokasi</a>
         </div>
     </div>
 
