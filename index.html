@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="application/ld+json">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Kamizan Amirudin – Senior Programmer & System Analyst Portfolio" />
+    <meta name="theme-color" content="#0B0E14" />
+    <title>Kamizan Amirudin | Senior Programmer & System Analyst</title>
+
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
@@ -14,12 +22,7 @@
         "https://www.linkedin.com/in/kamizan-amirudin"
       ]
     }
-</script>
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Kamizan Amirudin – Senior Programmer & System Analyst Portfolio" />
-    <title>Kamizan Amirudin | Senior Programmer & System Analyst</title>
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,27 +36,30 @@
 </head>
 
 <body>
-    <canvas id="star-canvas"></canvas>
+    <canvas id="star-canvas" aria-hidden="true"></canvas>
 
     <nav class="navbar">
-        <div class="nav-brand">KA.</div>
-        <ul class="nav-links">
+        <a href="#" class="nav-brand">KA.</a>
+        <ul class="nav-links" id="nav-links">
             <li><a href="#about" class="nav-link">About</a></li>
             <li><a href="#skills" class="nav-link">Stack</a></li>
             <li><a href="#experience" class="nav-link">Experience</a></li>
             <li><a href="#portfolio" class="nav-link">Projects</a></li>
             <li><a href="#contact" class="nav-link btn-glow">Contact</a></li>
         </ul>
-        <div class="hamburger">
-            <i class="fas fa-bars"></i>
-        </div>
+        <button type="button" class="hamburger" id="nav-toggle" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
     </nav>
+    <div class="nav-backdrop" id="nav-backdrop"></div>
 
     <main>
         <header class="hero">
             <div class="hero-content">
                 <div class="profile-wrapper">
-                    <img src="images/icon_new.jpg" alt="Kamizan Amirudin" class="profile-img">
+                    <img src="images/icon_new.jpg" alt="Kamizan Amirudin" class="profile-img" width="180"
+                        height="180" fetchpriority="high">
                     <div class="status-indicator"></div>
                 </div>
                 <h1 class="glitch" data-text="KAMIZAN AMIRUDIN">KAMIZAN AMIRUDIN</h1>
@@ -220,10 +226,11 @@
             <div class="project-grid">
                 <div class="project-card">
                     <div class="project-img-wrapper">
-                        <img src="images/project1.png" alt="RunCloud Test">
+                        <img src="images/project1.png" alt="RunCloud Test" loading="lazy" decoding="async">
                         <div class="overlay">
-                            <a href="https://github.com/KamizanAmir/runcloud/" target="_blank" class="icon-btn"><i
-                                    class="fab fa-github"></i></a>
+                            <a href="https://github.com/KamizanAmir/runcloud/" target="_blank" rel="noopener"
+                                class="icon-btn" aria-label="RunCloud System Assessment on GitHub"><i
+                                    class="fab fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
@@ -236,10 +243,11 @@
 
                 <div class="project-card">
                     <div class="project-img-wrapper">
-                        <img src="images/project3.png" alt="Mobile App">
+                        <img src="images/project3.png" alt="Mobile App" loading="lazy" decoding="async">
                         <div class="overlay">
-                            <a href="https://github.com/KamizanAmir/kamching/" target="_blank" class="icon-btn"><i
-                                    class="fab fa-github"></i></a>
+                            <a href="https://github.com/KamizanAmir/kamching/" target="_blank" rel="noopener"
+                                class="icon-btn" aria-label="Flutter Interactive App on GitHub"><i
+                                    class="fab fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
@@ -252,9 +260,10 @@
 
                 <div class="project-card">
                     <div class="project-img-wrapper">
-                        <img src="images/project2.png" alt="API Docs">
+                        <img src="images/project2.png" alt="API Docs" loading="lazy" decoding="async">
                         <div class="overlay">
-                            <span class="locked"><i class="fas fa-lock"></i></span>
+                            <span class="locked" title="Private repository"><i class="fas fa-lock"
+                                    aria-hidden="true"></i></span>
                         </div>
                     </div>
                     <div class="project-info">
@@ -308,13 +317,15 @@
                         <a href="mailto:kamizan980505@gmail.com" class="method">
                             <i class="fas fa-envelope"></i> kamizan980505@gmail.com
                         </a>
-                        <a href="https://wasap.my/60134718690" target="_blank" class="method">
+                        <a href="https://wasap.my/60134718690" target="_blank" rel="noopener" class="method">
                             <i class="fab fa-whatsapp"></i> +6013-471 8690
                         </a>
                     </div>
                     <div class="socials-large">
-                        <a href="https://www.linkedin.com/in/kamizan-amirudin"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://github.com/KamizanAmir"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank" rel="noopener"
+                            aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                        <a href="https://github.com/KamizanAmir" target="_blank" rel="noopener"
+                            aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
                     </div>
                 </div>
 

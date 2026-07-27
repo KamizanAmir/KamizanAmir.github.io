@@ -1,8 +1,6 @@
 /* ================= VARIABLES ================= */
 :root {
     --bg-color: #0B0E14;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
     --primary: #00F0FF;
     /* Cyber Neon Blue */
     --secondary: #7000FF;
@@ -12,6 +10,27 @@
     --font-head: 'Orbitron', sans-serif;
     --font-body: 'Inter', sans-serif;
     --gradient: linear-gradient(90deg, var(--primary), var(--secondary));
+
+    /* ---- Glassmorphism tokens ---- */
+    --glass-bg: rgba(255, 255, 255, 0.045);
+    --glass-bg-strong: rgba(255, 255, 255, 0.075);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-blur: 18px;
+    --glass-saturate: 160%;
+    --glass-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    --glass-shadow-hover:
+        0 16px 48px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(0, 240, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    /* Light refracting off the top-left edge of each pane */
+    --glass-rim: linear-gradient(140deg,
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0.05) 30%,
+            rgba(255, 255, 255, 0) 55%,
+            rgba(0, 240, 255, 0.18) 100%);
+    --nav-height: 72px;
 }
 
 /* ================= RESET ================= */
@@ -21,23 +40,61 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    /* Keep anchor targets clear of the fixed navbar */
+    scroll-padding-top: calc(var(--nav-height) + 16px);
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: var(--font-body);
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ================= CANVAS BACKGROUND ================= */
+body.nav-open {
+    overflow: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+}
+
+/* ================= BACKGROUND LAYERS ================= */
 #star-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -3;
     background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
+}
+
+/* Soft colour fields so the glass has something to refract */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        radial-gradient(40vw 40vw at 12% 18%, rgba(112, 0, 255, 0.20), transparent 65%),
+        radial-gradient(45vw 45vw at 88% 72%, rgba(0, 240, 255, 0.14), transparent 65%);
+    filter: blur(20px);
 }
 
 /* ================= UTILITIES ================= */
@@ -54,13 +111,71 @@ ul {
 .container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 100px 20px;
+    padding: clamp(56px, 9vw, 100px) clamp(16px, 4vw, 20px);
 }
 
 .text-gradient {
     background: var(--gradient);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* ================= GLASS SURFACE ================= */
+/* Shared frosted-pane treatment. Each pane gets a blurred, saturated
+   backdrop plus a 1px gradient rim that fakes a lit glass edge. */
+.glass-card,
+.skill-card,
+.project-card,
+.glass-form,
+.stat-item,
+.cert-item,
+.nav-links,
+.btn.secondary {
+    position: relative;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.glass-card::after,
+.skill-card::after,
+.project-card::after,
+.glass-form::after,
+.stat-item::after,
+.cert-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--glass-rim);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Browsers without backdrop-filter get an opaque tint instead of
+   transparent panes that would leave text sitting on raw starfield. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+
+    .glass-card,
+    .skill-card,
+    .project-card,
+    .glass-form,
+    .stat-item,
+    .cert-item,
+    .nav-links {
+        background: rgba(18, 22, 32, 0.92);
+    }
 }
 
 /* ================= NAVIGATION ================= */
@@ -68,16 +183,28 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    gap: 16px;
+    padding: 0 clamp(16px, 4vw, 40px);
+    min-height: var(--nav-height);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    background: rgba(11, 14, 20, 0.85);
-    /* Slightly darker background */
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid transparent;
-    border-image: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent) 1;
+    background: rgba(11, 14, 20, 0.6);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.navbar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.45), transparent);
+    pointer-events: none;
 }
 
 .nav-brand {
@@ -85,20 +212,59 @@ ul {
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--primary);
+    text-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: clamp(18px, 2.5vw, 30px);
     align-items: center;
+    /* Desktop bar needs no pane of its own */
+    background: none;
+    border: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
 }
 
-/* Add this to hide the hamburger on desktop */
 .hamburger {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     cursor: pointer;
     color: var(--text-main);
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.hamburger:hover,
+.hamburger[aria-expanded="true"] {
+    color: var(--primary);
+    border-color: rgba(0, 240, 255, 0.5);
+}
+
+.nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(5, 7, 12, 0.6);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.nav-backdrop.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .nav-link {
@@ -117,6 +283,7 @@ ul {
     color: var(--primary);
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    background: rgba(0, 240, 255, 0.06);
 }
 
 .btn-glow:hover {
@@ -127,27 +294,25 @@ ul {
 
 /* ================= HERO SECTION ================= */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
+    /* Small-viewport unit avoids the mobile URL-bar clipping the CTA */
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 0 20px;
+    padding: calc(var(--nav-height) + 32px) clamp(16px, 5vw, 20px) 96px;
     position: relative;
-    /* Add a slight background darkening to make text pop against stars */
-    background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
+    background: radial-gradient(circle at center, transparent 0%, rgba(11, 14, 20, 0.85) 100%);
 }
 
 .profile-wrapper {
     position: relative;
-    width: 180px;
-    height: 180px;
-    margin-bottom: 2.5rem;
+    width: clamp(120px, 32vw, 180px);
+    height: clamp(120px, 32vw, 180px);
+    margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
     z-index: 2;
-    /* Added to fix alignment */
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .profile-img {
@@ -156,9 +321,7 @@ ul {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(0, 240, 255, 0.5);
-    /* Thinner, glowing border */
     box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-    /* Outer glow to anchor the image */
     transition: transform 0.3s ease;
 }
 
@@ -184,10 +347,10 @@ ul {
 
 .status-indicator {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 25px;
-    height: 25px;
+    bottom: 8%;
+    right: 8%;
+    width: clamp(18px, 4.5vw, 25px);
+    height: clamp(18px, 4.5vw, 25px);
     background-color: #2ecc71;
     border-radius: 50%;
     border: 4px solid var(--bg-color);
@@ -195,17 +358,9 @@ ul {
     animation: pulse-green 2s infinite;
 }
 
-.hero h1 {
-    font-family: var(--font-head);
-    font-size: 3.5rem;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
 .role-title {
     color: var(--primary);
-    font-size: 1.2rem;
+    font-size: clamp(0.95rem, 3.2vw, 1.2rem);
     margin-bottom: 20px;
     font-weight: 400;
     letter-spacing: 1px;
@@ -213,10 +368,10 @@ ul {
 
 .typing-container {
     font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
     color: var(--text-muted);
-    margin-bottom: 40px;
-    height: 1.5rem;
+    margin-bottom: clamp(28px, 6vw, 40px);
+    min-height: 1.6rem;
     /* prevent jump */
 }
 
@@ -230,15 +385,21 @@ ul {
 
 .hero-btns {
     display: flex;
-    gap: 20px;
+    gap: clamp(12px, 3vw, 20px);
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .btn {
-    padding: 12px 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 12px clamp(22px, 5vw, 35px);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -259,34 +420,28 @@ ul {
     transform: translateY(-2px);
     box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
     letter-spacing: 2px;
-    /* Expands on hover */
 }
 
 .btn.secondary {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
+    background: var(--glass-bg-strong);
     color: var(--text-main);
 }
 
 .btn.secondary:hover {
     border-color: var(--primary);
-    background: rgba(0, 240, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    background: rgba(0, 240, 255, 0.12);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
     color: var(--primary);
 }
 
 /* ================= GLASS CARD & LAYOUT ================= */
 .glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 50px;
-    position: relative;
+    padding: clamp(24px, 5vw, 50px);
     overflow: hidden;
 }
 
-/* Subtle shine effect on cards */
+/* Sweeping highlight, like light travelling across a pane */
 .glass-card::before {
     content: '';
     position: absolute;
@@ -294,9 +449,10 @@ ul {
     left: -50%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
     transform: skewX(-25deg);
     transition: 0.5s;
+    pointer-events: none;
 }
 
 .glass-card:hover::before {
@@ -305,10 +461,10 @@ ul {
 }
 
 .section-header {
-    margin-bottom: 50px;
+    margin-bottom: clamp(28px, 5vw, 50px);
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: clamp(12px, 2.5vw, 20px);
 }
 
 .section-header.center {
@@ -317,29 +473,31 @@ ul {
 
 .section-number {
     font-family: var(--font-head);
-    font-size: 3rem;
-    color: rgba(255, 255, 255, 0.05);
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    color: rgba(255, 255, 255, 0.08);
     font-weight: bold;
+    line-height: 1;
 }
 
 .section-header h3 {
     font-family: var(--font-head);
-    font-size: 2rem;
+    font-size: clamp(1.35rem, 4.5vw, 2rem);
+    line-height: 1.2;
 }
 
 /* ================= ABOUT GRID ================= */
 .about-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 50px;
+    gap: clamp(28px, 5vw, 50px);
 }
 
 .highlight-p {
-    font-size: 1.2rem;
+    font-size: clamp(1.05rem, 3.2vw, 1.2rem);
     color: var(--text-main);
     margin-bottom: 20px;
     border-left: 3px solid var(--primary);
-    padding-left: 20px;
+    padding-left: clamp(14px, 3vw, 20px);
 }
 
 .about-text p {
@@ -354,18 +512,17 @@ ul {
 }
 
 .stat-item {
-    background: rgba(255, 255, 255, 0.03);
     padding: 20px;
     text-align: center;
-    border-radius: 8px;
-    border: 1px solid var(--glass-border);
+    border-radius: 12px;
 }
 
 .stat-number {
     display: block;
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 5vw, 2rem);
     font-weight: 700;
     color: var(--primary);
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
 }
 
 .stat-label {
@@ -378,32 +535,34 @@ ul {
 /* ================= SKILLS ================= */
 .skills-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
+    /* min() keeps the track from overflowing narrow phones */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: clamp(18px, 3vw, 30px);
 }
 
 .skill-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    padding: 30px;
-    border-radius: 12px;
+    padding: clamp(22px, 4vw, 30px);
+    border-radius: 14px;
     transition: 0.3s;
 }
 
 .skill-card:hover {
     transform: translateY(-10px);
-    border-color: var(--primary);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(0, 240, 255, 0.45);
+    background: var(--glass-bg-strong);
+    box-shadow: var(--glass-shadow-hover);
 }
 
 .skill-icon {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
     color: var(--secondary);
     margin-bottom: 20px;
+    text-shadow: 0 0 25px rgba(112, 0, 255, 0.6);
 }
 
 .skill-card h4 {
     font-family: var(--font-head);
+    font-size: clamp(1rem, 2.6vw, 1.15rem);
     margin-bottom: 15px;
 }
 
@@ -411,27 +570,33 @@ ul {
     color: var(--text-muted);
     margin-bottom: 8px;
     font-size: 0.95rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding-bottom: 5px;
 }
 
 /* ================= TIMELINE ================= */
 .timeline {
+    --tl-pad: 40px;
     position: relative;
     border-left: 2px solid var(--glass-border);
     margin-left: 20px;
-    padding-left: 40px;
+    padding-left: var(--tl-pad);
 }
 
 .timeline-item {
-    margin-bottom: 50px;
+    margin-bottom: clamp(30px, 5vw, 50px);
     position: relative;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
 }
 
 .timeline-dot {
     position: absolute;
-    left: -49px;
-    top: 0;
+    /* Centres the 20px dot (16px + 2px borders) on the rail */
+    left: calc(-1 * var(--tl-pad) - 11px);
+    top: 4px;
     width: 16px;
     height: 16px;
     background: var(--bg-color);
@@ -443,12 +608,12 @@ ul {
 .timeline-date {
     color: var(--primary);
     font-family: var(--font-head);
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2.4vw, 0.9rem);
     margin-bottom: 5px;
 }
 
 .timeline-content h4 {
-    font-size: 1.3rem;
+    font-size: clamp(1.05rem, 3.2vw, 1.3rem);
     margin-bottom: 5px;
 }
 
@@ -467,20 +632,25 @@ ul {
 /* ================= PORTFOLIO ================= */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(18px, 3vw, 30px);
 }
 
 .project-card {
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    transition: 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--glass-shadow-hover);
 }
 
 .project-img-wrapper {
     position: relative;
-    height: 200px;
+    aspect-ratio: 16 / 10;
+    height: auto;
     overflow: hidden;
 }
 
@@ -497,11 +667,10 @@ ul {
 
 .overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -509,15 +678,20 @@ ul {
     transition: 0.3s;
 }
 
-.project-card:hover .overlay {
+.project-card:hover .overlay,
+.project-card:focus-within .overlay {
     opacity: 1;
 }
 
 .icon-btn {
-    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
     color: white;
-    border: 1px solid white;
-    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     transition: 0.3s;
 }
@@ -527,26 +701,92 @@ ul {
     color: black;
 }
 
+.locked {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
 .project-info {
     padding: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .project-info h4 {
     font-family: var(--font-head);
-    margin-bottom: 10px;
+    font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+    margin-bottom: 12px;
 }
 
 .tags {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .tags span {
     font-size: 0.7rem;
     padding: 4px 10px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
+    color: var(--text-muted);
+}
+
+/* On touch devices there is no hover, so surface the action permanently */
+@media (hover: none) {
+    .overlay {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 65%);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 12px;
+    }
+
+    .icon-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.15rem;
+        background: rgba(0, 0, 0, 0.35);
+    }
+}
+
+/* ================= CERTIFICATIONS ================= */
+.cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: clamp(16px, 3vw, 24px);
+}
+
+.cert-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.cert-item:hover {
+    background: var(--glass-bg-strong);
+    border-color: rgba(0, 240, 255, 0.35);
+}
+
+.cert-item i {
+    font-size: 1.6rem;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.cert-item h5 {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.cert-year {
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
@@ -554,13 +794,13 @@ ul {
 .contact-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    gap: clamp(32px, 5vw, 50px);
     align-items: center;
 }
 
 .contact-text h2 {
     font-family: var(--font-head);
-    font-size: 2.5rem;
+    font-size: clamp(1.7rem, 6vw, 2.5rem);
     margin-bottom: 20px;
     line-height: 1.2;
 }
@@ -577,7 +817,8 @@ ul {
     align-items: center;
     gap: 10px;
     color: var(--text-muted);
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+    min-height: 44px;
 }
 
 .method:hover {
@@ -591,6 +832,14 @@ ul {
     margin-top: 20px;
 }
 
+.socials-large a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+}
+
 .socials-large a:hover {
     color: var(--secondary);
     transform: translateY(-3px);
@@ -598,10 +847,8 @@ ul {
 
 /* Futuristic Form */
 .glass-form {
-    background: var(--glass-bg);
-    padding: 40px;
+    padding: clamp(24px, 5vw, 40px);
     border-radius: 16px;
-    border: 1px solid var(--glass-border);
 }
 
 .input-group {
@@ -617,8 +864,14 @@ ul {
     border: none;
     border-bottom: 1px solid var(--text-muted);
     color: white;
-    font-size: 1rem;
+    /* 16px minimum stops iOS Safari from zooming on focus */
+    font-size: 16px;
+    font-family: inherit;
     outline: none;
+}
+
+.input-group textarea {
+    resize: vertical;
 }
 
 .input-group label {
@@ -649,22 +902,32 @@ ul {
     margin-top: 10px;
 }
 
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
 /* ================= FOOTER ================= */
 footer {
     text-align: center;
-    padding: 40px;
+    padding: clamp(28px, 5vw, 40px) 20px;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     border-top: 1px solid var(--glass-border);
 }
 
 .scroll-indicator {
     position: absolute;
-    bottom: 30px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     animation: bounce 2s infinite;
     text-align: center;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
@@ -705,42 +968,12 @@ footer {
     transform: translateY(0);
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .about-grid,
-    .contact-wrapper {
-        grid-template-columns: 1fr;
-    }
-
-    .navbar {
-        padding: 20px;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .hamburger {
-        display: block;
-    }
-
-    /* Add this to ensure text is visible on mobile */
-    .glitch::before,
-    .glitch::after {
-        display: none;
-    }
-}
-
 /* ================= GLITCH EFFECT ================= */
 .glitch {
     position: relative;
     font-family: var(--font-head);
-    font-size: 3.5rem;
-    letter-spacing: 2px;
+    font-size: clamp(1.6rem, 7.5vw, 3.5rem);
+    letter-spacing: clamp(1px, 0.4vw, 2px);
     margin-bottom: 10px;
     text-transform: uppercase;
     color: var(--text-main);
@@ -768,6 +1001,174 @@ footer {
     text-shadow: -1px 0 var(--primary);
     clip: rect(85px, 550px, 140px, 0);
     animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablet / small laptop */
+@media (max-width: 900px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        flex-direction: row;
+    }
+
+    .stat-item {
+        flex: 1;
+    }
+}
+
+/* Nav collapses before the five links start crowding the brand */
+@media (max-width: 860px) {
+    .hamburger {
+        display: inline-flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        height: 100dvh;
+        width: min(80vw, 320px);
+        z-index: 999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        gap: 8px;
+        padding: calc(var(--nav-height) + 24px) 28px 40px;
+        background: rgba(11, 14, 20, 0.72);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        backdrop-filter: blur(24px) saturate(180%);
+        border: none;
+        border-left: 1px solid var(--glass-border);
+        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+        transform: translateX(102%);
+        /* visibility keeps the off-screen links out of the tab order,
+           delayed so the slide-out animation still plays */
+        visibility: hidden;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.4s;
+    }
+
+    .nav-links.open {
+        transform: translateX(0);
+        visibility: visible;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
+    }
+
+    .nav-links li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-links li:last-child {
+        border-bottom: none;
+        margin-top: 16px;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 16px 4px;
+        font-size: 1rem;
+    }
+
+    .nav-link.btn-glow {
+        text-align: center;
+        padding: 14px 20px;
+    }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline {
+        --tl-pad: 24px;
+        margin-left: 8px;
+    }
+
+    /* Layered pseudo-elements smear badly on small type */
+    .glitch::before,
+    .glitch::after {
+        display: none;
+    }
+
+    /* Blur is expensive on mobile GPUs */
+    :root {
+        --glass-blur: 12px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .section-header {
+        gap: 10px;
+    }
+
+    .stats-grid {
+        flex-direction: column;
+    }
+
+    .hero-btns {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-btns .btn {
+        width: 100%;
+    }
+
+    .socials-large {
+        font-size: 1.6rem;
+    }
+
+    .cert-item {
+        padding: 16px;
+    }
+
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+/* Landscape phones: 100svh hero would otherwise squash the content */
+@media (max-height: 520px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding-top: calc(var(--nav-height) + 40px);
+        padding-bottom: 60px;
+    }
+
+    .profile-wrapper {
+        width: 90px;
+        height: 90px;
+    }
+
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 @keyframes glitch-anim {
@@ -939,12 +1340,5 @@ footer {
 
     100% {
         clip: rect(33px, 9999px, 142px, 0);
-    }
-}
-
-/* Mobile responsive adjustments for Glitch Title */
-@media (max-width: 768px) {
-    .glitch {
-        font-size: 2rem;
     }
 }
