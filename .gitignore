@@ -1,0 +1,7 @@
+
+# Release APKs are uploaded to GitHub Releases, never committed.
+# One is 34 MB and git keeps every version of it forever — .git was already
+# 206 MB after a single release. The release asset is the distribution point;
+# the repo only needs update/latest.json to point at it.
+kamitrack-arm64.apk
+*.apk
