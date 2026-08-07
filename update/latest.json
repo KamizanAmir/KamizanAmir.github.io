@@ -1,35 +1,31 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.4",
-  "latestBuild": 5,
+  "latestVersion": "1.0.5",
+  "latestBuild": 6,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.4/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.5/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
-      "Moments tabs are now Mine, Friends and Global, with a sliding switch.",
-      "Fourteen new achievements, including weekly, monthly and yearly leaderboard badges.",
-      "Fixed: a surrendered game still showed as live in the chat until you reopened it.",
-      "The bottom bar is properly translucent again over long content."
+      "Feed posts now show who wrote them — avatar, name and time.",
+      "Tidier moment cards: one metadata strip and a clear divider above the actions.",
+      "Global now includes people you follow who haven't followed you back."
     ],
     "ms": [
-      "Tab Detik kini Saya, Rakan dan Global, dengan suis gelongsor.",
-      "Empat belas pencapaian baharu, termasuk lencana papan pendahulu mingguan, bulanan dan tahunan.",
-      "Dibaiki: permainan yang diserah kalah masih ditunjukkan sebagai langsung dalam sembang.",
-      "Bar bawah kembali lut sinar dengan betul pada kandungan panjang."
+      "Siaran dalam suapan kini menunjukkan penulisnya — avatar, nama dan masa.",
+      "Kad detik lebih kemas: satu jalur metadata dan pembahagi jelas di atas tindakan.",
+      "Global kini termasuk orang yang anda ikuti tetapi belum mengikuti anda kembali."
     ],
     "zh": [
-      "动态标签页改为“我的、好友、全球”，带滑动切换。",
-      "新增十四个成就，含周榜、月榜和年榜徽章。",
-      "修复：认输后的对局在聊天中仍显示为进行中。",
-      "长内容下底部栏恢复正确的半透明效果。"
+      "动态卡片现在显示作者——头像、昵称和时间。",
+      "卡片更整洁：统一的信息栏，操作区上方有清晰分隔线。",
+      "“全球”现在包含你关注但尚未回关的人。"
     ],
     "ta": [
-      "தருணங்கள் தாவல்கள் இப்போது எனது, நண்பர்கள், உலகளாவிய — நழுவும் சுவிட்சுடன்.",
-      "பதினான்கு புதிய சாதனைகள், வாராந்திர, மாதாந்திர, ஆண்டு பேட்ஜ்கள் உட்பட.",
-      "சரிசெய்யப்பட்டது: சரணடைந்த ஆட்டம் அரட்டையில் நேரலையாகக் காட்டியது.",
-      "நீண்ட உள்ளடக்கத்தில் கீழ் பட்டி மீண்டும் சரியாக ஒளிஊடுருவும்."
+      "ஊட்ட இடுகைகள் இப்போது எழுதியவரைக் காட்டுகின்றன — அவதாரம், பெயர், நேரம்.",
+      "நேர்த்தியான தருண அட்டைகள்: ஒரே தகவல் பட்டி, செயல்களுக்கு மேலே தெளிவான பிரிப்பான்.",
+      "உலகளாவியதில் இப்போது நீங்கள் பின்தொடர்ந்து உங்களைப் பின்தொடராதவர்களும் அடங்குவர்."
     ]
   },
   "announcement": null
