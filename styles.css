@@ -814,6 +814,16 @@ ul {
     background: rgba(255, 255, 255, 0.06);
 }
 
+/* Projects with no emblem of their own get a glyph rather than a borrowed
+   logo. Inventing a mark for someone's side project is worse than not having
+   one — it reads as a brand that doesn't exist. */
+.project-mark--icon {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary);
+    font-size: 1.4rem;
+}
+
+
 .project-heading {
     display: flex;
     align-items: center;
@@ -835,6 +845,11 @@ ul {
 
 .project-info .tags {
     margin-top: auto;
+}
+
+/* The link sits below the tags, not pushed by them. */
+.project-info .project-link {
+    align-self: flex-start;
 }
 
 .project-info h5 {
@@ -930,6 +945,22 @@ ul {
 .project-link:focus-visible {
     transform: translateX(3px);
     box-shadow: 0 0 24px rgba(79, 217, 245, 0.35);
+}
+
+/* A quieter link for the repos, so the one download CTA stays the loudest
+   thing in the section. Declared after .project-link because they share a
+   specificity of 0-1-0 — source order is the only tiebreak. */
+.project-link--ghost {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid rgba(79, 217, 245, 0.35);
+    padding: 9px 16px;
+}
+
+.project-link--ghost:hover,
+.project-link--ghost:focus-visible {
+    background: rgba(79, 217, 245, 0.10);
+    box-shadow: none;
 }
 
 /* Phones: the cards go single column well before 300px would force it, the
