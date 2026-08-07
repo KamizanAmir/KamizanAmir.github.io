@@ -775,6 +775,19 @@ ul {
     border: 1px solid rgba(180, 123, 255, 0.45);
 }
 
+/* The full name under the acronym. Sized and spaced as a subtitle so the
+   acronym stays the heading — SPAKE is what people say, the expansion is what
+   it means. Italic rather than dimmer: another step down in colour would drop
+   it below the 4.5:1 floor. */
+.project-expansion {
+    font-size: 0.775rem;
+    line-height: 1.45;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.62);
+    margin: -2px 0 10px;
+}
+
 .project-desc {
     color: var(--text-muted);
     font-size: 0.875rem;
