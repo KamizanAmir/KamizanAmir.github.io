@@ -1,31 +1,35 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.2",
-  "latestBuild": 3,
+  "latestVersion": "1.0.3",
+  "latestBuild": 4,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.2/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.3/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
-      "Updates now download inside the app instead of the browser — no more downloads stuck at 100%.",
-      "Music no longer keeps playing after you clear the queue or finish a run.",
-      "Fixed the queue row overflowing on narrow screens."
+      "Moments now has Friends, Global and Mine tabs.",
+      "Three new games in chat: Sudoku with difficulty levels, a block puzzle, and a word race.",
+      "Fixed: the last square of a tic-tac-toe board could not be filled.",
+      "Fixed: Translate now translates into your app language, not always English."
     ],
     "ms": [
-      "Kemas kini kini dimuat turun dalam apl, bukan pelayar — tiada lagi muat turun tersekat pada 100%.",
-      "Muzik tidak lagi terus dimainkan selepas anda kosongkan baris gilir atau tamatkan larian.",
-      "Baris baris gilir tidak lagi terkeluar pada skrin sempit."
+      "Detik kini mempunyai tab Rakan, Global dan Saya.",
+      "Tiga permainan baharu dalam sembang: Sudoku dengan tahap kesukaran, teka-teki blok, dan perlumbaan kata.",
+      "Dibaiki: petak terakhir papan tic-tac-toe tidak boleh diisi.",
+      "Dibaiki: Terjemah kini menterjemah ke bahasa apl anda, bukan sentiasa Inggeris."
     ],
     "zh": [
-      "更新改为在应用内下载，不再经过浏览器——不会再卡在 100%。",
-      "清空队列或结束跑步后，音乐不会再继续播放。",
-      "修复了窄屏下队列栏溢出的问题。"
+      "动态新增“好友”“全球”“我的”三个标签页。",
+      "聊天内新增三款游戏：带难度分级的数独、方块拼图和单词竞速。",
+      "修复：井字棋最后一格无法填入。",
+      "修复：翻译现在会翻成你的应用语言，而不总是英文。"
     ],
     "ta": [
-      "புதுப்பிப்புகள் இப்போது உலாவிக்கு பதிலாக ஆப்பிற்குள் பதிவிறக்கம் — 100% இல் நிற்காது.",
-      "வரிசையை அழித்த பிறகோ ஓட்டத்தை முடித்த பிறகோ இசை தொடர்ந்து இயங்காது.",
-      "குறுகிய திரைகளில் வரிசை பட்டி வெளியே செல்வது சரிசெய்யப்பட்டது."
+      "தருணங்களில் இப்போது நண்பர்கள், உலகளாவிய, எனது தாவல்கள்.",
+      "அரட்டையில் மூன்று புதிய விளையாட்டுகள்: சிரம நிலைகளுடன் சுடோகு, பிளாக் புதிர், சொல் பந்தயம்.",
+      "சரிசெய்யப்பட்டது: டிக்-டாக்-டோ பலகையின் கடைசி கட்டத்தை நிரப்ப முடியவில்லை.",
+      "சரிசெய்யப்பட்டது: மொழிபெயர்ப்பு இப்போது உங்கள் ஆப் மொழிக்கு மொழிபெயர்க்கிறது."
     ]
   },
   "announcement": null
