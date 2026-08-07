@@ -1,31 +1,43 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.5",
-  "latestBuild": 6,
+  "latestVersion": "1.0.6",
+  "latestBuild": 7,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.5/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.6/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
-      "Feed posts now show who wrote them — avatar, name and time.",
-      "Tidier moment cards: one metadata strip and a clear divider above the actions.",
-      "Global now includes people you follow who haven't followed you back."
+      "A guided tour on first launch — it asks your language first, then walks you through tasks, goals, the leaderboard, runs and music. Replay it any time from Profile.",
+      "Make your profile yours: a cover image, a bio, a showcase artwork, avatar frames earned from badges, and a colour for the page.",
+      "Share a run as a still route drawing or an animated one that draws itself out.",
+      "Daily sign-in: a day of VIP for each day in a row, three months on day 14.",
+      "Fixed: creating a group failed every time.",
+      "Sudoku is readable again — white for the puzzle, mint for your answers, plus a count of how many of each digit are left."
     ],
     "ms": [
-      "Siaran dalam suapan kini menunjukkan penulisnya — avatar, nama dan masa.",
-      "Kad detik lebih kemas: satu jalur metadata dan pembahagi jelas di atas tindakan.",
-      "Global kini termasuk orang yang anda ikuti tetapi belum mengikuti anda kembali."
+      "Panduan berpandu pada permulaan pertama — ia bertanya bahasa anda dahulu, kemudian menunjukkan tugasan, matlamat, papan pendahulu, larian dan muzik. Main semula bila-bila masa dari Profil.",
+      "Jadikan profil anda milik anda: imej kulit, bio, karya seni pameran, bingkai avatar daripada lencana, dan warna untuk halaman.",
+      "Kongsi larian sebagai lukisan laluan statik atau animasi yang melukis sendiri.",
+      "Daftar masuk harian: sehari VIP setiap hari berturut-turut, tiga bulan pada hari ke-14.",
+      "Dibaiki: mencipta kumpulan gagal setiap kali.",
+      "Sudoku lebih jelas — putih untuk teka-teki, hijau pudina untuk jawapan anda, serta kiraan berapa banyak setiap digit yang tinggal."
     ],
     "zh": [
-      "动态卡片现在显示作者——头像、昵称和时间。",
-      "卡片更整洁：统一的信息栏，操作区上方有清晰分隔线。",
-      "“全球”现在包含你关注但尚未回关的人。"
+      "首次启动会有新手导览——先问你的语言，再带你看任务、目标、排行榜、跑步和音乐。之后可在「我的」里重看。",
+      "把资料页变成你的：封面图、简介、作品展示、由徽章解锁的头像边框，以及页面配色。",
+      "跑步可分享为静态路线图，或会自动绘制的动画。",
+      "每日签到：连续每天得一天 VIP，第 14 天得三个月。",
+      "已修复：创建群组每次都失败。",
+      "数独更清晰了——题目用白色，你填的用薄荷绿，并显示每个数字还剩几个。"
     ],
     "ta": [
-      "ஊட்ட இடுகைகள் இப்போது எழுதியவரைக் காட்டுகின்றன — அவதாரம், பெயர், நேரம்.",
-      "நேர்த்தியான தருண அட்டைகள்: ஒரே தகவல் பட்டி, செயல்களுக்கு மேலே தெளிவான பிரிப்பான்.",
-      "உலகளாவியதில் இப்போது நீங்கள் பின்தொடர்ந்து உங்களைப் பின்தொடராதவர்களும் அடங்குவர்."
+      "முதல் முறை திறக்கும்போது வழிகாட்டி அறிமுகம் — முதலில் உங்கள் மொழியைக் கேட்டு, பிறகு பணிகள், இலக்குகள், தரவரிசை, ஓட்டம், இசை ஆகியவற்றைக் காட்டும். சுயவிவரப் பக்கத்தில் மீண்டும் பார்க்கலாம்.",
+      "சுயவிவரப் பக்கத்தை உங்களுடையதாக்குங்கள்: அட்டைப் படம், சிறு அறிமுகம், படைப்புக் காட்சி, பேட்ஜ்களால் திறக்கும் அவதார் சட்டங்கள், பக்க நிறம்.",
+      "ஓட்டத்தை நிலையான பாதை வரைபடமாக அல்லது தானே வரையும் அனிமேஷனாகப் பகிரவும்.",
+      "தினசரி உள்நுழைவு: தொடர்ச்சியான ஒவ்வொரு நாளுக்கும் ஒரு நாள் VIP, 14வது நாளில் மூன்று மாதங்கள்.",
+      "சரிசெய்யப்பட்டது: குழு உருவாக்குவது ஒவ்வொரு முறையும் தோல்வியடைந்தது.",
+      "சூடோகு இப்போது தெளிவாக — புதிருக்கு வெள்ளை, உங்கள் விடைகளுக்கு புதினா பச்சை, மேலும் ஒவ்வொரு இலக்கமும் எத்தனை மீதம் என்ற எண்ணிக்கை."
     ]
   },
   "announcement": null
