@@ -1,35 +1,35 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.3",
-  "latestBuild": 4,
+  "latestVersion": "1.0.4",
+  "latestBuild": 5,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.3/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.4/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
-      "Moments now has Friends, Global and Mine tabs.",
-      "Three new games in chat: Sudoku with difficulty levels, a block puzzle, and a word race.",
-      "Fixed: the last square of a tic-tac-toe board could not be filled.",
-      "Fixed: Translate now translates into your app language, not always English."
+      "Moments tabs are now Mine, Friends and Global, with a sliding switch.",
+      "Fourteen new achievements, including weekly, monthly and yearly leaderboard badges.",
+      "Fixed: a surrendered game still showed as live in the chat until you reopened it.",
+      "The bottom bar is properly translucent again over long content."
     ],
     "ms": [
-      "Detik kini mempunyai tab Rakan, Global dan Saya.",
-      "Tiga permainan baharu dalam sembang: Sudoku dengan tahap kesukaran, teka-teki blok, dan perlumbaan kata.",
-      "Dibaiki: petak terakhir papan tic-tac-toe tidak boleh diisi.",
-      "Dibaiki: Terjemah kini menterjemah ke bahasa apl anda, bukan sentiasa Inggeris."
+      "Tab Detik kini Saya, Rakan dan Global, dengan suis gelongsor.",
+      "Empat belas pencapaian baharu, termasuk lencana papan pendahulu mingguan, bulanan dan tahunan.",
+      "Dibaiki: permainan yang diserah kalah masih ditunjukkan sebagai langsung dalam sembang.",
+      "Bar bawah kembali lut sinar dengan betul pada kandungan panjang."
     ],
     "zh": [
-      "动态新增“好友”“全球”“我的”三个标签页。",
-      "聊天内新增三款游戏：带难度分级的数独、方块拼图和单词竞速。",
-      "修复：井字棋最后一格无法填入。",
-      "修复：翻译现在会翻成你的应用语言，而不总是英文。"
+      "动态标签页改为“我的、好友、全球”，带滑动切换。",
+      "新增十四个成就，含周榜、月榜和年榜徽章。",
+      "修复：认输后的对局在聊天中仍显示为进行中。",
+      "长内容下底部栏恢复正确的半透明效果。"
     ],
     "ta": [
-      "தருணங்களில் இப்போது நண்பர்கள், உலகளாவிய, எனது தாவல்கள்.",
-      "அரட்டையில் மூன்று புதிய விளையாட்டுகள்: சிரம நிலைகளுடன் சுடோகு, பிளாக் புதிர், சொல் பந்தயம்.",
-      "சரிசெய்யப்பட்டது: டிக்-டாக்-டோ பலகையின் கடைசி கட்டத்தை நிரப்ப முடியவில்லை.",
-      "சரிசெய்யப்பட்டது: மொழிபெயர்ப்பு இப்போது உங்கள் ஆப் மொழிக்கு மொழிபெயர்க்கிறது."
+      "தருணங்கள் தாவல்கள் இப்போது எனது, நண்பர்கள், உலகளாவிய — நழுவும் சுவிட்சுடன்.",
+      "பதினான்கு புதிய சாதனைகள், வாராந்திர, மாதாந்திர, ஆண்டு பேட்ஜ்கள் உட்பட.",
+      "சரிசெய்யப்பட்டது: சரணடைந்த ஆட்டம் அரட்டையில் நேரலையாகக் காட்டியது.",
+      "நீண்ட உள்ளடக்கத்தில் கீழ் பட்டி மீண்டும் சரியாக ஒளிஊடுருவும்."
     ]
   },
   "announcement": null
