@@ -1,44 +1,258 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.6",
-  "latestBuild": 7,
+  "latestVersion": "1.0.7",
+  "latestBuild": 8,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.6/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.7/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
-      "A guided tour on first launch — it asks your language first, then walks you through tasks, goals, the leaderboard, runs and music. Replay it any time from Profile.",
-      "Make your profile yours: a cover image, a bio, a showcase artwork, avatar frames earned from badges, and a colour for the page.",
-      "Share a run as a still route drawing or an animated one that draws itself out.",
-      "Daily sign-in: a day of VIP for each day in a row, three months on day 14.",
-      "Fixed: creating a group failed every time.",
-      "Sudoku is readable again — white for the puzzle, mint for your answers, plus a count of how many of each digit are left."
+      "Group settings: change the group's name, picture and description in one place. Owner only.",
+      "This page now lists every release, not just the newest one.",
+      "Profile customisation moved onto the Profile tab, where it was supposed to be: cover image or GIF, biography, showcase artwork, avatar frames and page colour.",
+      "The eye on your profile shows who has visited it.",
+      "Chat is split into People and Groups tabs.",
+      "Home shows your history charts directly instead of a button that opens them."
     ],
     "ms": [
-      "Panduan berpandu pada permulaan pertama — ia bertanya bahasa anda dahulu, kemudian menunjukkan tugasan, matlamat, papan pendahulu, larian dan muzik. Main semula bila-bila masa dari Profil.",
-      "Jadikan profil anda milik anda: imej kulit, bio, karya seni pameran, bingkai avatar daripada lencana, dan warna untuk halaman.",
-      "Kongsi larian sebagai lukisan laluan statik atau animasi yang melukis sendiri.",
-      "Daftar masuk harian: sehari VIP setiap hari berturut-turut, tiga bulan pada hari ke-14.",
-      "Dibaiki: mencipta kumpulan gagal setiap kali.",
-      "Sudoku lebih jelas — putih untuk teka-teki, hijau pudina untuk jawapan anda, serta kiraan berapa banyak setiap digit yang tinggal."
+      "Tetapan kumpulan: tukar nama, gambar dan penerangan kumpulan di satu tempat. Pemilik sahaja.",
+      "Halaman ini kini menyenaraikan setiap keluaran, bukan yang terbaharu sahaja.",
+      "Penyesuaian profil dipindahkan ke tab Profil: imej kulit atau GIF, biografi, karya seni pameran, bingkai avatar dan warna halaman.",
+      "Ikon mata pada profil anda menunjukkan siapa yang telah melawatnya.",
+      "Sembang dibahagikan kepada tab Orang dan Kumpulan.",
+      "Laman utama memaparkan carta sejarah anda terus, bukan butang yang membukanya."
     ],
     "zh": [
-      "首次启动会有新手导览——先问你的语言，再带你看任务、目标、排行榜、跑步和音乐。之后可在「我的」里重看。",
-      "把资料页变成你的：封面图、简介、作品展示、由徽章解锁的头像边框，以及页面配色。",
-      "跑步可分享为静态路线图，或会自动绘制的动画。",
-      "每日签到：连续每天得一天 VIP，第 14 天得三个月。",
-      "已修复：创建群组每次都失败。",
-      "数独更清晰了——题目用白色，你填的用薄荷绿，并显示每个数字还剩几个。"
+      "群组设置：在一个地方修改群名称、群图片和群介绍。仅群主可用。",
+      "本页现在列出每一个版本，而不只是最新版。",
+      "资料页自定义已移到「我的」标签：封面图或 GIF、简介、作品展示、头像边框和页面配色。",
+      "资料页上的眼睛图标显示谁访问过你。",
+      "聊天分为「联系人」和「群组」两个标签。",
+      "主页直接显示历史图表，不再是一个需要点开的按钮。"
     ],
     "ta": [
-      "முதல் முறை திறக்கும்போது வழிகாட்டி அறிமுகம் — முதலில் உங்கள் மொழியைக் கேட்டு, பிறகு பணிகள், இலக்குகள், தரவரிசை, ஓட்டம், இசை ஆகியவற்றைக் காட்டும். சுயவிவரப் பக்கத்தில் மீண்டும் பார்க்கலாம்.",
-      "சுயவிவரப் பக்கத்தை உங்களுடையதாக்குங்கள்: அட்டைப் படம், சிறு அறிமுகம், படைப்புக் காட்சி, பேட்ஜ்களால் திறக்கும் அவதார் சட்டங்கள், பக்க நிறம்.",
-      "ஓட்டத்தை நிலையான பாதை வரைபடமாக அல்லது தானே வரையும் அனிமேஷனாகப் பகிரவும்.",
-      "தினசரி உள்நுழைவு: தொடர்ச்சியான ஒவ்வொரு நாளுக்கும் ஒரு நாள் VIP, 14வது நாளில் மூன்று மாதங்கள்.",
-      "சரிசெய்யப்பட்டது: குழு உருவாக்குவது ஒவ்வொரு முறையும் தோல்வியடைந்தது.",
-      "சூடோகு இப்போது தெளிவாக — புதிருக்கு வெள்ளை, உங்கள் விடைகளுக்கு புதினா பச்சை, மேலும் ஒவ்வொரு இலக்கமும் எத்தனை மீதம் என்ற எண்ணிக்கை."
+      "குழு அமைப்புகள்: குழுவின் பெயர், படம், விவரம் ஒரே இடத்தில் மாற்றலாம். உரிமையாளர் மட்டும்.",
+      "இந்தப் பக்கம் இப்போது ஒவ்வொரு வெளியீட்டையும் பட்டியலிடும், புதியது மட்டுமல்ல.",
+      "சுயவிவரத் தனிப்பயனாக்கம் சுயவிவரத் தாவலுக்கு நகர்த்தப்பட்டது: அட்டைப் படம் அல்லது GIF, சுயவிவரம், படைப்புக் காட்சி, அவதார் சட்டங்கள், பக்க நிறம்.",
+      "உங்கள் சுயவிவரத்தில் உள்ள கண் ஐகான் யார் பார்த்தார்கள் என்பதைக் காட்டும்.",
+      "அரட்டை 'நபர்கள்', 'குழுக்கள்' எனப் பிரிக்கப்பட்டது.",
+      "முகப்பு உங்கள் வரலாற்று விளக்கப்படங்களை நேரடியாகக் காட்டும்."
     ]
   },
-  "announcement": null
+  "announcement": null,
+  "history": [
+    {
+      "version": "1.0.7",
+      "released": "2026-08-07",
+      "notes": {
+        "en": [
+          "Group settings: change the group's name, picture and description in one place. Owner only.",
+          "This page now lists every release, not just the newest one.",
+          "Profile customisation moved onto the Profile tab, where it was supposed to be: cover image or GIF, biography, showcase artwork, avatar frames and page colour.",
+          "The eye on your profile shows who has visited it.",
+          "Chat is split into People and Groups tabs.",
+          "Home shows your history charts directly instead of a button that opens them."
+        ],
+        "ms": [
+          "Tetapan kumpulan: tukar nama, gambar dan penerangan kumpulan di satu tempat. Pemilik sahaja.",
+          "Halaman ini kini menyenaraikan setiap keluaran, bukan yang terbaharu sahaja.",
+          "Penyesuaian profil dipindahkan ke tab Profil: imej kulit atau GIF, biografi, karya seni pameran, bingkai avatar dan warna halaman.",
+          "Ikon mata pada profil anda menunjukkan siapa yang telah melawatnya.",
+          "Sembang dibahagikan kepada tab Orang dan Kumpulan.",
+          "Laman utama memaparkan carta sejarah anda terus, bukan butang yang membukanya."
+        ],
+        "zh": [
+          "群组设置：在一个地方修改群名称、群图片和群介绍。仅群主可用。",
+          "本页现在列出每一个版本，而不只是最新版。",
+          "资料页自定义已移到「我的」标签：封面图或 GIF、简介、作品展示、头像边框和页面配色。",
+          "资料页上的眼睛图标显示谁访问过你。",
+          "聊天分为「联系人」和「群组」两个标签。",
+          "主页直接显示历史图表，不再是一个需要点开的按钮。"
+        ],
+        "ta": [
+          "குழு அமைப்புகள்: குழுவின் பெயர், படம், விவரம் ஒரே இடத்தில் மாற்றலாம். உரிமையாளர் மட்டும்.",
+          "இந்தப் பக்கம் இப்போது ஒவ்வொரு வெளியீட்டையும் பட்டியலிடும், புதியது மட்டுமல்ல.",
+          "சுயவிவரத் தனிப்பயனாக்கம் சுயவிவரத் தாவலுக்கு நகர்த்தப்பட்டது: அட்டைப் படம் அல்லது GIF, சுயவிவரம், படைப்புக் காட்சி, அவதார் சட்டங்கள், பக்க நிறம்.",
+          "உங்கள் சுயவிவரத்தில் உள்ள கண் ஐகான் யார் பார்த்தார்கள் என்பதைக் காட்டும்.",
+          "அரட்டை 'நபர்கள்', 'குழுக்கள்' எனப் பிரிக்கப்பட்டது.",
+          "முகப்பு உங்கள் வரலாற்று விளக்கப்படங்களை நேரடியாகக் காட்டும்."
+        ]
+      }
+    },
+    {
+      "version": "1.0.6",
+      "released": "2026-08-07",
+      "notes": {
+        "en": [
+          "A guided tour on first launch — it asks your language first, then walks you through the app. Replay it any time from Profile.",
+          "Share a run as a still route drawing or an animated one that draws itself out.",
+          "Fixed: creating a group failed every time.",
+          "Sudoku is readable again — white for the puzzle, mint for your answers, plus a count of how many of each digit are left."
+        ],
+        "ms": [
+          "Panduan berpandu pada permulaan pertama — ia bertanya bahasa anda dahulu. Main semula bila-bila masa dari Profil.",
+          "Kongsi larian sebagai lukisan laluan statik atau animasi yang melukis sendiri.",
+          "Dibaiki: mencipta kumpulan gagal setiap kali.",
+          "Sudoku lebih jelas — putih untuk teka-teki, hijau pudina untuk jawapan anda, serta kiraan digit yang tinggal."
+        ],
+        "zh": [
+          "首次启动会有新手导览——先问你的语言，再带你熟悉应用。之后可在「我的」里重看。",
+          "跑步可分享为静态路线图，或会自动绘制的动画。",
+          "已修复：创建群组每次都失败。",
+          "数独更清晰了——题目用白色，你填的用薄荷绿，并显示每个数字还剩几个。"
+        ],
+        "ta": [
+          "முதல் முறை திறக்கும்போது வழிகாட்டி அறிமுகம் — முதலில் மொழியைக் கேட்கும். சுயவிவரத்தில் மீண்டும் பார்க்கலாம்.",
+          "ஓட்டத்தை நிலையான பாதை வரைபடமாக அல்லது அனிமேஷனாகப் பகிரவும்.",
+          "சரிசெய்யப்பட்டது: குழு உருவாக்குவது ஒவ்வொரு முறையும் தோல்வியடைந்தது.",
+          "சூடோகு தெளிவாக — புதிருக்கு வெள்ளை, உங்கள் விடைகளுக்கு புதினா பச்சை, மீதமுள்ள இலக்க எண்ணிக்கையுடன்."
+        ]
+      }
+    },
+    {
+      "version": "1.0.5",
+      "released": "2026-08-05",
+      "notes": {
+        "en": [
+          "Multiplayer games in chat: tic-tac-toe, sudoku, block buster, word puzzle and snakes — with a live scoreboard.",
+          "Moments split into Mine, Friends and Global.",
+          "More achievements, including ones only the server can award."
+        ],
+        "ms": [
+          "Permainan berbilang pemain dalam sembang: tic-tac-toe, sudoku, block buster, teka silang kata dan ular — dengan papan markah langsung.",
+          "Detik dibahagikan kepada Saya, Rakan dan Global.",
+          "Lebih banyak pencapaian, termasuk yang hanya pelayan boleh berikan."
+        ],
+        "zh": [
+          "聊天中的多人游戏：井字棋、数独、消块、字谜和贪吃蛇 — 带实时计分板。",
+          "动态分为「我的」「好友」和「全球」。",
+          "更多成就，包括只有服务器才能授予的那些。"
+        ],
+        "ta": [
+          "அரட்டையில் பல்லாள் விளையாட்டுகள்: டிக்-டாக்-டோ, சூடோகு, பிளாக் பஸ்டர், சொல் புதிர், பாம்பு — நேரடி மதிப்பெண் பலகையுடன்.",
+          "தருணங்கள் 'என்னுடையது', 'நண்பர்கள்', 'உலகளாவிய' எனப் பிரிக்கப்பட்டது.",
+          "மேலும் சாதனைகள், சேவையகம் மட்டுமே வழங்கக்கூடியவை உட்பட."
+        ]
+      }
+    },
+    {
+      "version": "1.0.4",
+      "released": "2026-08-03",
+      "notes": {
+        "en": [
+          "Music during a run: play what's on your phone or search online, with a seek bar.",
+          "Save what you like as a playlist for next time."
+        ],
+        "ms": [
+          "Muzik semasa larian: mainkan lagu dalam telefon anda atau cari dalam talian, dengan bar carian.",
+          "Simpan lagu kegemaran sebagai senarai main untuk lain kali."
+        ],
+        "zh": [
+          "跑步时听音乐：播放手机里的歌或在线搜索，带进度条。",
+          "把喜欢的歌保存成播放列表，下次直接用。"
+        ],
+        "ta": [
+          "ஓட்டத்தின்போது இசை: தொலைபேசியில் உள்ளதை இயக்கவும் அல்லது இணையத்தில் தேடவும், சீக் பாருடன்.",
+          "பிடித்தவற்றை அடுத்த முறைக்காக பிளேலிஸ்ட்டாக சேமிக்கவும்."
+        ]
+      }
+    },
+    {
+      "version": "1.0.3",
+      "released": "2026-08-01",
+      "notes": {
+        "en": [
+          "Tasks gained notes, reminders, editing and drag-to-reorder.",
+          "Translate any post or message into your language.",
+          "Activity notifications split so comments no longer drown in likes."
+        ],
+        "ms": [
+          "Tugasan kini ada nota, peringatan, penyuntingan dan seret untuk susun semula.",
+          "Terjemah mana-mana siaran atau mesej ke bahasa anda.",
+          "Pemberitahuan aktiviti dipisahkan supaya komen tidak tenggelam dalam suka."
+        ],
+        "zh": [
+          "任务新增备注、提醒、编辑和拖动排序。",
+          "可将任意动态或消息翻译成你的语言。",
+          "活动通知已分开，评论不再被点赞淹没。"
+        ],
+        "ta": [
+          "பணிகளில் குறிப்புகள், நினைவூட்டல்கள், திருத்தம், இழுத்து வரிசைப்படுத்தல் சேர்க்கப்பட்டது.",
+          "எந்தப் பதிவையும் செய்தியையும் உங்கள் மொழியில் மொழிபெயர்க்கலாம்.",
+          "செயல்பாட்டு அறிவிப்புகள் பிரிக்கப்பட்டன."
+        ]
+      }
+    },
+    {
+      "version": "1.0.2",
+      "released": "2026-07-30",
+      "notes": {
+        "en": [
+          "Reply to a chat message straight from the notification.",
+          "Hold a message to reply or react. Reactions work on moments too.",
+          "Fixed notifications stacking after being cleared, and arriving for an account you'd signed out of."
+        ],
+        "ms": [
+          "Balas mesej sembang terus dari pemberitahuan.",
+          "Tekan lama mesej untuk membalas atau bereaksi. Reaksi berfungsi pada detik juga.",
+          "Dibaiki: pemberitahuan bertimbun selepas dikosongkan, dan tiba untuk akaun yang telah dilog keluar."
+        ],
+        "zh": [
+          "可直接在通知里回复聊天消息。",
+          "长按消息可回复或添加表情。动态也支持表情回应。",
+          "已修复：清除后通知仍堆叠，以及退出登录后仍收到该账号的通知。"
+        ],
+        "ta": [
+          "அறிவிப்பிலிருந்தே அரட்டைச் செய்திக்குப் பதிலளிக்கலாம்.",
+          "செய்தியை நீண்ட நேரம் அழுத்தி பதிலளிக்கவோ ரியாக்ட் செய்யவோ முடியும்.",
+          "சரிசெய்யப்பட்டது: அழித்த பிறகும் அறிவிப்புகள் அடுக்கப்படுவது, வெளியேறிய கணக்கிற்கு அறிவிப்பு வருவது."
+        ]
+      }
+    },
+    {
+      "version": "1.0.1",
+      "released": "2026-07-28",
+      "notes": {
+        "en": [
+          "In-app updates: KamiTrack now tells you when a new version is out and installs it for you.",
+          "Fixed the leaderboard ranking people alphabetically instead of by activity."
+        ],
+        "ms": [
+          "Kemas kini dalam aplikasi: KamiTrack kini memberitahu anda apabila versi baharu keluar dan memasangnya untuk anda.",
+          "Dibaiki papan pendahulu yang menyusun mengikut abjad, bukan mengikut aktiviti."
+        ],
+        "zh": [
+          "应用内更新：有新版本时 KamiTrack 会提示并帮你安装。",
+          "已修复排行榜按字母排序而非按活动量排序的问题。"
+        ],
+        "ta": [
+          "ஆப்-உள் புதுப்பிப்புகள்: புதிய பதிப்பு வரும்போது KamiTrack தெரிவித்து நிறுவும்.",
+          "தரவரிசை அகர வரிசையில் இருந்ததை சரிசெய்யப்பட்டது."
+        ]
+      }
+    },
+    {
+      "version": "1.0.0",
+      "released": "2026-07-25",
+      "notes": {
+        "en": [
+          "First release: step tracking, tasks that finish themselves when you hit a target, GPS runs with a live map, and a friends leaderboard.",
+          "Four languages: English, Bahasa Melayu, Chinese and Tamil."
+        ],
+        "ms": [
+          "Keluaran pertama: penjejakan langkah, tugasan yang selesai sendiri apabila anda capai sasaran, larian GPS dengan peta langsung, dan papan pendahulu rakan.",
+          "Empat bahasa: Inggeris, Bahasa Melayu, Cina dan Tamil."
+        ],
+        "zh": [
+          "首个版本：步数追踪、达标即自动完成的任务、带实时地图的 GPS 跑步，以及好友排行榜。",
+          "四种语言：英文、马来文、中文和泰米尔文。"
+        ],
+        "ta": [
+          "முதல் வெளியீடு: அடி எண்ணிக்கை, இலக்கை அடைந்ததும் தானே முடியும் பணிகள், நேரடி வரைபடத்துடன் GPS ஓட்டம், நண்பர் தரவரிசை.",
+          "நான்கு மொழிகள்: ஆங்கிலம், மலாய், சீனம், தமிழ்."
+        ]
+      }
+    }
+  ]
 }
