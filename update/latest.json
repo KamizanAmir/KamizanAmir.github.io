@@ -1,35 +1,31 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.1",
-  "latestBuild": 2,
+  "latestVersion": "1.0.2",
+  "latestBuild": 3,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.1/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.2/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
   "notes": {
     "en": [
+      "Updates now download inside the app instead of the browser — no more downloads stuck at 100%.",
       "Music no longer keeps playing after you clear the queue or finish a run.",
-      "Fixed the queue row overflowing on narrow screens.",
-      "Games in chat: Snakes & Ladders for up to six, tic-tac-toe head to head, spectating for everyone else.",
-      "Saved music playlists, and a seek bar that actually moves."
+      "Fixed the queue row overflowing on narrow screens."
     ],
     "ms": [
+      "Kemas kini kini dimuat turun dalam apl, bukan pelayar — tiada lagi muat turun tersekat pada 100%.",
       "Muzik tidak lagi terus dimainkan selepas anda kosongkan baris gilir atau tamatkan larian.",
-      "Baris baris gilir tidak lagi terkeluar pada skrin sempit.",
-      "Permainan dalam sembang: Ular & Tangga untuk enam orang, tic-tac-toe satu lawan satu, orang lain boleh menonton.",
-      "Senarai main tersimpan, dan bar imbasan yang benar-benar bergerak."
+      "Baris baris gilir tidak lagi terkeluar pada skrin sempit."
     ],
     "zh": [
+      "更新改为在应用内下载，不再经过浏览器——不会再卡在 100%。",
       "清空队列或结束跑步后，音乐不会再继续播放。",
-      "修复了窄屏下队列栏溢出的问题。",
-      "聊天内游戏：最多六人的蛇梯棋、一对一井字棋，其他人可观战。",
-      "已保存的播放列表，以及真正能拖动的进度条。"
+      "修复了窄屏下队列栏溢出的问题。"
     ],
     "ta": [
+      "புதுப்பிப்புகள் இப்போது உலாவிக்கு பதிலாக ஆப்பிற்குள் பதிவிறக்கம் — 100% இல் நிற்காது.",
       "வரிசையை அழித்த பிறகோ ஓட்டத்தை முடித்த பிறகோ இசை தொடர்ந்து இயங்காது.",
-      "குறுகிய திரைகளில் வரிசை பட்டி வெளியே செல்வது சரிசெய்யப்பட்டது.",
-      "அரட்டையில் விளையாட்டுகள்: ஆறு பேர் வரை பாம்பும் ஏணியும், ஒருவருக்கொருவர் டிக்-டாக்-டோ, மற்றவர்கள் பார்க்கலாம்.",
-      "சேமித்த பிளேலிஸ்ட்கள், மற்றும் உண்மையில் நகரும் சீக் பார்."
+      "குறுகிய திரைகளில் வரிசை பட்டி வெளியே செல்வது சரிசெய்யப்பட்டது."
     ]
   },
   "announcement": null
