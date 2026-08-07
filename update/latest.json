@@ -1,37 +1,36 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-
-  "latestVersion": "1.0.0",
-  "latestBuild": 1,
-
+  "latestVersion": "1.0.1",
+  "latestBuild": 2,
   "minimumVersion": "1.0.0",
-
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.0/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.1/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-07",
-
   "notes": {
     "en": [
-      "Games in chat: Snakes & Ladders for up to six, tic-tac-toe head to head, and anyone in the room can watch live.",
-      "Music search that actually plays, with a seek bar and saved playlists.",
-      "Reply to a specific message, and react to messages and moments."
+      "Music no longer keeps playing after you clear the queue or finish a run.",
+      "Fixed the queue row overflowing on narrow screens.",
+      "Games in chat: Snakes & Ladders for up to six, tic-tac-toe head to head, spectating for everyone else.",
+      "Saved music playlists, and a seek bar that actually moves."
     ],
     "ms": [
-      "Permainan dalam sembang: Ular & Tangga untuk enam orang, tic-tac-toe satu lawan satu, dan sesiapa boleh menonton.",
-      "Carian muzik yang benar-benar berfungsi, dengan bar imbasan dan senarai main tersimpan.",
-      "Balas mesej tertentu, dan beri reaksi pada mesej dan momen."
+      "Muzik tidak lagi terus dimainkan selepas anda kosongkan baris gilir atau tamatkan larian.",
+      "Baris baris gilir tidak lagi terkeluar pada skrin sempit.",
+      "Permainan dalam sembang: Ular & Tangga untuk enam orang, tic-tac-toe satu lawan satu, orang lain boleh menonton.",
+      "Senarai main tersimpan, dan bar imbasan yang benar-benar bergerak."
     ],
     "zh": [
-      "聊天内游戏：最多六人的蛇梯棋、一对一井字棋，房间内任何人都能观战。",
-      "可正常播放的音乐搜索，带进度条和已保存的播放列表。",
-      "回复指定消息，并对消息和动态添加反应。"
+      "清空队列或结束跑步后，音乐不会再继续播放。",
+      "修复了窄屏下队列栏溢出的问题。",
+      "聊天内游戏：最多六人的蛇梯棋、一对一井字棋，其他人可观战。",
+      "已保存的播放列表，以及真正能拖动的进度条。"
     ],
     "ta": [
-      "அரட்டையில் விளையாட்டுகள்: ஆறு பேர் வரை பாம்பும் ஏணியும், ஒருவருக்கொருவர் டிக்-டாக்-டோ, அறையில் உள்ள யாரும் பார்க்கலாம்.",
-      "உண்மையில் இயங்கும் இசைத் தேடல், சீக் பார் மற்றும் சேமித்த பிளேலிஸ்ட்களுடன்.",
-      "குறிப்பிட்ட செய்திக்குப் பதிலளிக்கவும், செய்திகள் மற்றும் தருணங்களுக்கு எதிர்வினையாற்றவும்."
+      "வரிசையை அழித்த பிறகோ ஓட்டத்தை முடித்த பிறகோ இசை தொடர்ந்து இயங்காது.",
+      "குறுகிய திரைகளில் வரிசை பட்டி வெளியே செல்வது சரிசெய்யப்பட்டது.",
+      "அரட்டையில் விளையாட்டுகள்: ஆறு பேர் வரை பாம்பும் ஏணியும், ஒருவருக்கொருவர் டிக்-டாக்-டோ, மற்றவர்கள் பார்க்கலாம்.",
+      "சேமித்த பிளேலிஸ்ட்கள், மற்றும் உண்மையில் நகரும் சீக் பார்."
     ]
   },
-
   "announcement": null
 }
