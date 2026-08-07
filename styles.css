@@ -1,35 +1,80 @@
 /* ================= VARIABLES ================= */
 :root {
-    --bg-color: #0B0E14;
-    --primary: #00F0FF;
-    /* Cyber Neon Blue */
-    --secondary: #7000FF;
-    /* Deep Purple */
-    --text-main: #FFFFFF;
-    --text-muted: #A0A0A0;
-    --font-head: 'Orbitron', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    /* ---- Surfaces ----------------------------------------------------------
+       Never pure #000: it smears on OLED during scroll and kills the depth the
+       glass panes depend on. Three steps, so a card on a card still reads. */
+    --bg-color: #0A0D14;
+    --surface-1: #10141F;
+    --surface-2: #161B29;
+
+    /* ---- Accent ------------------------------------------------------------
+       Pulled back from #00F0FF. Full-saturation cyan everywhere is what made
+       this read as a gaming site rather than an engineer's; it's now an accent
+       used sparingly, with a deeper tone for large fills where the bright one
+       vibrates. */
+    --primary: #4FD9F5;
+    --primary-deep: #1BA9CC;
+    --primary-ink: #06212B;
+    --secondary: #8B7BFF;
+
+    /* ---- Ink ---------------------------------------------------------------
+       --text-muted was #A0A0A0 — 4.8:1 here, but it fell under 4.5:1 on the
+       lighter glass panes. Lifted so every pairing clears AA. */
+    --text-main: #F2F6FB;
+    --text-soft: #C3CEDD;
+    --text-muted: #94A3B8;
+
+    /* ---- Type --------------------------------------------------------------
+       Orbitron out. It's a sci-fi display face and it was doing the heavy
+       lifting on every heading, which is most of why the page read as a game
+       UI. Space Grotesk keeps the technical character without the costume. */
+    --font-head: 'Space Grotesk', 'Inter', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
     --gradient: linear-gradient(90deg, var(--primary), var(--secondary));
 
+    /* ---- Spacing ----------------------------------------------------------
+       One scale, so vertical rhythm is a choice rather than an accident. */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    /* ---- Motion -----------------------------------------------------------
+       One easing and two durations. Everything moved on its own timing before,
+       which is what makes an interface feel assembled rather than designed. */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --fast: 180ms;
+    --slow: 320ms;
+
     /* ---- Glassmorphism tokens ---- */
-    --glass-bg: rgba(255, 255, 255, 0.045);
-    --glass-bg-strong: rgba(255, 255, 255, 0.075);
-    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-bg-strong: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.10);
     --glass-blur: 18px;
-    --glass-saturate: 160%;
+    --glass-saturate: 150%;
     --glass-shadow:
         0 8px 32px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     --glass-shadow-hover:
-        0 16px 48px rgba(0, 0, 0, 0.55),
-        0 0 40px rgba(0, 240, 255, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        0 18px 46px rgba(0, 0, 0, 0.5),
+        0 0 32px rgba(79, 217, 245, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.11);
     /* Light refracting off the top-left edge of each pane */
     --glass-rim: linear-gradient(140deg,
-            rgba(255, 255, 255, 0.4) 0%,
-            rgba(255, 255, 255, 0.05) 30%,
+            rgba(255, 255, 255, 0.32) 0%,
+            rgba(255, 255, 255, 0.04) 30%,
             rgba(255, 255, 255, 0) 55%,
-            rgba(0, 240, 255, 0.18) 100%);
+            rgba(79, 217, 245, 0.14) 100%);
     --nav-height: 72px;
 }
 
@@ -51,11 +96,31 @@ body {
     background-color: var(--bg-color);
     color: var(--text-main);
     font-family: var(--font-body);
-    line-height: 1.6;
+    /* 16px floor: anything smaller and iOS zooms on input focus, which throws
+       the whole layout sideways mid-form. */
+    font-size: 16px;
+    line-height: 1.65;
     overflow-x: hidden;
     overflow-wrap: break-word;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
+
+/* Body copy caps its measure. Full-width paragraphs on a 27" monitor are the
+   single most common reason a portfolio reads as unfinished. */
+p {
+    max-width: 68ch;
+}
+
+/* One visible focus ring for every interactive thing, keyboard-only so it
+   never fires on a mouse click. Removing focus rings is the accessibility
+   mistake that costs the most and is noticed the least. */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
 
 body.nav-open {
     overflow: hidden;
@@ -93,7 +158,7 @@ body::before {
     pointer-events: none;
     background:
         radial-gradient(40vw 40vw at 12% 18%, rgba(112, 0, 255, 0.20), transparent 65%),
-        radial-gradient(45vw 45vw at 88% 72%, rgba(0, 240, 255, 0.14), transparent 65%);
+        radial-gradient(45vw 45vw at 88% 72%, rgba(79, 217, 245, 0.14), transparent 65%);
     filter: blur(20px);
 }
 
@@ -203,7 +268,7 @@ ul {
     right: 0;
     bottom: -1px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.45), transparent);
+    background: linear-gradient(90deg, transparent, rgba(79, 217, 245, 0.45), transparent);
     pointer-events: none;
 }
 
@@ -212,7 +277,7 @@ ul {
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--primary);
-    text-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+    text-shadow: 0 0 18px rgba(79, 217, 245, 0.5);
 }
 
 .nav-links {
@@ -247,7 +312,7 @@ ul {
 .hamburger:hover,
 .hamburger[aria-expanded="true"] {
     color: var(--primary);
-    border-color: rgba(0, 240, 255, 0.5);
+    border-color: rgba(79, 217, 245, 0.5);
 }
 
 .nav-backdrop {
@@ -282,14 +347,14 @@ ul {
     border: 1px solid var(--primary);
     color: var(--primary);
     border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
-    background: rgba(0, 240, 255, 0.06);
+    box-shadow: 0 0 10px rgba(79, 217, 245, 0.2);
+    background: rgba(79, 217, 245, 0.06);
 }
 
 .btn-glow:hover {
     background: var(--primary);
     color: #000;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    box-shadow: 0 0 20px rgba(79, 217, 245, 0.6);
 }
 
 /* ================= HERO SECTION ================= */
@@ -320,14 +385,14 @@ ul {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgba(0, 240, 255, 0.5);
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+    border: 2px solid rgba(79, 217, 245, 0.5);
+    box-shadow: 0 0 30px rgba(79, 217, 245, 0.2);
     transition: transform 0.3s ease;
 }
 
 .profile-wrapper:hover .profile-img {
     transform: scale(1.05);
-    box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 50px rgba(79, 217, 245, 0.4);
     border-color: var(--primary);
 }
 
@@ -359,11 +424,25 @@ ul {
 }
 
 .role-title {
-    color: var(--primary);
-    font-size: clamp(0.95rem, 3.2vw, 1.2rem);
-    margin-bottom: 20px;
-    font-weight: 400;
-    letter-spacing: 1px;
+    color: var(--text-soft);
+    font-size: clamp(1rem, 3.2vw, 1.3rem);
+    margin-bottom: var(--space-5);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* The accent moves off the job title and onto a single rule under the name.
+   One small bright thing reads as confidence; a whole line of neon does not. */
+.role-title::before {
+    content: '';
+    display: block;
+    width: 46px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--primary);
+    /* The hero is centred, so the rule has to be too — left-aligned it sat
+       under the first letter and read as a stray underline. */
+    margin: 0 auto var(--space-4);
 }
 
 .typing-container {
@@ -418,7 +497,7 @@ ul {
 
 .btn.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 20px rgba(79, 217, 245, 0.4);
     letter-spacing: 2px;
 }
 
@@ -429,8 +508,8 @@ ul {
 
 .btn.secondary:hover {
     border-color: var(--primary);
-    background: rgba(0, 240, 255, 0.12);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    background: rgba(79, 217, 245, 0.12);
+    box-shadow: 0 0 18px rgba(79, 217, 245, 0.22);
     color: var(--primary);
 }
 
@@ -471,18 +550,29 @@ ul {
     justify-content: center;
 }
 
+/* The number was a ghost at 0.08 alpha — invisible on a phone in daylight and
+   pure decoration on a desktop. It's now a small, legible label. */
 .section-number {
-    font-family: var(--font-head);
-    font-size: clamp(1.8rem, 6vw, 3rem);
-    color: rgba(255, 255, 255, 0.08);
-    font-weight: bold;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--primary);
     line-height: 1;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    background: rgba(79, 217, 245, 0.10);
+    border: 1px solid rgba(79, 217, 245, 0.28);
+    flex-shrink: 0;
 }
 
 .section-header h3 {
     font-family: var(--font-head);
-    font-size: clamp(1.35rem, 4.5vw, 2rem);
-    line-height: 1.2;
+    font-size: clamp(1.45rem, 4.5vw, 2.15rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
 }
 
 /* ================= ABOUT GRID ================= */
@@ -522,7 +612,7 @@ ul {
     font-size: clamp(1.6rem, 5vw, 2rem);
     font-weight: 700;
     color: var(--primary);
-    text-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+    text-shadow: 0 0 20px rgba(79, 217, 245, 0.35);
 }
 
 .stat-label {
@@ -548,7 +638,7 @@ ul {
 
 .skill-card:hover {
     transform: translateY(-10px);
-    border-color: rgba(0, 240, 255, 0.45);
+    border-color: rgba(79, 217, 245, 0.45);
     background: var(--glass-bg-strong);
     box-shadow: var(--glass-shadow-hover);
 }
@@ -666,7 +756,7 @@ ul {
 
 .group-dot--gov {
     background: var(--primary);
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.55);
+    box-shadow: 0 0 12px rgba(79, 217, 245, 0.55);
 }
 
 .group-dot--personal {
@@ -697,38 +787,31 @@ ul {
     box-shadow: var(--glass-shadow-hover);
 }
 
-/* The mark. Only the favicon — no screenshots, so the grid stays calm and
-   nothing goes stale when a UI changes. */
+/* The mark. Each project's own emblem, on a neutral tile — no screenshots, so
+   the grid stays calm and nothing goes stale when a UI changes.
+   Deliberately NOT hue-rotated: three of these are official unit crests and
+   recolouring them would be wrong. */
 .project-mark {
-    width: 56px;
-    height: 56px;
-    border-radius: 15px;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md);
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.06);
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.94);
     border: 1px solid var(--glass-border);
 }
 
 .project-mark img {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    /* The favicon is one asset doing duty for four cards, so each gets its own
-       hue rather than four identical tiles. */
-    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.4));
 }
 
-.project-card:nth-of-type(2) .project-mark img {
-    filter: hue-rotate(48deg) drop-shadow(0 0 10px rgba(0, 255, 190, 0.4));
-}
-
-.project-card:nth-of-type(3) .project-mark img {
-    filter: hue-rotate(-38deg) drop-shadow(0 0 10px rgba(120, 200, 255, 0.4));
-}
-
-.project-card--feature .project-mark img {
-    filter: hue-rotate(96deg) drop-shadow(0 0 12px rgba(180, 123, 255, 0.5));
+/* KamiTrack's mark is drawn for a dark surface, so it gets one. */
+.project-card--feature .project-mark {
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .project-heading {
@@ -743,6 +826,15 @@ ul {
     padding: 0;
     position: relative;
     z-index: 1;
+    /* Pushes the tags to the bottom so cards in a row end level even when one
+       has an extra line of them. */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-info .tags {
+    margin-top: auto;
 }
 
 .project-info h5 {
@@ -765,8 +857,8 @@ ul {
 /* Both badges clear 4.5:1 against the card behind them. */
 .badge--gov {
     color: #9BF3FF;
-    background: rgba(0, 240, 255, 0.13);
-    border: 1px solid rgba(0, 240, 255, 0.42);
+    background: rgba(79, 217, 245, 0.13);
+    border: 1px solid rgba(79, 217, 245, 0.42);
 }
 
 .badge--personal {
@@ -837,7 +929,43 @@ ul {
 .project-link:hover,
 .project-link:focus-visible {
     transform: translateX(3px);
-    box-shadow: 0 0 24px rgba(0, 240, 255, 0.35);
+    box-shadow: 0 0 24px rgba(79, 217, 245, 0.35);
+}
+
+/* Phones: the cards go single column well before 300px would force it, the
+   mark shrinks, and the hover lift is dropped — there is no hover on a
+   touchscreen, and the transform only ever fires as a sticky tap state. */
+@media (max-width: 600px) {
+    .project-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .project-card {
+        padding: 20px 18px;
+    }
+
+    .project-mark {
+        width: 52px;
+        height: 52px;
+    }
+
+    .project-group-label:not(:first-of-type) {
+        margin-top: var(--space-7);
+    }
+
+    .project-lock {
+        top: 16px;
+        right: 16px;
+    }
+}
+
+@media (hover: none) {
+
+    .project-card:hover,
+    .project-card:focus-within {
+        transform: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -907,7 +1035,7 @@ ul {
 
 .cert-item:hover {
     background: var(--glass-bg-strong);
-    border-color: rgba(0, 240, 255, 0.35);
+    border-color: rgba(79, 217, 245, 0.35);
 }
 
 .cert-item i {
@@ -1105,376 +1233,18 @@ footer {
 }
 
 /* ================= GLITCH EFFECT ================= */
-.glitch {
-    position: relative;
+/* The name, set to be read. The glitch layers that used to sit here were a
+   gaming trope on the one string that has to look credible on a CV. */
+.hero-name {
     font-family: var(--font-head);
-    font-size: clamp(1.6rem, 7.5vw, 3.5rem);
-    letter-spacing: clamp(1px, 0.4vw, 2px);
-    margin-bottom: 10px;
-    text-transform: uppercase;
+    font-size: clamp(2rem, 8vw, 4.25rem);
+    font-weight: 700;
+    line-height: 1.05;
+    /* Negative tracking at display sizes; the default spacing looks loose the
+       larger the type gets. */
+    letter-spacing: clamp(-1.6px, -0.35vw, -0.5px);
+    margin-bottom: var(--space-3);
     color: var(--text-main);
+    text-wrap: balance;
 }
 
-.glitch::before,
-.glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.glitch::before {
-    left: 2px;
-    text-shadow: -1px 0 var(--secondary);
-    clip: rect(24px, 550px, 90px, 0);
-    animation: glitch-anim-2 3s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-    left: -2px;
-    text-shadow: -1px 0 var(--primary);
-    clip: rect(85px, 550px, 140px, 0);
-    animation: glitch-anim 2.5s infinite linear alternate-reverse;
-}
-
-/* ================= RESPONSIVE ================= */
-
-/* Tablet / small laptop */
-@media (max-width: 900px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stats-grid {
-        flex-direction: row;
-    }
-
-    .stat-item {
-        flex: 1;
-    }
-}
-
-/* Nav collapses before the five links start crowding the brand */
-@media (max-width: 860px) {
-    .hamburger {
-        display: inline-flex;
-    }
-
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: 0;
-        height: 100vh;
-        height: 100dvh;
-        width: min(80vw, 320px);
-        z-index: 999;
-        flex-direction: column;
-        justify-content: center;
-        align-items: stretch;
-        gap: 8px;
-        padding: calc(var(--nav-height) + 24px) 28px 40px;
-        background: rgba(11, 14, 20, 0.72);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        backdrop-filter: blur(24px) saturate(180%);
-        border: none;
-        border-left: 1px solid var(--glass-border);
-        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
-        transform: translateX(102%);
-        /* visibility keeps the off-screen links out of the tab order,
-           delayed so the slide-out animation still plays */
-        visibility: hidden;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.4s;
-    }
-
-    .nav-links.open {
-        transform: translateX(0);
-        visibility: visible;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
-    }
-
-    .nav-links li {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .nav-links li:last-child {
-        border-bottom: none;
-        margin-top: 16px;
-    }
-
-    .nav-link {
-        display: block;
-        padding: 16px 4px;
-        font-size: 1rem;
-    }
-
-    .nav-link.btn-glow {
-        text-align: center;
-        padding: 14px 20px;
-    }
-}
-
-/* Phones */
-@media (max-width: 768px) {
-    .contact-wrapper {
-        grid-template-columns: 1fr;
-    }
-
-    .timeline {
-        --tl-pad: 24px;
-        margin-left: 8px;
-    }
-
-    /* Layered pseudo-elements smear badly on small type */
-    .glitch::before,
-    .glitch::after {
-        display: none;
-    }
-
-    /* Blur is expensive on mobile GPUs */
-    :root {
-        --glass-blur: 12px;
-    }
-}
-
-/* Small phones */
-@media (max-width: 480px) {
-    .section-header {
-        gap: 10px;
-    }
-
-    .stats-grid {
-        flex-direction: column;
-    }
-
-    .hero-btns {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .hero-btns .btn {
-        width: 100%;
-    }
-
-    .socials-large {
-        font-size: 1.6rem;
-    }
-
-    .cert-item {
-        padding: 16px;
-    }
-
-    .scroll-indicator {
-        display: none;
-    }
-}
-
-/* Landscape phones: 100svh hero would otherwise squash the content */
-@media (max-height: 520px) and (orientation: landscape) {
-    .hero {
-        min-height: auto;
-        padding-top: calc(var(--nav-height) + 40px);
-        padding-bottom: 60px;
-    }
-
-    .profile-wrapper {
-        width: 90px;
-        height: 90px;
-    }
-
-    .scroll-indicator {
-        display: none;
-    }
-}
-
-/* ================= REDUCED MOTION ================= */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-
-    .reveal {
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@keyframes glitch-anim {
-    0% {
-        clip: rect(14px, 9999px, 122px, 0);
-    }
-
-    5% {
-        clip: rect(86px, 9999px, 7px, 0);
-    }
-
-    10% {
-        clip: rect(109px, 9999px, 46px, 0);
-    }
-
-    15% {
-        clip: rect(38px, 9999px, 18px, 0);
-    }
-
-    20% {
-        clip: rect(6px, 9999px, 32px, 0);
-    }
-
-    25% {
-        clip: rect(4px, 9999px, 86px, 0);
-    }
-
-    30% {
-        clip: rect(98px, 9999px, 16px, 0);
-    }
-
-    35% {
-        clip: rect(59px, 9999px, 126px, 0);
-    }
-
-    40% {
-        clip: rect(42px, 9999px, 20px, 0);
-    }
-
-    45% {
-        clip: rect(66px, 9999px, 70px, 0);
-    }
-
-    50% {
-        clip: rect(107px, 9999px, 137px, 0);
-    }
-
-    55% {
-        clip: rect(82px, 9999px, 14px, 0);
-    }
-
-    60% {
-        clip: rect(35px, 9999px, 102px, 0);
-    }
-
-    65% {
-        clip: rect(79px, 9999px, 136px, 0);
-    }
-
-    70% {
-        clip: rect(31px, 9999px, 60px, 0);
-    }
-
-    75% {
-        clip: rect(107px, 9999px, 12px, 0);
-    }
-
-    80% {
-        clip: rect(34px, 9999px, 148px, 0);
-    }
-
-    85% {
-        clip: rect(51px, 9999px, 145px, 0);
-    }
-
-    90% {
-        clip: rect(142px, 9999px, 86px, 0);
-    }
-
-    95% {
-        clip: rect(3px, 9999px, 124px, 0);
-    }
-
-    100% {
-        clip: rect(7px, 9999px, 76px, 0);
-    }
-}
-
-@keyframes glitch-anim-2 {
-    0% {
-        clip: rect(129px, 9999px, 36px, 0);
-    }
-
-    5% {
-        clip: rect(36px, 9999px, 4px, 0);
-    }
-
-    10% {
-        clip: rect(85px, 9999px, 66px, 0);
-    }
-
-    15% {
-        clip: rect(91px, 9999px, 91px, 0);
-    }
-
-    20% {
-        clip: rect(2px, 9999px, 145px, 0);
-    }
-
-    25% {
-        clip: rect(95px, 9999px, 10px, 0);
-    }
-
-    30% {
-        clip: rect(74px, 9999px, 125px, 0);
-    }
-
-    35% {
-        clip: rect(122px, 9999px, 7px, 0);
-    }
-
-    40% {
-        clip: rect(69px, 9999px, 118px, 0);
-    }
-
-    45% {
-        clip: rect(90px, 9999px, 28px, 0);
-    }
-
-    50% {
-        clip: rect(6px, 9999px, 100px, 0);
-    }
-
-    55% {
-        clip: rect(19px, 9999px, 32px, 0);
-    }
-
-    60% {
-        clip: rect(103px, 9999px, 14px, 0);
-    }
-
-    65% {
-        clip: rect(138px, 9999px, 67px, 0);
-    }
-
-    70% {
-        clip: rect(73px, 9999px, 9px, 0);
-    }
-
-    75% {
-        clip: rect(4px, 9999px, 25px, 0);
-    }
-
-    80% {
-        clip: rect(25px, 9999px, 46px, 0);
-    }
-
-    85% {
-        clip: rect(55px, 9999px, 83px, 0);
-    }
-
-    90% {
-        clip: rect(128px, 9999px, 125px, 0);
-    }
-
-    95% {
-        clip: rect(47px, 9999px, 44px, 0);
-    }
-
-    100% {
-        clip: rect(33px, 9999px, 142px, 0);
-    }
-}
