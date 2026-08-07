@@ -1,47 +1,93 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.7",
-  "latestBuild": 8,
+  "latestVersion": "1.0.8",
+  "latestBuild": 9,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.7/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.8/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
-  "releasedAt": "2026-08-07",
+  "releasedAt": "2026-08-08",
   "notes": {
     "en": [
-      "Group settings: change the group's name, picture and description in one place. Owner only.",
-      "This page now lists every release, not just the newest one.",
-      "Profile customisation moved onto the Profile tab, where it was supposed to be: cover image or GIF, biography, showcase artwork, avatar frames and page colour.",
-      "The eye on your profile shows who has visited it.",
-      "Chat is split into People and Groups tabs.",
-      "Home shows your history charts directly instead of a button that opens them."
+      "Task reminders are alarms now: they keep sounding until you press Done on the notification itself. No need to open the app.",
+      "Avatar frames have real shapes — wings, ribbons, crowns and laurels, earned from your rarest badges.",
+      "Your profile page colour now repaints the page background. Button colours stay yours, set by Accent Colour.",
+      "Your cover image sits behind your avatar and name instead of above them.",
+      "Settings moved into one More settings page, with the app version at the end. Badges now come before your friend list.",
+      "Fixed: adding the same song twice silently doubled your queue. The queue is now visible in the music panel.",
+      "Fixed: steps walked before you first opened the app each day were being discarded."
     ],
     "ms": [
-      "Tetapan kumpulan: tukar nama, gambar dan penerangan kumpulan di satu tempat. Pemilik sahaja.",
-      "Halaman ini kini menyenaraikan setiap keluaran, bukan yang terbaharu sahaja.",
-      "Penyesuaian profil dipindahkan ke tab Profil: imej kulit atau GIF, biografi, karya seni pameran, bingkai avatar dan warna halaman.",
-      "Ikon mata pada profil anda menunjukkan siapa yang telah melawatnya.",
-      "Sembang dibahagikan kepada tab Orang dan Kumpulan.",
-      "Laman utama memaparkan carta sejarah anda terus, bukan butang yang membukanya."
+      "Peringatan tugasan kini penggera: ia terus berbunyi sehingga anda tekan Selesai pada pemberitahuan itu sendiri. Tidak perlu buka aplikasi.",
+      "Bingkai avatar kini berbentuk sebenar — sayap, reben, mahkota dan daun, diperoleh daripada lencana paling jarang anda.",
+      "Warna halaman profil kini mengecat latar belakang halaman. Warna butang kekal milik anda, ditetapkan oleh Warna Aksen.",
+      "Imej kulit anda kini berada di belakang avatar dan nama anda, bukan di atasnya.",
+      "Tetapan dipindahkan ke satu halaman Tetapan lain, dengan versi aplikasi di hujungnya. Lencana kini sebelum senarai rakan.",
+      "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir tanpa amaran. Baris gilir kini kelihatan dalam panel muzik.",
+      "Dibaiki: langkah sebelum anda membuka aplikasi setiap hari sedang dibuang."
     ],
     "zh": [
-      "群组设置：在一个地方修改群名称、群图片和群介绍。仅群主可用。",
-      "本页现在列出每一个版本，而不只是最新版。",
-      "资料页自定义已移到「我的」标签：封面图或 GIF、简介、作品展示、头像边框和页面配色。",
-      "资料页上的眼睛图标显示谁访问过你。",
-      "聊天分为「联系人」和「群组」两个标签。",
-      "主页直接显示历史图表，不再是一个需要点开的按钮。"
+      "任务提醒现在是闹钟：会一直响到你在通知上按「完成」为止，不用打开应用。",
+      "头像边框有了真正的造型——翅膀、缎带、王冠和桂冠，由你最稀有的徽章解锁。",
+      "资料页配色现在会重绘页面背景。按钮颜色仍由「强调色」决定。",
+      "封面图现在位于头像和名字的后方，而不是上方。",
+      "设置已收进「更多设置」一页，末尾显示应用版本。徽章现在排在好友列表之前。",
+      "已修复：重复添加同一首歌会悄悄让队列翻倍。音乐面板现在能看到队列。",
+      "已修复：每天首次打开应用之前走的步数会被丢弃。"
     ],
     "ta": [
-      "குழு அமைப்புகள்: குழுவின் பெயர், படம், விவரம் ஒரே இடத்தில் மாற்றலாம். உரிமையாளர் மட்டும்.",
-      "இந்தப் பக்கம் இப்போது ஒவ்வொரு வெளியீட்டையும் பட்டியலிடும், புதியது மட்டுமல்ல.",
-      "சுயவிவரத் தனிப்பயனாக்கம் சுயவிவரத் தாவலுக்கு நகர்த்தப்பட்டது: அட்டைப் படம் அல்லது GIF, சுயவிவரம், படைப்புக் காட்சி, அவதார் சட்டங்கள், பக்க நிறம்.",
-      "உங்கள் சுயவிவரத்தில் உள்ள கண் ஐகான் யார் பார்த்தார்கள் என்பதைக் காட்டும்.",
-      "அரட்டை 'நபர்கள்', 'குழுக்கள்' எனப் பிரிக்கப்பட்டது.",
-      "முகப்பு உங்கள் வரலாற்று விளக்கப்படங்களை நேரடியாகக் காட்டும்."
+      "பணி நினைவூட்டல்கள் இப்போது அலாரம்: அறிவிப்பிலேயே 'முடிந்தது' அழுத்தும் வரை ஒலித்துக்கொண்டே இருக்கும். ஆப்பைத் திறக்க வேண்டியதில்லை.",
+      "அவதார் சட்டங்களுக்கு உண்மையான வடிவங்கள் — இறக்கைகள், ரிப்பன், கிரீடம், இலைமாலை, உங்கள் அரிய பேட்ஜ்களால் திறக்கப்படும்.",
+      "சுயவிவரப் பக்க நிறம் இப்போது பக்கப் பின்னணியை மாற்றும். பொத்தான் நிறங்கள் 'அக்சென்ட் நிறம்' மூலம் உங்களுடையதாகவே இருக்கும்.",
+      "அட்டைப் படம் இப்போது உங்கள் அவதாருக்கும் பெயருக்கும் பின்னால் இருக்கும், மேலே அல்ல.",
+      "அமைப்புகள் ஒரே 'மேலும் அமைப்புகள்' பக்கத்திற்கு நகர்ந்தன, இறுதியில் ஆப் பதிப்புடன். பேட்ஜ்கள் இப்போது நண்பர் பட்டியலுக்கு முன்.",
+      "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை அமைதியாக இரட்டிப்பானது. வரிசை இப்போது இசைப் பலகையில் தெரியும்.",
+      "சரிசெய்யப்பட்டது: ஒவ்வொரு நாளும் ஆப்பைத் திறப்பதற்கு முன் நடந்த அடிகள் நிராகரிக்கப்பட்டன."
     ]
   },
   "announcement": null,
   "history": [
+    {
+      "version": "1.0.8",
+      "released": "2026-08-08",
+      "notes": {
+        "en": [
+          "Task reminders are alarms now: they keep sounding until you press Done on the notification itself. No need to open the app.",
+          "Avatar frames have real shapes — wings, ribbons, crowns and laurels, earned from your rarest badges.",
+          "Your profile page colour now repaints the page background. Button colours stay yours, set by Accent Colour.",
+          "Your cover image sits behind your avatar and name instead of above them.",
+          "Settings moved into one More settings page, with the app version at the end. Badges now come before your friend list.",
+          "Fixed: adding the same song twice silently doubled your queue. The queue is now visible in the music panel.",
+          "Fixed: steps walked before you first opened the app each day were being discarded."
+        ],
+        "ms": [
+          "Peringatan tugasan kini penggera: ia terus berbunyi sehingga anda tekan Selesai pada pemberitahuan itu sendiri. Tidak perlu buka aplikasi.",
+          "Bingkai avatar kini berbentuk sebenar — sayap, reben, mahkota dan daun, diperoleh daripada lencana paling jarang anda.",
+          "Warna halaman profil kini mengecat latar belakang halaman. Warna butang kekal milik anda, ditetapkan oleh Warna Aksen.",
+          "Imej kulit anda kini berada di belakang avatar dan nama anda, bukan di atasnya.",
+          "Tetapan dipindahkan ke satu halaman Tetapan lain, dengan versi aplikasi di hujungnya. Lencana kini sebelum senarai rakan.",
+          "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir tanpa amaran. Baris gilir kini kelihatan dalam panel muzik.",
+          "Dibaiki: langkah sebelum anda membuka aplikasi setiap hari sedang dibuang."
+        ],
+        "zh": [
+          "任务提醒现在是闹钟：会一直响到你在通知上按「完成」为止，不用打开应用。",
+          "头像边框有了真正的造型——翅膀、缎带、王冠和桂冠，由你最稀有的徽章解锁。",
+          "资料页配色现在会重绘页面背景。按钮颜色仍由「强调色」决定。",
+          "封面图现在位于头像和名字的后方，而不是上方。",
+          "设置已收进「更多设置」一页，末尾显示应用版本。徽章现在排在好友列表之前。",
+          "已修复：重复添加同一首歌会悄悄让队列翻倍。音乐面板现在能看到队列。",
+          "已修复：每天首次打开应用之前走的步数会被丢弃。"
+        ],
+        "ta": [
+          "பணி நினைவூட்டல்கள் இப்போது அலாரம்: அறிவிப்பிலேயே 'முடிந்தது' அழுத்தும் வரை ஒலித்துக்கொண்டே இருக்கும். ஆப்பைத் திறக்க வேண்டியதில்லை.",
+          "அவதார் சட்டங்களுக்கு உண்மையான வடிவங்கள் — இறக்கைகள், ரிப்பன், கிரீடம், இலைமாலை, உங்கள் அரிய பேட்ஜ்களால் திறக்கப்படும்.",
+          "சுயவிவரப் பக்க நிறம் இப்போது பக்கப் பின்னணியை மாற்றும். பொத்தான் நிறங்கள் 'அக்சென்ட் நிறம்' மூலம் உங்களுடையதாகவே இருக்கும்.",
+          "அட்டைப் படம் இப்போது உங்கள் அவதாருக்கும் பெயருக்கும் பின்னால் இருக்கும், மேலே அல்ல.",
+          "அமைப்புகள் ஒரே 'மேலும் அமைப்புகள்' பக்கத்திற்கு நகர்ந்தன, இறுதியில் ஆப் பதிப்புடன். பேட்ஜ்கள் இப்போது நண்பர் பட்டியலுக்கு முன்.",
+          "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை அமைதியாக இரட்டிப்பானது. வரிசை இப்போது இசைப் பலகையில் தெரியும்.",
+          "சரிசெய்யப்பட்டது: ஒவ்வொரு நாளும் ஆப்பைத் திறப்பதற்கு முன் நடந்த அடிகள் நிராகரிக்கப்பட்டன."
+        ]
+      }
+    },
     {
       "version": "1.0.7",
       "released": "2026-08-07",
