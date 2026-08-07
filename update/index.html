@@ -1,3 +1,139 @@
-<a href="https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.0/kamitrack-arm64.apk" class="download-btn">
-    Download Latest APK
-</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KamiTrack — Download</title>
+    <link rel="icon" href="../favicon.ico">
+    <style>
+        /* Self-contained on purpose: this page is what someone lands on from a
+           phone with a half-broken app, so it must not depend on anything that
+           can fail to load. */
+        :root {
+            --bg: #0A1628;
+            --surface: #10203A;
+            --outline: #233A5C;
+            --text: #EAF4FF;
+            --muted: #9FB4D1;
+            --accent: #3DDCFF;
+            --ink: #06202F;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #F4F8FC; --surface: #FFFFFF; --outline: #D8E3F0;
+                --text: #0E1B2C; --muted: #5A6E88; --ink: #06202F;
+            }
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 32px 20px 60px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                         "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrap { max-width: 640px; margin: 0 auto; }
+        h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.5px; }
+        .version {
+            display: inline-block; font-size: 13px; font-weight: 700;
+            color: var(--accent); background: rgba(61, 220, 255, 0.12);
+            border: 1px solid rgba(61, 220, 255, 0.4);
+            padding: 3px 10px; border-radius: 999px; margin-bottom: 22px;
+        }
+        .download-btn {
+            display: block; text-align: center; text-decoration: none;
+            background: var(--accent); color: var(--ink);
+            font-weight: 800; font-size: 16px;
+            padding: 16px 20px; border-radius: 14px;
+            /* 44px minimum touch target, comfortably exceeded. */
+            min-height: 54px; margin: 4px 0 10px;
+        }
+        .note { font-size: 13px; color: var(--muted); margin: 0 0 30px; }
+        .card {
+            background: var(--surface); border: 1px solid var(--outline);
+            border-radius: 16px; padding: 18px 20px; margin-bottom: 16px;
+        }
+        .card h2 { font-size: 15px; margin: 0 0 10px; letter-spacing: 0.3px;
+                   text-transform: uppercase; color: var(--muted); }
+        ol, ul { margin: 0; padding-left: 20px; }
+        li { margin-bottom: 8px; font-size: 14.5px; }
+        li:last-child { margin-bottom: 0; }
+        code {
+            background: rgba(127, 127, 127, 0.16); padding: 1px 6px;
+            border-radius: 5px; font-size: 13px;
+        }
+        footer { font-size: 12.5px; color: var(--muted); margin-top: 34px;
+                 text-align: center; }
+        a { color: var(--accent); }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>KamiTrack</h1>
+    <span class="version" id="version">Loading latest version…</span>
+
+    <a href="https://github.com/KamizanAmir/KamizanAmir.github.io/releases/latest"
+       class="download-btn" id="download">Download latest APK</a>
+    <p class="note">Android, 64-bit (arm64). Around 34 MB.</p>
+
+    <div class="card">
+        <h2>Installing</h2>
+        <ol>
+            <li>Tap <strong>Download</strong> above. Your browser will warn you
+                — that warning is about sideloading in general, not about this
+                file.</li>
+            <li>Open the downloaded file.</li>
+            <li>Android will ask to allow installs from your browser. Allow it,
+                then come back and tap the file again.</li>
+            <li>Installing over an existing copy keeps your account, your
+                settings and your history.</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h2>What's new</h2>
+        <ul id="notes"><li>Loading…</li></ul>
+    </div>
+
+    <footer>
+        Built by <a href="../">Kamizan Amir</a> ·
+        <a href="https://github.com/KamizanAmir/KamizanAmir.github.io/releases">All releases</a>
+    </footer>
+</div>
+
+<script>
+    // The same manifest the app reads, so this page and the in-app prompt can
+    // never disagree about what the current version is.
+    fetch('latest.json?t=' + Math.floor(Date.now() / 60000))
+        .then(function (r) { return r.json(); })
+        .then(function (m) {
+            document.getElementById('version').textContent =
+                'Version ' + m.latestVersion + ' · ' + m.releasedAt;
+            if (m.apkUrl) document.getElementById('download').href = m.apkUrl;
+
+            var notes = (m.notes && (m.notes.en || m.notes)) || [];
+            var list = document.getElementById('notes');
+            list.innerHTML = '';
+            if (!notes.length) {
+                list.innerHTML = '<li>See the release page for details.</li>';
+                return;
+            }
+            notes.forEach(function (note) {
+                var li = document.createElement('li');
+                li.textContent = note;
+                list.appendChild(li);
+            });
+        })
+        .catch(function () {
+            // The button already points at the "latest" release, so a failed
+            // fetch costs the version label and nothing else.
+            document.getElementById('version').textContent = 'Latest release';
+            document.getElementById('notes').innerHTML =
+                '<li>See the release page for details.</li>';
+        });
+</script>
+</body>
+</html>
