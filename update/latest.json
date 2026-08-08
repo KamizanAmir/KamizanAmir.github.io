@@ -1,59 +1,103 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.10",
-  "latestBuild": 11,
+  "latestVersion": "1.0.13",
+  "latestBuild": 14,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.10/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.13/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-08",
   "notes": {
     "en": [
-      "Fixed: the Alerts list stopped short of the navigation bar instead of scrolling behind it.",
-      "Important: this build is signed with a new key, so you must uninstall the old KamiTrack before installing it. Your account, steps and runs are safe — they live on your account, not the phone.",
-      "Report posts, messages and people. Tap the flag on any post, hold a message, or use the flag on someone's profile.",
-      "Daily sign-in is live for the first 12 beta testers: a day of VIP each day, and 3 months when you reach day 14.",
-      "A VIP badge now shows beside your name, and everyone can see it.",
-      "You can delete your account and everything on it from Profile > More settings.",
-      "Fixed: task reminders never fired. They are now alarms that keep sounding until you press Done on the notification.",
-      "Fixed: a bright profile colour left the text unreadable, the dark mode button stopped working, and the tutorial appeared when leaving More settings.",
-      "Fixed: adding the same song twice silently doubled your queue, and changing Week to Month jumped Home back to the top."
+      "Fixed: in Blast block the player who jammed their board first showed as the leader. The scoreboard now ranks by score, because finishing early in blocks means running out of moves.",
+      "Tapping a name or photo in the Chat list now opens the conversation. Their profile is in the chat header.",
+      "Fixed: pressing Done on a task alarm silenced it but never marked the task complete.",
+      "Someone's profile now shows a Moments button instead of their whole feed.",
+      "Fixed: the Alerts list stopped short of the navigation bar instead of scrolling behind it."
     ],
     "ms": [
-      "Dibaiki: senarai Pemberitahuan terhenti sebelum bar navigasi dan tidak menatal di belakangnya.",
-      "Penting: binaan ini ditandatangani dengan kunci baharu, jadi anda perlu menyahpasang KamiTrack lama sebelum memasangnya. Akaun, langkah dan larian anda selamat — ia disimpan pada akaun anda, bukan telefon.",
-      "Laporkan siaran, mesej dan orang. Ketik bendera pada mana-mana siaran, tekan lama mesej, atau guna bendera pada profil seseorang.",
-      "Daftar masuk harian kini aktif untuk 12 penguji beta pertama: sehari VIP setiap hari, dan 3 bulan apabila sampai hari ke-14.",
-      "Lencana VIP kini dipaparkan di sebelah nama anda, dan semua orang boleh melihatnya.",
-      "Anda boleh memadam akaun anda dan segala isinya dari Profil > Tetapan lain.",
-      "Dibaiki: peringatan tugasan tidak pernah berbunyi. Kini ia penggera yang terus berbunyi sehingga anda tekan Selesai pada pemberitahuan.",
-      "Dibaiki: warna profil cerah menjadikan teks tidak terbaca, butang mod gelap tidak berfungsi, dan tutorial muncul semasa keluar dari Tetapan lain.",
-      "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir, dan menukar Minggu ke Bulan melompat semula ke atas."
+      "Dibaiki: dalam Blast block, pemain yang papannya tersekat dahulu dipaparkan sebagai pendahulu. Papan markah kini menyusun ikut skor.",
+      "Mengetik nama atau gambar dalam senarai Sembang kini membuka perbualan. Profil mereka ada di pengepala sembang.",
+      "Dibaiki: menekan Selesai pada penggera tugasan menyenyapkannya tetapi tidak menandakan tugasan siap.",
+      "Profil seseorang kini memaparkan butang Detik dan bukan keseluruhan suapan mereka.",
+      "Dibaiki: senarai Pemberitahuan terhenti sebelum bar navigasi."
     ],
     "zh": [
-      "已修复：通知列表没有滚动到导航栏后面，而是提前截断。",
-      "重要：本版本使用了新的签名密钥，安装前必须先卸载旧版 KamiTrack。你的账号、步数和跑步记录都不会丢失——它们保存在账号里，不在手机上。",
-      "可以举报动态、消息和用户。点动态上的旗帜、长按消息，或在对方资料页点旗帜。",
-      "每日签到已对前 12 位测试者开放：每天一天 VIP，坚持到第 14 天可得 3 个月。",
-      "VIP 徽章现在显示在名字旁边，所有人都能看到。",
-      "可在「我的 > 更多设置」中删除账号及其全部内容。",
-      "已修复：任务提醒从不响。现在是闹钟，会一直响到你在通知上按「完成」。",
-      "已修复：浅色资料页配色导致文字看不清、深色模式按钮失效、离开更多设置时弹出新手导览。",
-      "已修复：重复添加同一首歌会让队列翻倍；把「周」改成「月」会让主页跳回顶部。"
+      "已修复：消块游戏中最先卡住棋盘的人被显示为领先者。计分板现在按分数排名——在消块里提前结束意味着无路可走。",
+      "在聊天列表点名字或头像现在会打开对话。对方资料页在聊天顶部。",
+      "已修复：在任务闹钟上按「完成」只会静音，没有把任务标记为完成。",
+      "别人的资料页现在只显示「动态」按钮，而不是整个动态流。",
+      "已修复：通知列表没有滚动到导航栏后面。"
     ],
     "ta": [
-      "சரிசெய்யப்பட்டது: அறிவிப்புப் பட்டியல் வழிசெலுத்தல் பட்டைக்குப் பின்னால் செல்லாமல் நின்றது.",
-      "முக்கியம்: இந்தப் பதிப்பு புதிய சாவியால் கையொப்பமிடப்பட்டுள்ளது, எனவே நிறுவும் முன் பழைய KamiTrack-ஐ நீக்க வேண்டும். உங்கள் கணக்கு, அடிகள், ஓட்டங்கள் பாதுகாப்பானவை — அவை கணக்கில் உள்ளன, தொலைபேசியில் அல்ல.",
-      "பதிவுகள், செய்திகள், நபர்களைப் புகாரளிக்கலாம். பதிவில் உள்ள கொடியைத் தட்டவும், செய்தியை நீண்ட நேரம் அழுத்தவும், அல்லது சுயவிவரத்தில் உள்ள கொடியைப் பயன்படுத்தவும்.",
-      "தினசரி உள்நுழைவு முதல் 12 பீட்டா சோதனையாளர்களுக்கு: ஒவ்வொரு நாளும் ஒரு நாள் VIP, 14வது நாளில் 3 மாதங்கள்.",
-      "VIP பேட்ஜ் இப்போது உங்கள் பெயருக்கு அருகில், அனைவரும் பார்க்கலாம்.",
-      "சுயவிவரம் > மேலும் அமைப்புகள் என்பதில் கணக்கையும் அதிலுள்ள அனைத்தையும் நீக்கலாம்.",
-      "சரிசெய்யப்பட்டது: பணி நினைவூட்டல்கள் ஒலிக்கவே இல்லை. இப்போது அறிவிப்பில் 'முடிந்தது' அழுத்தும் வரை ஒலிக்கும் அலாரம்.",
-      "சரிசெய்யப்பட்டது: பிரகாசமான சுயவிவர நிறத்தில் எழுத்து தெரியவில்லை, டார்க் மோட் பொத்தான் வேலை செய்யவில்லை, மேலும் அமைப்புகளிலிருந்து வெளியேறும்போது பயிற்சி தோன்றியது.",
-      "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை இரட்டிப்பானது; வாரத்தை மாதமாக மாற்றினால் முகப்பு மேலே தாவியது."
+      "சரிசெய்யப்பட்டது: பிளாஸ்ட் பிளாக்கில் முதலில் பலகை அடைத்தவர் முன்னிலையில் காட்டப்பட்டார். மதிப்பெண் பலகை இப்போது ஸ்கோர் அடிப்படையில் வரிசைப்படுத்தும்.",
+      "அரட்டைப் பட்டியலில் பெயர் அல்லது படத்தைத் தட்டினால் உரையாடல் திறக்கும். சுயவிவரம் அரட்டைத் தலைப்பில் உள்ளது.",
+      "சரிசெய்யப்பட்டது: பணி அலாரத்தில் 'முடிந்தது' அழுத்தினால் ஒலி நின்றது, ஆனால் பணி முடிந்ததாகக் குறிக்கப்படவில்லை.",
+      "ஒருவரின் சுயவிவரம் இப்போது முழு ஊட்டத்திற்குப் பதிலாக 'தருணங்கள்' பொத்தானைக் காட்டும்.",
+      "சரிசெய்யப்பட்டது: அறிவிப்புப் பட்டியல் வழிசெலுத்தல் பட்டைக்கு முன் நின்றது."
     ]
   },
   "announcement": null,
   "history": [
+    {
+      "version": "1.0.13",
+      "released": "2026-08-08",
+      "notes": {
+        "en": [
+          "Fixed: in Blast block the player who jammed their board first showed as the leader. The scoreboard now ranks by score, because finishing early in blocks means running out of moves.",
+          "Tapping a name or photo in the Chat list now opens the conversation. Their profile is in the chat header.",
+          "Fixed: pressing Done on a task alarm silenced it but never marked the task complete.",
+          "Someone's profile now shows a Moments button instead of their whole feed.",
+          "Fixed: the Alerts list stopped short of the navigation bar instead of scrolling behind it."
+        ],
+        "ms": [
+          "Dibaiki: dalam Blast block, pemain yang papannya tersekat dahulu dipaparkan sebagai pendahulu. Papan markah kini menyusun ikut skor.",
+          "Mengetik nama atau gambar dalam senarai Sembang kini membuka perbualan. Profil mereka ada di pengepala sembang.",
+          "Dibaiki: menekan Selesai pada penggera tugasan menyenyapkannya tetapi tidak menandakan tugasan siap.",
+          "Profil seseorang kini memaparkan butang Detik dan bukan keseluruhan suapan mereka.",
+          "Dibaiki: senarai Pemberitahuan terhenti sebelum bar navigasi."
+        ],
+        "zh": [
+          "已修复：消块游戏中最先卡住棋盘的人被显示为领先者。计分板现在按分数排名——在消块里提前结束意味着无路可走。",
+          "在聊天列表点名字或头像现在会打开对话。对方资料页在聊天顶部。",
+          "已修复：在任务闹钟上按「完成」只会静音，没有把任务标记为完成。",
+          "别人的资料页现在只显示「动态」按钮，而不是整个动态流。",
+          "已修复：通知列表没有滚动到导航栏后面。"
+        ],
+        "ta": [
+          "சரிசெய்யப்பட்டது: பிளாஸ்ட் பிளாக்கில் முதலில் பலகை அடைத்தவர் முன்னிலையில் காட்டப்பட்டார். மதிப்பெண் பலகை இப்போது ஸ்கோர் அடிப்படையில் வரிசைப்படுத்தும்.",
+          "அரட்டைப் பட்டியலில் பெயர் அல்லது படத்தைத் தட்டினால் உரையாடல் திறக்கும். சுயவிவரம் அரட்டைத் தலைப்பில் உள்ளது.",
+          "சரிசெய்யப்பட்டது: பணி அலாரத்தில் 'முடிந்தது' அழுத்தினால் ஒலி நின்றது, ஆனால் பணி முடிந்ததாகக் குறிக்கப்படவில்லை.",
+          "ஒருவரின் சுயவிவரம் இப்போது முழு ஊட்டத்திற்குப் பதிலாக 'தருணங்கள்' பொத்தானைக் காட்டும்.",
+          "சரிசெய்யப்பட்டது: அறிவிப்புப் பட்டியல் வழிசெலுத்தல் பட்டைக்கு முன் நின்றது."
+        ]
+      }
+    },
+    {
+      "version": "1.0.12",
+      "released": "2026-08-08",
+      "notes": {
+        "en": [
+          "Someone's profile now shows a Moments button instead of their whole feed — the page is for their badges and artwork, not a wall of posts.",
+          "Fixed: pressing Done on a task alarm silenced it but never marked the task complete.",
+          "Fixed: the Alerts list stopped short of the navigation bar instead of scrolling behind it."
+        ],
+        "ms": [
+          "Profil seseorang kini memaparkan butang Detik dan bukan keseluruhan suapan mereka — halaman itu untuk lencana dan karya seni mereka.",
+          "Dibaiki: menekan Selesai pada penggera tugasan menyenyapkannya tetapi tidak pernah menandakan tugasan itu siap.",
+          "Dibaiki: senarai Pemberitahuan terhenti sebelum bar navigasi dan tidak menatal di belakangnya."
+        ],
+        "zh": [
+          "别人的资料页现在只显示一个「动态」按钮，而不是整个动态流——这一页是给徽章和作品展示用的。",
+          "已修复：在任务闹钟上按「完成」只会静音，并没有把任务标记为完成。",
+          "已修复：通知列表没有滚动到导航栏后面，而是提前截断。"
+        ],
+        "ta": [
+          "ஒருவரின் சுயவிவரப் பக்கம் இப்போது முழு ஊட்டத்திற்குப் பதிலாக 'தருணங்கள்' பொத்தானைக் காட்டும் — அந்தப் பக்கம் அவர்களின் பேட்ஜ்கள், படைப்புகளுக்கானது.",
+          "சரிசெய்யப்பட்டது: பணி அலாரத்தில் 'முடிந்தது' அழுத்தினால் ஒலி நின்றது, ஆனால் பணி முடிந்ததாகக் குறிக்கப்படவில்லை.",
+          "சரிசெய்யப்பட்டது: அறிவிப்புப் பட்டியல் வழிசெலுத்தல் பட்டைக்குப் பின்னால் செல்லாமல் நின்றது."
+        ]
+      }
+    },
     {
       "version": "1.0.10",
       "released": "2026-08-08",
@@ -101,6 +145,32 @@
           "சரிசெய்யப்பட்டது: பணி நினைவூட்டல்கள் ஒலிக்கவே இல்லை. இப்போது அறிவிப்பில் 'முடிந்தது' அழுத்தும் வரை ஒலிக்கும் அலாரம்.",
           "சரிசெய்யப்பட்டது: பிரகாசமான சுயவிவர நிறத்தில் எழுத்து தெரியவில்லை, டார்க் மோட் பொத்தான் வேலை செய்யவில்லை, மேலும் அமைப்புகளிலிருந்து வெளியேறும்போது பயிற்சி தோன்றியது.",
           "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை இரட்டிப்பானது; வாரத்தை மாதமாக மாற்றினால் முகப்பு மேலே தாவியது."
+        ]
+      }
+    },
+    {
+      "version": "1.0.8",
+      "released": "2026-08-08",
+      "notes": {
+        "en": [
+          "A guided tour on first launch, replayable from Profile.",
+          "Profile customisation: cover image or GIF, biography, showcase artwork, avatar frames and page colour.",
+          "Insistent task alarms, ornate avatar frames, and a step-counting fix for steps walked before opening the app."
+        ],
+        "ms": [
+          "Panduan berpandu pada permulaan pertama, boleh dimainkan semula dari Profil.",
+          "Penyesuaian profil: imej kulit atau GIF, biografi, karya seni pameran, bingkai avatar dan warna halaman.",
+          "Penggera tugasan berterusan, bingkai avatar berhias, dan pembaikan kiraan langkah."
+        ],
+        "zh": [
+          "首次启动的新手导览，可在「我的」里重看。",
+          "资料页自定义：封面图或 GIF、简介、作品展示、头像边框和页面配色。",
+          "持续响铃的任务闹钟、精致头像边框，以及步数统计修复。"
+        ],
+        "ta": [
+          "முதல் முறை திறக்கும்போது வழிகாட்டி அறிமுகம், சுயவிவரத்தில் மீண்டும் பார்க்கலாம்.",
+          "சுயவிவரத் தனிப்பயனாக்கம்: அட்டைப் படம் அல்லது GIF, சுயவிவரம், படைப்புக் காட்சி, அவதார் சட்டங்கள், பக்க நிறம்.",
+          "தொடர்ந்து ஒலிக்கும் பணி அலாரம், அலங்கார அவதார் சட்டங்கள், அடி எண்ணிக்கை சரிசெய்தல்."
         ]
       }
     },
