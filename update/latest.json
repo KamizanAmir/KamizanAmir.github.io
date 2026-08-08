@@ -8,40 +8,40 @@
   "releasedAt": "2026-08-08",
   "notes": {
     "en": [
-      "Task reminders are alarms now: they keep sounding until you press Done on the notification itself. No need to open the app.",
-      "Avatar frames have real shapes — wings, ribbons, crowns and laurels, earned from your rarest badges.",
-      "Your profile page colour now repaints the page background. Button colours stay yours, set by Accent Colour.",
-      "Your cover image sits behind your avatar and name instead of above them.",
-      "Settings moved into one More settings page, with the app version at the end. Badges now come before your friend list.",
-      "Fixed: adding the same song twice silently doubled your queue. The queue is now visible in the music panel.",
-      "Fixed: steps walked before you first opened the app each day were being discarded."
+      "Report posts, messages and people. Tap the flag on any post, hold a message, or use the flag on someone's profile.",
+      "Daily sign-in is live for the first 12 beta testers: a day of VIP each day, and 3 months when you reach day 14.",
+      "A VIP badge now shows beside your name, and everyone can see it.",
+      "You can delete your account and everything on it from Profile > More settings.",
+      "Fixed: task reminders never fired. They are now alarms that keep sounding until you press Done on the notification.",
+      "Fixed: a bright profile colour left the text unreadable, the dark mode button stopped working, and the tutorial appeared when leaving More settings.",
+      "Fixed: adding the same song twice silently doubled your queue, and changing Week to Month jumped Home back to the top."
     ],
     "ms": [
-      "Peringatan tugasan kini penggera: ia terus berbunyi sehingga anda tekan Selesai pada pemberitahuan itu sendiri. Tidak perlu buka aplikasi.",
-      "Bingkai avatar kini berbentuk sebenar — sayap, reben, mahkota dan daun, diperoleh daripada lencana paling jarang anda.",
-      "Warna halaman profil kini mengecat latar belakang halaman. Warna butang kekal milik anda, ditetapkan oleh Warna Aksen.",
-      "Imej kulit anda kini berada di belakang avatar dan nama anda, bukan di atasnya.",
-      "Tetapan dipindahkan ke satu halaman Tetapan lain, dengan versi aplikasi di hujungnya. Lencana kini sebelum senarai rakan.",
-      "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir tanpa amaran. Baris gilir kini kelihatan dalam panel muzik.",
-      "Dibaiki: langkah sebelum anda membuka aplikasi setiap hari sedang dibuang."
+      "Laporkan siaran, mesej dan orang. Ketik bendera pada mana-mana siaran, tekan lama mesej, atau guna bendera pada profil seseorang.",
+      "Daftar masuk harian kini aktif untuk 12 penguji beta pertama: sehari VIP setiap hari, dan 3 bulan apabila sampai hari ke-14.",
+      "Lencana VIP kini dipaparkan di sebelah nama anda, dan semua orang boleh melihatnya.",
+      "Anda boleh memadam akaun anda dan segala isinya dari Profil > Tetapan lain.",
+      "Dibaiki: peringatan tugasan tidak pernah berbunyi. Kini ia penggera yang terus berbunyi sehingga anda tekan Selesai pada pemberitahuan.",
+      "Dibaiki: warna profil cerah menjadikan teks tidak terbaca, butang mod gelap tidak berfungsi, dan tutorial muncul semasa keluar dari Tetapan lain.",
+      "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir, dan menukar Minggu ke Bulan melompat semula ke atas."
     ],
     "zh": [
-      "任务提醒现在是闹钟：会一直响到你在通知上按「完成」为止，不用打开应用。",
-      "头像边框有了真正的造型——翅膀、缎带、王冠和桂冠，由你最稀有的徽章解锁。",
-      "资料页配色现在会重绘页面背景。按钮颜色仍由「强调色」决定。",
-      "封面图现在位于头像和名字的后方，而不是上方。",
-      "设置已收进「更多设置」一页，末尾显示应用版本。徽章现在排在好友列表之前。",
-      "已修复：重复添加同一首歌会悄悄让队列翻倍。音乐面板现在能看到队列。",
-      "已修复：每天首次打开应用之前走的步数会被丢弃。"
+      "可以举报动态、消息和用户。点动态上的旗帜、长按消息，或在对方资料页点旗帜。",
+      "每日签到已对前 12 位测试者开放：每天一天 VIP，坚持到第 14 天可得 3 个月。",
+      "VIP 徽章现在显示在名字旁边，所有人都能看到。",
+      "可在「我的 > 更多设置」中删除账号及其全部内容。",
+      "已修复：任务提醒从不响。现在是闹钟，会一直响到你在通知上按「完成」。",
+      "已修复：浅色资料页配色导致文字看不清、深色模式按钮失效、离开更多设置时弹出新手导览。",
+      "已修复：重复添加同一首歌会让队列翻倍；把「周」改成「月」会让主页跳回顶部。"
     ],
     "ta": [
-      "பணி நினைவூட்டல்கள் இப்போது அலாரம்: அறிவிப்பிலேயே 'முடிந்தது' அழுத்தும் வரை ஒலித்துக்கொண்டே இருக்கும். ஆப்பைத் திறக்க வேண்டியதில்லை.",
-      "அவதார் சட்டங்களுக்கு உண்மையான வடிவங்கள் — இறக்கைகள், ரிப்பன், கிரீடம், இலைமாலை, உங்கள் அரிய பேட்ஜ்களால் திறக்கப்படும்.",
-      "சுயவிவரப் பக்க நிறம் இப்போது பக்கப் பின்னணியை மாற்றும். பொத்தான் நிறங்கள் 'அக்சென்ட் நிறம்' மூலம் உங்களுடையதாகவே இருக்கும்.",
-      "அட்டைப் படம் இப்போது உங்கள் அவதாருக்கும் பெயருக்கும் பின்னால் இருக்கும், மேலே அல்ல.",
-      "அமைப்புகள் ஒரே 'மேலும் அமைப்புகள்' பக்கத்திற்கு நகர்ந்தன, இறுதியில் ஆப் பதிப்புடன். பேட்ஜ்கள் இப்போது நண்பர் பட்டியலுக்கு முன்.",
-      "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை அமைதியாக இரட்டிப்பானது. வரிசை இப்போது இசைப் பலகையில் தெரியும்.",
-      "சரிசெய்யப்பட்டது: ஒவ்வொரு நாளும் ஆப்பைத் திறப்பதற்கு முன் நடந்த அடிகள் நிராகரிக்கப்பட்டன."
+      "பதிவுகள், செய்திகள், நபர்களைப் புகாரளிக்கலாம். பதிவில் உள்ள கொடியைத் தட்டவும், செய்தியை நீண்ட நேரம் அழுத்தவும், அல்லது சுயவிவரத்தில் உள்ள கொடியைப் பயன்படுத்தவும்.",
+      "தினசரி உள்நுழைவு முதல் 12 பீட்டா சோதனையாளர்களுக்கு: ஒவ்வொரு நாளும் ஒரு நாள் VIP, 14வது நாளில் 3 மாதங்கள்.",
+      "VIP பேட்ஜ் இப்போது உங்கள் பெயருக்கு அருகில், அனைவரும் பார்க்கலாம்.",
+      "சுயவிவரம் > மேலும் அமைப்புகள் என்பதில் கணக்கையும் அதிலுள்ள அனைத்தையும் நீக்கலாம்.",
+      "சரிசெய்யப்பட்டது: பணி நினைவூட்டல்கள் ஒலிக்கவே இல்லை. இப்போது அறிவிப்பில் 'முடிந்தது' அழுத்தும் வரை ஒலிக்கும் அலாரம்.",
+      "சரிசெய்யப்பட்டது: பிரகாசமான சுயவிவர நிறத்தில் எழுத்து தெரியவில்லை, டார்க் மோட் பொத்தான் வேலை செய்யவில்லை, மேலும் அமைப்புகளிலிருந்து வெளியேறும்போது பயிற்சி தோன்றியது.",
+      "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை இரட்டிப்பானது; வாரத்தை மாதமாக மாற்றினால் முகப்பு மேலே தாவியது."
     ]
   },
   "announcement": null,
@@ -51,40 +51,40 @@
       "released": "2026-08-08",
       "notes": {
         "en": [
-          "Task reminders are alarms now: they keep sounding until you press Done on the notification itself. No need to open the app.",
-          "Avatar frames have real shapes — wings, ribbons, crowns and laurels, earned from your rarest badges.",
-          "Your profile page colour now repaints the page background. Button colours stay yours, set by Accent Colour.",
-          "Your cover image sits behind your avatar and name instead of above them.",
-          "Settings moved into one More settings page, with the app version at the end. Badges now come before your friend list.",
-          "Fixed: adding the same song twice silently doubled your queue. The queue is now visible in the music panel.",
-          "Fixed: steps walked before you first opened the app each day were being discarded."
+          "Report posts, messages and people. Tap the flag on any post, hold a message, or use the flag on someone's profile.",
+          "Daily sign-in is live for the first 12 beta testers: a day of VIP each day, and 3 months when you reach day 14.",
+          "A VIP badge now shows beside your name, and everyone can see it.",
+          "You can delete your account and everything on it from Profile > More settings.",
+          "Fixed: task reminders never fired. They are now alarms that keep sounding until you press Done on the notification.",
+          "Fixed: a bright profile colour left the text unreadable, the dark mode button stopped working, and the tutorial appeared when leaving More settings.",
+          "Fixed: adding the same song twice silently doubled your queue, and changing Week to Month jumped Home back to the top."
         ],
         "ms": [
-          "Peringatan tugasan kini penggera: ia terus berbunyi sehingga anda tekan Selesai pada pemberitahuan itu sendiri. Tidak perlu buka aplikasi.",
-          "Bingkai avatar kini berbentuk sebenar — sayap, reben, mahkota dan daun, diperoleh daripada lencana paling jarang anda.",
-          "Warna halaman profil kini mengecat latar belakang halaman. Warna butang kekal milik anda, ditetapkan oleh Warna Aksen.",
-          "Imej kulit anda kini berada di belakang avatar dan nama anda, bukan di atasnya.",
-          "Tetapan dipindahkan ke satu halaman Tetapan lain, dengan versi aplikasi di hujungnya. Lencana kini sebelum senarai rakan.",
-          "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir tanpa amaran. Baris gilir kini kelihatan dalam panel muzik.",
-          "Dibaiki: langkah sebelum anda membuka aplikasi setiap hari sedang dibuang."
+          "Laporkan siaran, mesej dan orang. Ketik bendera pada mana-mana siaran, tekan lama mesej, atau guna bendera pada profil seseorang.",
+          "Daftar masuk harian kini aktif untuk 12 penguji beta pertama: sehari VIP setiap hari, dan 3 bulan apabila sampai hari ke-14.",
+          "Lencana VIP kini dipaparkan di sebelah nama anda, dan semua orang boleh melihatnya.",
+          "Anda boleh memadam akaun anda dan segala isinya dari Profil > Tetapan lain.",
+          "Dibaiki: peringatan tugasan tidak pernah berbunyi. Kini ia penggera yang terus berbunyi sehingga anda tekan Selesai pada pemberitahuan.",
+          "Dibaiki: warna profil cerah menjadikan teks tidak terbaca, butang mod gelap tidak berfungsi, dan tutorial muncul semasa keluar dari Tetapan lain.",
+          "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir, dan menukar Minggu ke Bulan melompat semula ke atas."
         ],
         "zh": [
-          "任务提醒现在是闹钟：会一直响到你在通知上按「完成」为止，不用打开应用。",
-          "头像边框有了真正的造型——翅膀、缎带、王冠和桂冠，由你最稀有的徽章解锁。",
-          "资料页配色现在会重绘页面背景。按钮颜色仍由「强调色」决定。",
-          "封面图现在位于头像和名字的后方，而不是上方。",
-          "设置已收进「更多设置」一页，末尾显示应用版本。徽章现在排在好友列表之前。",
-          "已修复：重复添加同一首歌会悄悄让队列翻倍。音乐面板现在能看到队列。",
-          "已修复：每天首次打开应用之前走的步数会被丢弃。"
+          "可以举报动态、消息和用户。点动态上的旗帜、长按消息，或在对方资料页点旗帜。",
+          "每日签到已对前 12 位测试者开放：每天一天 VIP，坚持到第 14 天可得 3 个月。",
+          "VIP 徽章现在显示在名字旁边，所有人都能看到。",
+          "可在「我的 > 更多设置」中删除账号及其全部内容。",
+          "已修复：任务提醒从不响。现在是闹钟，会一直响到你在通知上按「完成」。",
+          "已修复：浅色资料页配色导致文字看不清、深色模式按钮失效、离开更多设置时弹出新手导览。",
+          "已修复：重复添加同一首歌会让队列翻倍；把「周」改成「月」会让主页跳回顶部。"
         ],
         "ta": [
-          "பணி நினைவூட்டல்கள் இப்போது அலாரம்: அறிவிப்பிலேயே 'முடிந்தது' அழுத்தும் வரை ஒலித்துக்கொண்டே இருக்கும். ஆப்பைத் திறக்க வேண்டியதில்லை.",
-          "அவதார் சட்டங்களுக்கு உண்மையான வடிவங்கள் — இறக்கைகள், ரிப்பன், கிரீடம், இலைமாலை, உங்கள் அரிய பேட்ஜ்களால் திறக்கப்படும்.",
-          "சுயவிவரப் பக்க நிறம் இப்போது பக்கப் பின்னணியை மாற்றும். பொத்தான் நிறங்கள் 'அக்சென்ட் நிறம்' மூலம் உங்களுடையதாகவே இருக்கும்.",
-          "அட்டைப் படம் இப்போது உங்கள் அவதாருக்கும் பெயருக்கும் பின்னால் இருக்கும், மேலே அல்ல.",
-          "அமைப்புகள் ஒரே 'மேலும் அமைப்புகள்' பக்கத்திற்கு நகர்ந்தன, இறுதியில் ஆப் பதிப்புடன். பேட்ஜ்கள் இப்போது நண்பர் பட்டியலுக்கு முன்.",
-          "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை அமைதியாக இரட்டிப்பானது. வரிசை இப்போது இசைப் பலகையில் தெரியும்.",
-          "சரிசெய்யப்பட்டது: ஒவ்வொரு நாளும் ஆப்பைத் திறப்பதற்கு முன் நடந்த அடிகள் நிராகரிக்கப்பட்டன."
+          "பதிவுகள், செய்திகள், நபர்களைப் புகாரளிக்கலாம். பதிவில் உள்ள கொடியைத் தட்டவும், செய்தியை நீண்ட நேரம் அழுத்தவும், அல்லது சுயவிவரத்தில் உள்ள கொடியைப் பயன்படுத்தவும்.",
+          "தினசரி உள்நுழைவு முதல் 12 பீட்டா சோதனையாளர்களுக்கு: ஒவ்வொரு நாளும் ஒரு நாள் VIP, 14வது நாளில் 3 மாதங்கள்.",
+          "VIP பேட்ஜ் இப்போது உங்கள் பெயருக்கு அருகில், அனைவரும் பார்க்கலாம்.",
+          "சுயவிவரம் > மேலும் அமைப்புகள் என்பதில் கணக்கையும் அதிலுள்ள அனைத்தையும் நீக்கலாம்.",
+          "சரிசெய்யப்பட்டது: பணி நினைவூட்டல்கள் ஒலிக்கவே இல்லை. இப்போது அறிவிப்பில் 'முடிந்தது' அழுத்தும் வரை ஒலிக்கும் அலாரம்.",
+          "சரிசெய்யப்பட்டது: பிரகாசமான சுயவிவர நிறத்தில் எழுத்து தெரியவில்லை, டார்க் மோட் பொத்தான் வேலை செய்யவில்லை, மேலும் அமைப்புகளிலிருந்து வெளியேறும்போது பயிற்சி தோன்றியது.",
+          "சரிசெய்யப்பட்டது: ஒரே பாடலை இருமுறை சேர்த்தால் வரிசை இரட்டிப்பானது; வாரத்தை மாதமாக மாற்றினால் முகப்பு மேலே தாவியது."
         ]
       }
     },
