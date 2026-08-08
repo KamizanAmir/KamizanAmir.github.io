@@ -1,14 +1,14 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.14",
-  "latestBuild": 15,
+  "latestVersion": "1.0.15",
+  "latestBuild": 16,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.14/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.15/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-08",
   "notes": {
     "en": [
-      "Removed the in-app APK installer permission for Google Play"
+      "Play installs no longer prompt for the GitHub update"
     ],
     "ms": [
       "Dibaiki: dalam Blast block, pemain yang papannya tersekat dahulu dipaparkan sebagai pendahulu. Papan markah kini menyusun ikut skor.",
