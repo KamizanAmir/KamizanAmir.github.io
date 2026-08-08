@@ -1,18 +1,14 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.13",
-  "latestBuild": 14,
+  "latestVersion": "1.0.14",
+  "latestBuild": 15,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.13/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.14/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-08",
   "notes": {
     "en": [
-      "Fixed: in Blast block the player who jammed their board first showed as the leader. The scoreboard now ranks by score, because finishing early in blocks means running out of moves.",
-      "Tapping a name or photo in the Chat list now opens the conversation. Their profile is in the chat header.",
-      "Fixed: pressing Done on a task alarm silenced it but never marked the task complete.",
-      "Someone's profile now shows a Moments button instead of their whole feed.",
-      "Fixed: the Alerts list stopped short of the navigation bar instead of scrolling behind it."
+      "Removed the in-app APK installer permission for Google Play"
     ],
     "ms": [
       "Dibaiki: dalam Blast block, pemain yang papannya tersekat dahulu dipaparkan sebagai pendahulu. Papan markah kini menyusun ikut skor.",
