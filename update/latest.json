@@ -1,13 +1,14 @@
 {
   "_comment": "KamiTrack release manifest. The installed app fetches this on launch and compares it against its own version. Edit it, commit, push — GitHub Pages serves it within a minute and every phone finds out on next launch.",
-  "latestVersion": "1.0.8",
-  "latestBuild": 9,
+  "latestVersion": "1.0.9",
+  "latestBuild": 10,
   "minimumVersion": "1.0.0",
-  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.8/kamitrack-arm64.apk",
+  "apkUrl": "https://github.com/KamizanAmir/KamizanAmir.github.io/releases/download/1.0.9/kamitrack-arm64.apk",
   "releasePage": "https://kamizanamir.github.io/update/",
   "releasedAt": "2026-08-08",
   "notes": {
     "en": [
+      "Important: this build is signed with a new key, so you must uninstall the old KamiTrack before installing it. Your account, steps and runs are safe — they live on your account, not the phone.",
       "Report posts, messages and people. Tap the flag on any post, hold a message, or use the flag on someone's profile.",
       "Daily sign-in is live for the first 12 beta testers: a day of VIP each day, and 3 months when you reach day 14.",
       "A VIP badge now shows beside your name, and everyone can see it.",
@@ -17,6 +18,7 @@
       "Fixed: adding the same song twice silently doubled your queue, and changing Week to Month jumped Home back to the top."
     ],
     "ms": [
+      "Penting: binaan ini ditandatangani dengan kunci baharu, jadi anda perlu menyahpasang KamiTrack lama sebelum memasangnya. Akaun, langkah dan larian anda selamat — ia disimpan pada akaun anda, bukan telefon.",
       "Laporkan siaran, mesej dan orang. Ketik bendera pada mana-mana siaran, tekan lama mesej, atau guna bendera pada profil seseorang.",
       "Daftar masuk harian kini aktif untuk 12 penguji beta pertama: sehari VIP setiap hari, dan 3 bulan apabila sampai hari ke-14.",
       "Lencana VIP kini dipaparkan di sebelah nama anda, dan semua orang boleh melihatnya.",
@@ -26,6 +28,7 @@
       "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir, dan menukar Minggu ke Bulan melompat semula ke atas."
     ],
     "zh": [
+      "重要：本版本使用了新的签名密钥，安装前必须先卸载旧版 KamiTrack。你的账号、步数和跑步记录都不会丢失——它们保存在账号里，不在手机上。",
       "可以举报动态、消息和用户。点动态上的旗帜、长按消息，或在对方资料页点旗帜。",
       "每日签到已对前 12 位测试者开放：每天一天 VIP，坚持到第 14 天可得 3 个月。",
       "VIP 徽章现在显示在名字旁边，所有人都能看到。",
@@ -35,6 +38,7 @@
       "已修复：重复添加同一首歌会让队列翻倍；把「周」改成「月」会让主页跳回顶部。"
     ],
     "ta": [
+      "முக்கியம்: இந்தப் பதிப்பு புதிய சாவியால் கையொப்பமிடப்பட்டுள்ளது, எனவே நிறுவும் முன் பழைய KamiTrack-ஐ நீக்க வேண்டும். உங்கள் கணக்கு, அடிகள், ஓட்டங்கள் பாதுகாப்பானவை — அவை கணக்கில் உள்ளன, தொலைபேசியில் அல்ல.",
       "பதிவுகள், செய்திகள், நபர்களைப் புகாரளிக்கலாம். பதிவில் உள்ள கொடியைத் தட்டவும், செய்தியை நீண்ட நேரம் அழுத்தவும், அல்லது சுயவிவரத்தில் உள்ள கொடியைப் பயன்படுத்தவும்.",
       "தினசரி உள்நுழைவு முதல் 12 பீட்டா சோதனையாளர்களுக்கு: ஒவ்வொரு நாளும் ஒரு நாள் VIP, 14வது நாளில் 3 மாதங்கள்.",
       "VIP பேட்ஜ் இப்போது உங்கள் பெயருக்கு அருகில், அனைவரும் பார்க்கலாம்.",
@@ -47,10 +51,11 @@
   "announcement": null,
   "history": [
     {
-      "version": "1.0.8",
+      "version": "1.0.9",
       "released": "2026-08-08",
       "notes": {
         "en": [
+          "Important: this build is signed with a new key, so you must uninstall the old KamiTrack before installing it. Your account, steps and runs are safe — they live on your account, not the phone.",
           "Report posts, messages and people. Tap the flag on any post, hold a message, or use the flag on someone's profile.",
           "Daily sign-in is live for the first 12 beta testers: a day of VIP each day, and 3 months when you reach day 14.",
           "A VIP badge now shows beside your name, and everyone can see it.",
@@ -60,6 +65,7 @@
           "Fixed: adding the same song twice silently doubled your queue, and changing Week to Month jumped Home back to the top."
         ],
         "ms": [
+          "Penting: binaan ini ditandatangani dengan kunci baharu, jadi anda perlu menyahpasang KamiTrack lama sebelum memasangnya. Akaun, langkah dan larian anda selamat — ia disimpan pada akaun anda, bukan telefon.",
           "Laporkan siaran, mesej dan orang. Ketik bendera pada mana-mana siaran, tekan lama mesej, atau guna bendera pada profil seseorang.",
           "Daftar masuk harian kini aktif untuk 12 penguji beta pertama: sehari VIP setiap hari, dan 3 bulan apabila sampai hari ke-14.",
           "Lencana VIP kini dipaparkan di sebelah nama anda, dan semua orang boleh melihatnya.",
@@ -69,6 +75,7 @@
           "Dibaiki: menambah lagu yang sama dua kali menggandakan baris gilir, dan menukar Minggu ke Bulan melompat semula ke atas."
         ],
         "zh": [
+          "重要：本版本使用了新的签名密钥，安装前必须先卸载旧版 KamiTrack。你的账号、步数和跑步记录都不会丢失——它们保存在账号里，不在手机上。",
           "可以举报动态、消息和用户。点动态上的旗帜、长按消息，或在对方资料页点旗帜。",
           "每日签到已对前 12 位测试者开放：每天一天 VIP，坚持到第 14 天可得 3 个月。",
           "VIP 徽章现在显示在名字旁边，所有人都能看到。",
@@ -78,6 +85,7 @@
           "已修复：重复添加同一首歌会让队列翻倍；把「周」改成「月」会让主页跳回顶部。"
         ],
         "ta": [
+          "முக்கியம்: இந்தப் பதிப்பு புதிய சாவியால் கையொப்பமிடப்பட்டுள்ளது, எனவே நிறுவும் முன் பழைய KamiTrack-ஐ நீக்க வேண்டும். உங்கள் கணக்கு, அடிகள், ஓட்டங்கள் பாதுகாப்பானவை — அவை கணக்கில் உள்ளன, தொலைபேசியில் அல்ல.",
           "பதிவுகள், செய்திகள், நபர்களைப் புகாரளிக்கலாம். பதிவில் உள்ள கொடியைத் தட்டவும், செய்தியை நீண்ட நேரம் அழுத்தவும், அல்லது சுயவிவரத்தில் உள்ள கொடியைப் பயன்படுத்தவும்.",
           "தினசரி உள்நுழைவு முதல் 12 பீட்டா சோதனையாளர்களுக்கு: ஒவ்வொரு நாளும் ஒரு நாள் VIP, 14வது நாளில் 3 மாதங்கள்.",
           "VIP பேட்ஜ் இப்போது உங்கள் பெயருக்கு அருகில், அனைவரும் பார்க்கலாம்.",
