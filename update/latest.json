@@ -32,7 +32,11 @@
       "சரிசெய்யப்பட்டது: அறிவிப்புப் பட்டியல் வழிசெலுத்தல் பட்டைக்கு முன் நின்றது."
     ]
   },
-  "announcement": null,
+  "announcement": {
+    "id": "kami-1.7.0-2026-08-15",
+    "title": "KamiTrack 1.7.0 is here 🎉",
+    "body": "👤 Profiles are cleaner: when you visit someone, Follow and Message are first, with Moments directly above their Posts, Friends, Followers and Following. Your own profile no longer repeats the Friends list.\n\n🔥 Home now shows your BMR and signed calorie deficit or surplus. Tasks and Reminders show small badges only when something needs attention.\n\n⏰ Reminders are easier to read, and 📊 the activity chart now shows a steps axis and values above the bars.\n\n🖼️ Animated avatar frames now fit properly. We also fixed comment submission errors and improved reaction notifications and reactor details.\n\nThank you for testing and sending reports 🙏"
+  },
   "history": [
     {
       "version": "1.0.13",
