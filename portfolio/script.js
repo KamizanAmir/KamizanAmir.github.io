@@ -1,292 +1,600 @@
-document.addEventListener('DOMContentLoaded', () => {
+/* =============================================================================
+   KAMIZAN AMIRUDIN — ARCADE PORTFOLIO ENGINE
+   Vanilla, no build step, no dependencies.
 
-    const world = document.getElementById('world');
-    const hero = document.getElementById('hero');
-    const startScreen = document.getElementById('start-screen');
-    const altVal = document.getElementById('alt-val');
-    const expVal = document.getElementById('exp-val');
-    const obstacles = document.querySelectorAll('.obstacle');
-    const restartBtn = document.getElementById('restart-btn');
-    const balloonVehicle = document.getElementById('balloon-vehicle');
-    const startBtn = document.getElementById('start-btn');
+   Two things changed structurally from the previous build:
 
-    // Controls
-    const btnRight = document.getElementById('btn-right');
-    const btnLeft = document.getElementById('btn-left');
-    const btnJump = document.getElementById('btn-jump');
+   1. Movement is a requestAnimationFrame loop over a held-key set, not a
+      setInterval firing discrete 20px hops. Input now has acceleration and
+      friction, so holding a key feels continuous instead of stuttering, and
+      the world moves at the same speed on a 60Hz and a 144Hz display.
 
-    // STATE
-    let cameraX = 0;
-    let cameraY = 0;
-    let heroScreenLeft = window.innerWidth < 768 ? 50 : 200;
-    let isGameStarted = false;
-    let isJumping = false;
-    let moveInterval = null;
-    let gameMode = 'WALKING'; // 'WALKING', 'FLYING', 'ROOF_WALK'
+   2. Altitude is a pure function of world X rather than a four-state machine
+      ('WALKING'/'FLYING'/'ROOF_WALK'/...). The old version could desync if you
+      turned around mid-flight, which stranded the balloon off-screen. A curve
+      cannot desync: walk back and you descend along exactly the path you rose.
+   ========================================================================== */
 
-    // CONFIG
-    const speed = 20;
-    const maxScroll = 9500;
-    const groundLevel = 64;
-    const missionCompleteX = 9000;
+(() => {
+    'use strict';
 
-    // BALLOON CONFIG
-    const balloonTriggerX = 5000;
-    const landingX = 7000;
-    const maxAltitude = 600;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // --- INITIALIZATION ---
-    initPortfolioLogic();
-    initContactFormLogic();
+    /* =========================================================================
+       WORLD LAYOUT
+       Zone x-positions live in the HTML (data-x) so the markup stays the single
+       source of truth for where things are.
+       ====================================================================== */
+    const WORLD_END = 15000;
 
-    // --- INPUT HANDLERS ---
-    window.addEventListener('wheel', (e) => {
-        if (!isGameStarted) startGame();
-        let dir = e.deltaY > 0 ? 1 : -1;
-        handleMovement(dir);
-    });
+    // Altitude curve keyframes: [worldX, altitude]. Everything between is a
+    // smoothstep, so the ride eases in and out instead of hinging at a corner.
+    const ALT_CURVE = [
+        [0, 0],
+        [7000, 0],       // balloon pickup
+        [8000, 560],     // cruising altitude, reached before the first sky zone
+        [11400, 560],    // stay up through projects + education
+        [12400, 0],      // descend
+        [WORLD_END, 0]
+    ];
+
+    const ZONE_LABELS = {
+        intro: 'START',
+        profile: 'PROFILE',
+        stack: 'STACK',
+        quests: 'QUESTS',
+        loot: 'WORK',
+        skills: 'SKILLS',
+        contact: 'CONTACT',
+        end: 'END'
+    };
+
+    /* =========================================================================
+       ELEMENTS
+       ====================================================================== */
+    const $ = (id) => document.getElementById(id);
+
+    const world = $('world');
+    const hero = $('hero');
+    const balloon = $('balloon');
+    const overlay = $('overlay');
+    const hint = $('hint');
+    const pad = $('pad');
+    const announce = $('announce');
+    const railMarks = $('rail-marks');
+    const railFill = $('rail-fill');
+    const layers = {
+        stars: $('layer-stars'),
+        far: $('layer-far'),
+        near: $('layer-near')
+    };
+    const hud = {
+        progress: $('hud-progress'),
+        alt: $('hud-alt'),
+        zone: $('hud-zone')
+    };
+
+    const zones = Array.from(document.querySelectorAll('.zone'));
+    const obstacles = Array.from(document.querySelectorAll('.obstacle'));
+    const placeables = Array.from(document.querySelectorAll('[data-x]'));
+
+    /* =========================================================================
+       STATE
+       ====================================================================== */
+    const state = {
+        x: 0,             // camera position in world units
+        vx: 0,            // velocity, px per frame at 60fps
+        facing: 1,
+        started: false,
+        paused: false,
+        jumpUntil: 0,
+        travelTo: null,   // fast-travel target, or null
+        lastTime: 0
+    };
+
+    const held = new Set();
+
+    // Config
+    const ACCEL = 1.5;
+    const MAX_SPEED = 15;
+    const FRICTION = 0.82;
+    const TRAVEL_SPEED = 90;   // px per frame while fast-travelling
+    const JUMP_MS = 520;
+    const JUMP_H = 150;
+
+    const heroScreenX = () => (window.innerWidth < 600 ? 42 : 200);
+    const groundH = () =>
+        parseInt(getComputedStyle(document.documentElement).getPropertyValue('--ground-h'), 10) || 74;
+
+    /* =========================================================================
+       ALTITUDE CURVE
+       ====================================================================== */
+    function altitudeAt(x) {
+        for (let i = 0; i < ALT_CURVE.length - 1; i++) {
+            const [x0, a0] = ALT_CURVE[i];
+            const [x1, a1] = ALT_CURVE[i + 1];
+            if (x < x0 || x > x1) continue;
+            if (a0 === a1) return a0;
+            const t = (x - x0) / (x1 - x0);
+            // smoothstep — no visible kink where the segments meet
+            const e = t * t * (3 - 2 * t);
+            return a0 + (a1 - a0) * e;
+        }
+        return ALT_CURVE[ALT_CURVE.length - 1][1];
+    }
+
+    /* =========================================================================
+       LAYOUT
+       Everything positioned from data-x, and lifted by the altitude curve so a
+       sky zone always arrives at eye level rather than above or below it.
+       ====================================================================== */
+    function layoutWorld() {
+        placeables.forEach((el) => {
+            const x = Number(el.dataset.x) || 0;
+            el.style.left = x + 'px';
+
+            // Clear the inline value first so the reading is the stylesheet's
+            // base, not the lifted value written on the previous pass —
+            // otherwise every resize stacked another altitude on top and the
+            // sky zones climbed off the screen. Clearing also re-picks up the
+            // breakpoint's own bottom after a rotation.
+            el.style.bottom = '';
+            const alt = altitudeAt(x);
+            if (alt <= 0) return;
+
+            // The world translates DOWN by `alt` when the camera reaches this
+            // x, so anything here is raised by the same amount to land back at
+            // ground height on screen.
+            const base = parseFloat(getComputedStyle(el).bottom) || 0;
+            el.style.bottom = (base + alt) + 'px';
+        });
+
+        // Zones are centred on their x, not left-aligned to it
+        zones.forEach((z) => {
+            z.style.width = '100vw';
+            z.style.left = (Number(z.dataset.x) - window.innerWidth / 2) + 'px';
+        });
+
+        world.style.width = WORLD_END + 'px';
+        hero.style.left = heroScreenX() + 'px';
+
+        // Rail positions depend on viewport width (camera space does), so they
+        // are recomputed here rather than fixed once at build time.
+        const max = camMax();
+        Array.from(railMarks.children).forEach((mark) => {
+            const target = clampX(Number(mark.dataset.target) - window.innerWidth / 2);
+            mark.style.left = ((target / max) * 100) + '%';
+        });
+    }
+
+    /* =========================================================================
+       ZONE RAIL — the map, and the reason this is usable at all
+       ====================================================================== */
+    function buildRail() {
+        zones.forEach((z, i) => {
+            const x = Number(z.dataset.x);
+            const key = z.dataset.zone;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'rail-mark';
+            btn.dataset.target = String(x);
+            btn.setAttribute('aria-label', `Zone ${i + 1}: ${ZONE_LABELS[key]}`);
+            btn.innerHTML = `<span>${ZONE_LABELS[key]}</span>`;
+            btn.addEventListener('click', () => travelTo(x));
+            railMarks.appendChild(btn);
+        });
+    }
+
+    // Takes a zone's world x and converts it to the camera position that puts
+    // that zone in the middle of the screen. Passing a zone x straight through
+    // as a camera position is what left every jump landing half a screen short.
+    function travelTo(zoneX) {
+        const x = zoneX - window.innerWidth / 2;
+        startGame();
+        closeOverlay();
+        if (reduceMotion) {
+            // No glide: land on it immediately, then let the normal frame
+            // update handle the HUD.
+            state.x = clampX(x);
+            state.vx = 0;
+            state.travelTo = null;
+            requestAnimationFrame(focusNearestPanel);
+        } else {
+            state.travelTo = clampX(x);
+        }
+    }
+
+    // The camera stops where the last zone sits centred — walking past the
+    // end of the content would only show empty ground.
+    function camMax() {
+        const endX = Number(zones[zones.length - 1].dataset.x);
+        return Math.max(1, endX - window.innerWidth / 2);
+    }
+
+    const clampX = (x) => Math.max(0, Math.min(x, camMax()));
+
+    // Only ever called after a deliberate jump — focusing on every arrival
+    // would yank focus out from under someone who is just walking past.
+    function focusNearestPanel() {
+        const centre = window.innerWidth / 2;
+        let nearest = null;
+        let best = Infinity;
+        zones.forEach((z) => {
+            const d = Math.abs((Number(z.dataset.x) - state.x) - centre);
+            if (d < best) { best = d; nearest = z; }
+        });
+        if (nearest && best < centre) {
+            nearest.querySelector('.panel')?.focus({ preventScroll: true });
+        }
+    }
+
+    /* =========================================================================
+       INPUT
+       ====================================================================== */
+    const LEFT_KEYS = ['ArrowLeft', 'KeyA'];
+    const RIGHT_KEYS = ['ArrowRight', 'KeyD'];
 
     window.addEventListener('keydown', (e) => {
-        if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
-            e.preventDefault();
-        }
-        if (!isGameStarted && (e.code === 'ArrowRight' || e.code === 'Space')) startGame();
+        // Never swallow keys while the visitor is typing into the contact form
+        const t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
 
-        switch (e.code) {
-            case 'ArrowRight': handleMovement(1); hero.classList.remove('face-left'); break;
-            case 'ArrowLeft': handleMovement(-1); hero.classList.add('face-left'); break;
-            case 'Space': if (gameMode !== 'FLYING') performJump(); break;
+        if (e.code === 'Escape') {
+            e.preventDefault();
+            overlay.hasAttribute('hidden') || overlay.classList.contains('is-hiding')
+                ? openOverlay()
+                : closeOverlay();
+            return;
+        }
+
+        // Number keys 1-8 warp to a zone
+        if (/^Digit[1-8]$/.test(e.code)) {
+            const idx = Number(e.code.slice(5)) - 1;
+            if (zones[idx]) {
+                e.preventDefault();
+                travelTo(Number(zones[idx].dataset.x));
+            }
+            return;
+        }
+
+        if (LEFT_KEYS.includes(e.code) || RIGHT_KEYS.includes(e.code) || e.code === 'Space') {
+            e.preventDefault();
+            startGame();
+            if (e.code === 'Space') jump();
+            else held.add(e.code);
         }
     });
-    if (startBtn) {
-        startBtn.addEventListener('touchstart', (e) => {
+
+    window.addEventListener('keyup', (e) => held.delete(e.code));
+
+    // Losing focus mid-hold would otherwise leave the hero walking forever
+    window.addEventListener('blur', () => held.clear());
+
+    /* ---- Touch pad: Pointer Events, so mouse and stylus work too ----
+       The previous build listened for touchstart only, which meant the
+       on-screen controls were completely dead on a laptop. */
+    pad.querySelectorAll('.pad-btn').forEach((btn) => {
+        const dir = btn.dataset.dir;
+
+        const down = (e) => {
             e.preventDefault();
+            btn.classList.add('is-down');
+            btn.setPointerCapture?.(e.pointerId);
             startGame();
-        });
-        startBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            startGame();
-        });
+            if (dir) held.add(dir === '1' ? 'ArrowRight' : 'ArrowLeft');
+            else jump();
+        };
+
+        const up = () => {
+            btn.classList.remove('is-down');
+            if (dir) held.delete(dir === '1' ? 'ArrowRight' : 'ArrowLeft');
+        };
+
+        btn.addEventListener('pointerdown', down);
+        btn.addEventListener('pointerup', up);
+        btn.addEventListener('pointercancel', up);
+        btn.addEventListener('pointerleave', up);
+        btn.addEventListener('contextmenu', (e) => e.preventDefault());
+    });
+
+    // Show the pad only where there is no fine pointer — a laptop gets the
+    // keyboard legend instead of thumb buttons covering the world.
+    const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
+    const syncPad = () => {
+        pad.classList.toggle('is-on', coarse.matches);
+        // Panels and the hint lift out from behind the pad only when it's there
+        document.body.classList.toggle('has-pad', coarse.matches);
+    };
+    coarse.addEventListener('change', syncPad);
+    syncPad();
+
+    /* =========================================================================
+       OVERLAY
+       ====================================================================== */
+    function openOverlay() {
+        state.paused = true;
+        overlay.removeAttribute('hidden');
+        overlay.classList.remove('is-hiding');
+        held.clear();
+        $('btn-start').focus();
     }
 
-    const startMoving = (dir) => {
-        if (!isGameStarted) startGame();
-        if (moveInterval) clearInterval(moveInterval);
-        if (dir === -1) hero.classList.add('face-left'); else hero.classList.remove('face-left');
-        moveInterval = setInterval(() => { handleMovement(dir); }, 30);
-    };
-    const stopMoving = () => { if (moveInterval) clearInterval(moveInterval); hero.classList.remove('walk'); };
-
-    btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); startMoving(1); });
-    btnRight.addEventListener('touchend', stopMoving);
-    btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); startMoving(-1); });
-    btnLeft.addEventListener('touchend', stopMoving);
-    btnJump.addEventListener('touchstart', (e) => { e.preventDefault(); if (gameMode !== 'FLYING') performJump(); });
-
-    restartBtn.addEventListener('click', () => { location.reload(); });
-
-    // --- CORE GAME LOGIC ---
+    function closeOverlay() {
+        state.paused = false;
+        overlay.classList.add('is-hiding');
+        setTimeout(() => overlay.setAttribute('hidden', ''), 260);
+    }
 
     function startGame() {
-        if (isGameStarted) return;
-        isGameStarted = true;
-        startScreen.style.opacity = '0';
-        setTimeout(() => { startScreen.style.display = 'none'; }, 500);
+        if (!state.started) {
+            state.started = true;
+            hint.hidden = false;
+            setTimeout(() => {
+                hint.classList.add('is-fading');
+                setTimeout(() => { hint.hidden = true; }, 300);
+            }, 4200);
+        }
+        if (!overlay.hasAttribute('hidden')) closeOverlay();
     }
 
-    function handleMovement(direction) {
-        let nextCameraX = cameraX + (direction * speed);
-        if (nextCameraX < 0) nextCameraX = 0;
-        if (nextCameraX > maxScroll) nextCameraX = maxScroll;
+    $('btn-start').addEventListener('click', startGame);
+    $('btn-help').addEventListener('click', openOverlay);
+    $('btn-restart')?.addEventListener('click', () => travelTo(0));
 
-        let heroWorldPos = nextCameraX + heroScreenLeft;
+    /* =========================================================================
+       JUMP
+       Timed rather than physics-simulated: this is a portfolio, not a
+       platformer, and a predictable arc is easier to land on a block with.
+       ====================================================================== */
+    function jump() {
+        if (performance.now() < state.jumpUntil) return;
+        state.jumpUntil = performance.now() + JUMP_MS;
+    }
 
-        // --- MODE SWITCHING ---
+    function jumpOffset(now) {
+        const left = state.jumpUntil - now;
+        if (left <= 0) return 0;
+        const t = 1 - left / JUMP_MS;          // 0 -> 1 across the jump
+        return Math.sin(t * Math.PI) * JUMP_H; // up and back down
+    }
 
-        // 1. Enter Flight (From Walking)
-        if (gameMode === 'WALKING' && heroWorldPos >= (balloonTriggerX - 50) && heroWorldPos < landingX) {
-            gameMode = 'FLYING';
-            hero.style.opacity = '0'; // Hide Hero
+    /* =========================================================================
+       COLLISION
+       One pass over the obstacle list: whichever block the hero overlaps sets
+       the platform height under them.
+       ====================================================================== */
+    function platformUnder(worldX) {
+        let top = 0;
+        for (const obs of obstacles) {
+            const left = Number(obs.dataset.x);
+            const w = obs.offsetWidth;
+            const h = Number(obs.dataset.h) || 0;
+            if (worldX + 26 > left && worldX + 8 < left + w) top = Math.max(top, h);
         }
+        return top;
+    }
 
-        // 2. Abort Flight (Go Back Left)
-        if (gameMode === 'FLYING' && heroWorldPos < (balloonTriggerX - 50)) {
-            gameMode = 'WALKING';
-            hero.style.opacity = '1';
-            cameraY = 0;
-            // Reset balloon to ground
-            balloonVehicle.style.bottom = '60px';
-            balloonVehicle.style.left = balloonTriggerX + 'px';
-        }
+    /* =========================================================================
+       MAIN LOOP
+       ====================================================================== */
+    function frame(now) {
+        requestAnimationFrame(frame);
 
-        // 3. Land on Roof (Reaching Skyscraper)
-        if (gameMode === 'FLYING' && heroWorldPos >= landingX) {
-            gameMode = 'ROOF_WALK';
-            hero.style.opacity = '1';
-            cameraY = maxAltitude;
-            // Hide balloon below screen
-            balloonVehicle.style.bottom = '-500px';
-            balloonVehicle.style.left = landingX + 'px';
-        }
+        // Normalise to a 60fps step so a 144Hz monitor doesn't run 2.4x fast.
+        const dt = state.lastTime ? Math.min((now - state.lastTime) / 16.667, 3) : 1;
+        state.lastTime = now;
 
-        // 4. Go Back to Flight (Leaving Skyscraper Left)
-        if (gameMode === 'ROOF_WALK' && heroWorldPos < landingX) {
-            gameMode = 'FLYING';
-            hero.style.opacity = '0'; // Hide Hero
-            // Balloon will reappear via the continuous update loop below
-        }
+        if (state.paused) return;
 
-        // --- POSITION UPDATES ---
-
-        cameraX = nextCameraX;
-
-        if (gameMode === 'FLYING') {
-            // Ascend/Descend Camera logic
-            let flightDist = landingX - balloonTriggerX;
-            let currentDist = heroWorldPos - balloonTriggerX;
-            let flightProgress = currentDist / flightDist;
-
-            if (flightProgress < 1.0) {
-                cameraY = flightProgress * maxAltitude;
+        /* ---- Movement ---- */
+        if (state.travelTo !== null) {
+            const delta = state.travelTo - state.x;
+            if (Math.abs(delta) <= TRAVEL_SPEED * dt) {
+                state.x = state.travelTo;
+                state.travelTo = null;
+                state.vx = 0;
+                focusNearestPanel();
             } else {
-                cameraY = maxAltitude;
+                const dir = Math.sign(delta);
+                state.x += dir * TRAVEL_SPEED * dt;
+                state.facing = dir;
+            }
+        } else {
+            const right = RIGHT_KEYS.some((k) => held.has(k));
+            const left = LEFT_KEYS.some((k) => held.has(k));
+            const dir = (right ? 1 : 0) - (left ? 1 : 0);
+
+            if (dir !== 0) {
+                state.vx += dir * ACCEL * dt;
+                state.facing = dir;
+            } else {
+                // Friction rather than a hard stop, so releasing a key coasts
+                state.vx *= Math.pow(FRICTION, dt);
+                if (Math.abs(state.vx) < 0.12) state.vx = 0;
             }
 
-            // CRITICAL FIX: Counter-act World Gravity
-            // As cameraY goes UP, the world moves DOWN.
-            // We increase balloon bottom by cameraY to keep it visually fixed on screen.
-            balloonVehicle.style.bottom = (cameraY + 60) + 'px';
-
-            // Lock balloon Horizontal to Hero
-            balloonVehicle.style.left = (heroWorldPos - 55) + 'px';
-        }
-        else if (gameMode === 'ROOF_WALK') {
-            cameraY = maxAltitude;
-        }
-        else {
-            cameraY = 0;
+            state.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, state.vx));
+            state.x += state.vx * dt;
         }
 
-        world.style.transform = `translate(${-cameraX}px, ${cameraY}px)`;
+        state.x = clampX(state.x);
 
-        // --- HUD & ANIMATION ---
+        /* ---- Camera ---- */
+        const alt = altitudeAt(state.x + heroScreenX());
+        world.style.transform = `translate3d(${-state.x}px, ${alt}px, 0)`;
 
-        let percent = Math.min(100, Math.floor((heroWorldPos / missionCompleteX) * 100));
-        expVal.innerText = percent + '%';
-        altVal.innerText = Math.floor(cameraY) + 'ft';
+        // Parallax: each layer at a fraction of camera speed
+        layers.stars.style.transform = `translate3d(${-state.x * 0.06}px, ${alt * 0.10}px, 0)`;
+        layers.far.style.transform = `translate3d(${-state.x * 0.18}px, ${alt * 0.35}px, 0)`;
+        layers.near.style.transform = `translate3d(${-state.x * 0.42}px, ${alt * 0.7}px, 0)`;
 
-        if (gameMode === 'WALKING' || gameMode === 'ROOF_WALK') {
-            hero.classList.add('walk');
-            checkObstacles();
-            if (!moveInterval) {
-                clearTimeout(window.walkTimeout);
-                window.walkTimeout = setTimeout(() => { hero.classList.remove('walk'); }, 100);
-            }
+        /* ---- Hero ---- */
+        const worldX = state.x + heroScreenX();
+        const platform = alt > 4 ? 0 : platformUnder(worldX);
+        const lift = jumpOffset(now);
+        const flying = alt > 4;
+
+        hero.style.bottom = (groundH() + platform) + 'px';
+        hero.style.setProperty('--jump', lift + 'px');
+        hero.style.setProperty('--face', state.facing < 0 ? '-1' : '1');
+        hero.classList.toggle('is-walking', Math.abs(state.vx) > 0.5 && !flying && lift === 0);
+        hero.style.opacity = flying ? '0' : '1';
+
+        // The balloon is only ever drawn where the hero actually is, so it
+        // cannot drift away from them the way the old state machine allowed.
+        if (flying) {
+            balloon.style.display = 'block';
+            balloon.style.left = (worldX - 53) + 'px';
+            balloon.style.bottom = (groundH() + alt) + 'px';
+        } else {
+            balloon.style.display = 'none';
+        }
+
+        updateHud(worldX, alt);
+    }
+
+    /* =========================================================================
+       HUD + ZONE TRACKING
+       ====================================================================== */
+    let lastZone = null;
+
+    function updateHud(worldX, alt) {
+        const pct = Math.round(Math.min(100, (state.x / camMax()) * 100));
+        hud.progress.textContent = pct + '%';
+        hud.alt.textContent = Math.round(alt) + ' ft';
+        railFill.style.width = pct + '%';
+
+        // Measured on screen, not in world units: a zone is "here" when its
+        // panel is near the middle of the viewport, which is true at every
+        // window size rather than only at the one the threshold was tuned for.
+        const centre = window.innerWidth / 2;
+        let nearest = null;
+        let best = Infinity;
+        zones.forEach((z) => {
+            const d = Math.abs((Number(z.dataset.x) - state.x) - centre);
+            if (d < best) { best = d; nearest = z; }
+        });
+
+        const inZone = best < centre * 0.8 ? nearest : null;
+        const key = inZone ? inZone.dataset.zone : null;
+        hud.zone.textContent = key ? ZONE_LABELS[key] : '—';
+
+        const marks = railMarks.children;
+        zones.forEach((z, i) => {
+            const zx = Number(z.dataset.x);
+            marks[i].classList.toggle('is-passed', (zx - state.x) <= centre);
+            marks[i].classList.toggle('is-current', z === inZone);
+        });
+
+        // Announce arrival once, for screen readers and for the HUD label
+        if (key !== lastZone) {
+            lastZone = key;
+            if (key) announce.textContent = `Zone: ${ZONE_LABELS[key]}`;
         }
     }
 
-    function performJump() {
-        if (isJumping) return;
-        isJumping = true;
-        hero.classList.add('jump');
-        setTimeout(() => {
-            hero.classList.remove('jump');
-            isJumping = false;
-            checkObstacles();
-        }, 500);
-    }
+    /* =========================================================================
+       PROJECT FILTER
+       aria-pressed rather than an .active class, so the state is exposed to
+       assistive tech and not only to the stylesheet.
+       ====================================================================== */
+    const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+    const lootItems = Array.from(document.querySelectorAll('.loot-item'));
 
-    function checkObstacles() {
-        if (isJumping) return;
-        let onObstacle = false;
-        heroScreenLeft = window.innerWidth < 768 ? 50 : 200;
-        let heroWorldPos = cameraX + heroScreenLeft;
+    filterBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const f = btn.dataset.filter;
+            filterBtns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+            lootItems.forEach((item) => {
+                item.hidden = !(f === 'all' || item.dataset.cat === f);
+            });
+        });
+    });
 
-        obstacles.forEach(obs => {
-            let obsLeft = parseInt(obs.style.left);
-            let obsWidth = obs.offsetWidth;
-            let obsHeight = parseInt(obs.getAttribute('data-height'));
+    /* =========================================================================
+       CONTACT FORM
+       Inline validation, error next to its own field, focus moved to the first
+       problem. The previous version wrote errors with raw style mutation and
+       left the field un-associated with its message.
+       ====================================================================== */
+    const form = $('contact-form');
 
-            // Ignore skyscraper collision if we are already on the roof mode
-            if (gameMode === 'ROOF_WALK' && obs.classList.contains('skyscraper')) {
+    if (form) {
+        const rules = [
+            ['cf-name', (v) => v.trim().length >= 2, 'NAME IS TOO SHORT'],
+            ['cf-email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), 'CHECK THE EMAIL ADDRESS'],
+            ['cf-subject', (v) => v.trim().length >= 3, 'SUBJECT IS TOO SHORT'],
+            ['cf-message', (v) => v.trim().length >= 10, 'MESSAGE NEEDS 10+ CHARACTERS']
+        ];
+
+        const setError = (field, msg) => {
+            const box = document.getElementById('err-' + field.id.slice(3));
+            box.textContent = msg || '';
+            field.setAttribute('aria-invalid', msg ? 'true' : 'false');
+            if (msg) {
+                field.classList.remove('shake');
+                void field.offsetWidth;              // restart the animation
+                field.classList.add('shake');
+            }
+        };
+
+        // Clear an error as soon as the visitor fixes it, rather than making
+        // them submit again to find out.
+        rules.forEach(([id, test]) => {
+            const field = $(id);
+            field.addEventListener('input', () => {
+                if (field.getAttribute('aria-invalid') === 'true' && test(field.value)) {
+                    setError(field, '');
+                }
+            });
+        });
+
+        form.addEventListener('submit', (e) => {
+            let firstBad = null;
+
+            rules.forEach(([id, test, msg]) => {
+                const field = $(id);
+                const ok = test(field.value);
+                setError(field, ok ? '' : msg);
+                if (!ok && !firstBad) firstBad = field;
+            });
+
+            if (firstBad) {
+                e.preventDefault();
+                firstBad.focus();
                 return;
             }
 
-            if ((heroWorldPos + 30) > obsLeft && (heroWorldPos + 10) < (obsLeft + obsWidth)) {
-                hero.style.bottom = (groundLevel + obsHeight) + 'px';
-                onObstacle = true;
-            }
+            const submit = $('cf-submit');
+            submit.textContent = 'SENDING…';
+            submit.disabled = true;
         });
-
-        if (!onObstacle) {
-            hero.style.bottom = groundLevel + 'px';
-        }
     }
 
+    /* =========================================================================
+       BOOT
+       ====================================================================== */
+    let resizeTimer;
     window.addEventListener('resize', () => {
-        heroScreenLeft = window.innerWidth < 768 ? 50 : 200;
-        checkObstacles();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layoutWorld, 150);
     });
 
-    // --- HELPERS ---
-    function initPortfolioLogic() {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const portfolioItems = document.querySelectorAll('.g-item');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                const filterValue = this.getAttribute('data-filter');
-                portfolioItems.forEach(item => {
-                    const category = item.getAttribute('data-category');
-                    if (filterValue === 'all' || category === filterValue) {
-                        item.classList.remove('hide');
-                        item.classList.add('show');
-                    } else {
-                        item.classList.remove('show');
-                        item.classList.add('hide');
-                    }
-                });
-            });
-        });
-    }
+    buildRail();
+    layoutWorld();
 
-    function initContactFormLogic() {
-        const contactForm = document.querySelector('.retro-form');
-        if (!contactForm) return;
-        contactForm.addEventListener('submit', function (e) {
-            let valid = true;
-            const nameField = document.getElementById('name');
-            const emailField = document.getElementById('email');
-            const subjectField = document.getElementById('subject');
-            const messageField = document.getElementById('message');
-            [nameField, emailField, subjectField, messageField].forEach(resetField);
-            if (nameField.value.trim().length < 2) { highlightError(nameField, 'NAME TOO SHORT'); valid = false; }
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(emailField.value.trim())) { highlightError(emailField, 'BAD EMAIL'); valid = false; }
-            if (subjectField.value.trim().length < 3) { highlightError(subjectField, 'SUBJECT TOO SHORT'); valid = false; }
-            if (messageField.value.trim().length < 10) { highlightError(messageField, 'MSG TOO SHORT'); valid = false; }
-            if (!valid) { e.preventDefault(); } else {
-                const submitBtn = contactForm.querySelector('.submit-btn');
-                submitBtn.innerHTML = 'SENDING...';
-                submitBtn.disabled = true;
-            }
-        });
+    // Open with the first zone centred instead of pinned to the left gutter.
+    state.x = clampX(Number(zones[0].dataset.x) - window.innerWidth / 2);
+
+    requestAnimationFrame(frame);
+
+    // Deep link: /portfolio/#stack lands on that zone
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+        const z = zones.find((el) => el.dataset.zone === hash);
+        if (z) {
+            state.x = clampX(Number(z.dataset.x) - window.innerWidth / 2);
+            startGame();
+        }
     }
-    function highlightError(field, message) {
-        const parent = field.parentElement;
-        if (parent.querySelector('.error-message')) parent.querySelector('.error-message').remove();
-        field.style.borderColor = '#ff4d4d';
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.innerText = `! ${message}`;
-        parent.appendChild(errorDiv);
-        field.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
-        field.addEventListener('animationend', () => { field.style.animation = ''; }, { once: true });
-    }
-    function resetField(field) {
-        field.style.borderColor = '#555';
-        const parent = field.parentElement;
-        if (parent.querySelector('.error-message')) parent.querySelector('.error-message').remove();
-    }
-});
+})();
