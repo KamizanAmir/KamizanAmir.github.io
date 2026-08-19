@@ -4,19 +4,40 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Kamizan Amirudin – Senior Programmer & System Analyst Portfolio" />
-    <meta name="theme-color" content="#0B0E14" />
-    <title>Kamizan Amirudin | Senior Programmer & System Analyst</title>
+    <meta name="description"
+        content="Kamizan Amirudin — Senior Programmer, System Analyst and DevOps engineer in Petaling Jaya, Malaysia. Enterprise systems, manufacturing MES/ERP, SAP integration and Laravel/Flutter product work." />
+    <meta name="theme-color" content="#070A10" />
+    <meta name="author" content="Muhamad Kamizan Amirudin" />
+    <title>Kamizan Amirudin — Senior Programmer, System Analyst &amp; DevOps</title>
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="Kamizan Amirudin — Senior Programmer, System Analyst & DevOps" />
+    <meta property="og:description"
+        content="7+ years building enterprise systems: manufacturing MES/ERP, SAP Business One integration, Laravel/Vue platforms and Flutter apps." />
+    <meta property="og:url" content="https://kamizanamir.github.io" />
+    <meta property="og:image" content="https://kamizanamir.github.io/images/icon_new.jpg" />
+    <meta name="twitter:card" content="summary" />
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "Kamizan Amirudin",
-      "alternateName": "Muhamad Kamizan Amirudin Bin Muhamad Hidir",
+      "name": "Muhamad Kamizan Amirudin",
+      "alternateName": "Kamizan Amirudin",
       "url": "https://kamizanamir.github.io",
       "image": "https://kamizanamir.github.io/images/icon_new.jpg",
-      "jobTitle": "Senior Programmer & System Analyst",
+      "jobTitle": "Senior Programmer",
+      "email": "mailto:kamizan980505@gmail.com",
+      "telephone": "+60134718690",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bandar Sunway, Petaling Jaya",
+        "addressCountry": "MY"
+      },
+      "worksFor": { "@type": "Organization", "name": "YHCM Sdn Bhd" },
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "Politeknik Tuanku Syed Sirajuddin" },
+      "knowsLanguage": ["ms", "en"],
+      "knowsAbout": ["Laravel", "Vue.js", "Flutter", "C#", "SAP Business One", "MES/ERP", "Docker", "MySQL", "MS SQL Server"],
       "sameAs": [
         "https://github.com/KamizanAmir",
         "https://www.linkedin.com/in/kamizan-amirudin"
@@ -27,479 +48,807 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="images/icon.ico" type="image/x-icon" />
+    <script>
+        /* Set before first paint: the reveal animations only hide their targets
+           when JS is present, so a blocked script leaves a readable page. */
+        document.documentElement.classList.add('js');
+    </script>
 </head>
 
 <body>
-    <canvas id="star-canvas" aria-hidden="true"></canvas>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-    <nav class="navbar">
-        <a href="#" class="nav-brand">KA.</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+    <nav class="nav" id="nav">
+        <a href="#top" class="nav-brand" aria-label="Kamizan Amirudin — home">
+            <span class="brand-mark" aria-hidden="true">KA</span>
+            <span class="brand-text">kamizan<span>.dev</span></span>
+        </a>
+
         <ul class="nav-links" id="nav-links">
             <li><a href="#about" class="nav-link">About</a></li>
-            <li><a href="#skills" class="nav-link">Stack</a></li>
+            <li><a href="#stack" class="nav-link">Stack</a></li>
             <li><a href="#experience" class="nav-link">Experience</a></li>
-            <li><a href="#portfolio" class="nav-link">Projects</a></li>
-            <li><a href="#contact" class="nav-link btn-glow">Contact</a></li>
+            <li><a href="#work" class="nav-link">Work</a></li>
+            <li><a href="#education" class="nav-link">Education</a></li>
+            <li><a href="#contact" class="nav-cta"><i class="fas fa-paper-plane" aria-hidden="true"></i> Contact</a>
+            </li>
         </ul>
-        <button type="button" class="hamburger" id="nav-toggle" aria-label="Open navigation menu"
-            aria-expanded="false" aria-controls="nav-links">
+
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open navigation menu" aria-expanded="false"
+            aria-controls="nav-links">
             <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
     </nav>
     <div class="nav-backdrop" id="nav-backdrop"></div>
 
-    <main>
+    <main id="top">
+
+        <!-- ============ HERO ============ -->
         <header class="hero">
-            <div class="hero-content">
-                <div class="profile-wrapper">
-                    <img src="images/icon_new.jpg" alt="Kamizan Amirudin" class="profile-img" width="180"
-                        height="180" fetchpriority="high">
-                    <div class="status-indicator"></div>
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="hero-eyebrow">
+                        <span class="pulse-dot" aria-hidden="true"></span>
+                        Available for senior roles
+                    </p>
+
+                    <h1>Kamizan<span class="surname text-gradient">Amirudin</span></h1>
+
+                    <p class="hero-role">
+                        Senior Programmer <span class="sep">/</span> System Analyst <span class="sep">/</span> DevOps
+                    </p>
+
+                    <p class="hero-bio">
+                        I build the systems factories and agencies run on — MES/ERP platforms,
+                        SAP-integrated workflows, and the Laravel, Vue and Flutter products
+                        layered on top of them.
+                    </p>
+
+                    <div class="hero-meta">
+                        <span class="chip"><i class="fas fa-location-dot" aria-hidden="true"></i> Bandar Sunway,
+                            Petaling Jaya</span>
+                        <span class="chip"><i class="fas fa-briefcase" aria-hidden="true"></i> 7+ years</span>
+                        <span class="chip chip--live"><i class="fas fa-plane-departure" aria-hidden="true"></i> Open to
+                            relocate</span>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#work" class="btn btn--primary">
+                            View selected work <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                        </a>
+                        <a href="resume/resume.pdf" download class="btn btn--ghost">
+                            <i class="fas fa-file-arrow-down" aria-hidden="true"></i> Download resume
+                        </a>
+                    </div>
+
+                    <div class="hero-socials">
+                        <a href="https://github.com/KamizanAmir" target="_blank" rel="noopener" aria-label="GitHub">
+                            <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank" rel="noopener"
+                            aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                        </a>
+                        <a href="mailto:kamizan980505@gmail.com" aria-label="Email Kamizan">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://wasap.my/60134718690" target="_blank" rel="noopener" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
-                <h1 class="hero-name">Kamizan Amirudin</h1>
-                <h2 class="role-title">Senior Programmer & System Analyst</h2>
-                <div class="typing-container">
-                    <span class="prefix">> </span>
-                    <span class="typewriter-text"></span>
-                    <span class="cursor">_</span>
-                </div>
-                <div class="hero-btns">
-                    <a href="#contact" class="btn primary">Get in Touch</a>
-                    <a href="resume/resume.pdf" download class="btn secondary"><i class="fas fa-download"></i>
-                        Resume</a>
-                </div>
+
+                <aside class="console" aria-label="Profile summary">
+                    <div class="console-bar">
+                        <span class="console-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="console-title">~/kamizan — whoami</span>
+                    </div>
+
+                    <div class="console-body">
+                        <div class="console-id">
+                            <div class="avatar-wrap">
+                                <span class="avatar-ring" aria-hidden="true"></span>
+                                <img src="images/icon_new.jpg" alt="Portrait of Kamizan Amirudin" class="avatar"
+                                    width="78" height="78" fetchpriority="high">
+                                <span class="avatar-status" aria-hidden="true"></span>
+                            </div>
+                            <div class="console-id-text">
+                                <strong>Muhamad Kamizan Amirudin</strong>
+                                <span>@KamizanAmir</span>
+                            </div>
+                        </div>
+
+                        <dl class="console-rows">
+                            <div class="console-row">
+                                <dt>role</dt>
+                                <dd>Senior Programmer</dd>
+                            </div>
+                            <div class="console-row">
+                                <dt>company</dt>
+                                <dd>YHCM Sdn Bhd, KL</dd>
+                            </div>
+                            <div class="console-row">
+                                <dt>focus</dt>
+                                <dd>Enterprise systems &amp; MES/ERP</dd>
+                            </div>
+                            <div class="console-row">
+                                <dt>lang</dt>
+                                <dd>Bahasa Malaysia, English</dd>
+                            </div>
+                            <div class="console-row">
+                                <dt>status</dt>
+                                <dd><span class="ok">● open to opportunities</span></dd>
+                            </div>
+                        </dl>
+
+                        <p class="console-line">
+                            <span class="prompt" aria-hidden="true">&gt;</span>
+                            <span class="typed" id="typed"></span><span class="caret" aria-hidden="true"></span>
+                        </p>
+                    </div>
+                </aside>
             </div>
-            <div class="scroll-indicator">
-                <span>Scroll</span>
-                <i class="fas fa-chevron-down"></i>
+
+            <div class="scroll-cue" aria-hidden="true">
+                <span class="track"></span>
+                <span>scroll</span>
             </div>
         </header>
 
+        <!-- ============ ABOUT ============ -->
         <section id="about" class="container reveal">
-            <div class="glass-card">
-                <div class="section-header">
-                    <span class="section-number">01</span>
-                    <h3>About Me</h3>
-                </div>
-                <div class="about-grid">
-                    <div class="about-text">
-                        <p class="highlight-p">
-                            I architect robust digital ecosystems.
-                        </p>
-                        <p>
-                            With over <strong>7 years of experience</strong>, I specialize in bridging the gap between
-                            legacy infrastructure and modern cloud-native solutions. My background spans manufacturing
-                            optimization, financial system integration (SAP), and high-performance web architecture.
-                        </p>
-                        <p>
-                            Currently based in Malaysia, I am the <strong>Senior Programmer at YHCM Sdn Bhd</strong>,
-                            where I lead technical teams to deliver scalable software that drives business efficiency.
-                        </p>
+            <div class="section-head">
+                <span class="idx">01</span>
+                <h2>About</h2>
+                <span class="rule" aria-hidden="true"></span>
+            </div>
+
+            <div class="bento">
+                <article class="panel b-story">
+                    <p class="lede">I build systems that production floors depend on.</p>
+                    <p>
+                        Seven years across <strong>manufacturing, semiconductor and government</strong> work
+                        has taught me that most software problems start as process problems. So I spend as
+                        much time on the floor with engineers and supervisors as I do in the editor —
+                        gathering requirements, then turning them into workflows people actually use.
+                    </p>
+                    <p>
+                        That's meant configuring in-house <strong>MES/ERP</strong> systems and Electronic
+                        Data Capture, wiring invoicing straight into on-premise <strong>SAP Business
+                            One</strong>, running full UAT and FAT deployment cycles, and shipping
+                        Laravel/Vue platforms and Flutter apps on top. I work efficiently with minimal
+                        supervision, and just as comfortably inside a team.
+                    </p>
+                </article>
+
+                <div class="b-stats stagger">
+                    <div class="panel stat">
+                        <span class="stat-num" data-count="7" data-suffix="+">0</span>
+                        <span class="stat-label">Years in industry</span>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number">7+</span>
-                            <span class="stat-label">Years Exp</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">20+</span>
-                            <span class="stat-label">Projects</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">100%</span>
-                            <span class="stat-label">Uptime Focus</span>
-                        </div>
+                    <div class="panel stat">
+                        <span class="stat-num" data-count="20" data-suffix="+">0</span>
+                        <span class="stat-label">Systems shipped</span>
+                    </div>
+                    <div class="panel stat">
+                        <span class="stat-num" data-count="3" data-suffix="">0</span>
+                        <span class="stat-label">Gov. platforms live</span>
+                    </div>
+                    <div class="panel stat">
+                        <span class="stat-num" data-count="8" data-suffix="">0</span>
+                        <span class="stat-label">Languages &amp; frameworks</span>
                     </div>
                 </div>
+
+                <article class="panel b-now">
+                    <span class="now-label">
+                        <span class="pulse-dot" aria-hidden="true"></span>
+                        <span class="mono">Currently</span>
+                    </span>
+                    <p class="now-text">
+                        <strong>Senior Programmer at YHCM Sdn Bhd</strong> in Wangsa Maju, KL — leading the
+                        design of enterprise-grade applications, mentoring junior developers through code
+                        review, and streamlining how the team ships.
+                    </p>
+                </article>
             </div>
         </section>
 
-        <section id="skills" class="container reveal">
-            <div class="section-header center">
-                <span class="section-number">02</span>
-                <h3>Technical Arsenal</h3>
+        <!-- ============ STACK ============ -->
+        <section id="stack" class="container reveal">
+            <div class="section-head">
+                <span class="idx">02</span>
+                <h2>Stack</h2>
+                <span class="rule" aria-hidden="true"></span>
             </div>
-
-            <div class="skills-wrapper">
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-code"></i></div>
-                    <h4>Languages</h4>
-                    <ul class="skill-list">
-                        <li>C# / .NET</li>
-                        <li>PHP (Laravel)</li>
-                        <li>Python</li>
-                        <li>Dart (Flutter)</li>
-                        <li>VB 6.0</li>
-                    </ul>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-database"></i></div>
-                    <h4>Data & Cloud</h4>
-                    <ul class="skill-list">
-                        <li>MS SQL Server</li>
-                        <li>MongoDB</li>
-                        <li>GCP / DigitalOcean</li>
-                        <li>SAP Business One</li>
-                    </ul>
-                </div>
-
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-network-wired"></i></div>
-                    <h4>DevOps & Net</h4>
-                    <ul class="skill-list">
-                        <li>GitLab CI/CD</li>
-                        <li>Docker</li>
-                        <li>OSPF / BGP</li>
-                        <li>Cybersecurity (Sec+)</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience" class="container reveal">
-            <div class="glass-card">
-                <div class="section-header">
-                    <span class="section-number">03</span>
-                    <h3>Professional Timeline</h3>
-                </div>
-
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2025 - Present</div>
-                        <div class="timeline-content">
-                            <h4>Senior Programmer</h4>
-                            <span class="company">YHCM Sdn Bhd</span>
-                            <p>Leading development strategy, mentoring junior teams, and modernizing legacy
-                                manufacturing systems into scalable architectures.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2023 - 2024</div>
-                        <div class="timeline-content">
-                            <h4>System Analyst</h4>
-                            <span class="company">AIC Semiconductor</span>
-                            <p>Optimized production flows, managed MS SQL databases, and integrated SAP Business One for
-                                financial automation.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2023</div>
-                        <div class="timeline-content">
-                            <h4>Software Developer</h4>
-                            <span class="company">Risau IO</span>
-                            <p>Developed RESTful APIs with Laravel, maintained Flutter apps, and implemented CI/CD
-                                pipelines.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2021 - 2022</div>
-                        <div class="timeline-content">
-                            <h4>Solution Engineer</h4>
-                            <span class="company">Mesiniaga Berhad</span>
-                            <p>Network stability operations, Disaster Recovery (Veeam/Nutanix), and server
-                                administration.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="portfolio" class="container reveal">
-            <div class="section-header center">
-                <span class="section-number">04</span>
-                <h3>Selected Works</h3>
-            </div>
-
-            <p class="project-lede">
-                Systems in production for Malaysian government agencies, alongside
-                the things I build on my own time.
+            <p class="section-sub">
+                What I reach for, grouped by what it's for. Highlighted items are the ones
+                I'd be comfortable being tested on tomorrow.
             </p>
 
-            <h4 class="project-group-label">
-                <span class="group-dot group-dot--gov" aria-hidden="true"></span>
-                Government systems
-            </h4>
-            <div class="project-grid">
-                <article class="project-card">
-                    <div class="project-mark">
-                        <img src="images/projects/spake.png" alt="SPAKE 4.0 emblem" width="256" height="256" loading="lazy" decoding="async">
+            <div class="stack-grid stagger">
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-code"></i></span>
+                    <div>
+                        <h3>Languages</h3>
+                        <span class="mono">core &amp; daily driver</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>SPAKE 4.0</h5>
-                            <span class="badge badge--gov">Government</span>
-                        </div>
-                        <p class="project-expansion">
-                            Sistem Pengurusan Aset Komunikasi dan Elektronik
-                        </p>
-                        <p class="project-desc">
-                            Asset management for communications and electronics
-                            equipment — registry, servicing and lifecycle records.
-                        </p>
-                        <div class="tags">
-                            <span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>Docker</span>
-                        </div>
-                    </div>
-                    <span class="project-lock" title="Private repository">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        <span class="sr-only">Private repository</span>
-                    </span>
+                    <ul class="stack-list">
+                        <li class="lvl-expert">C++</li>
+                        <li>C#</li>
+                        <li>PHP</li>
+                        <li>Java</li>
+                        <li>Dart</li>
+                        <li>Python</li>
+                        <li>HTML / CSS</li>
+                        <li>JavaScript</li>
+                    </ul>
                 </article>
 
-                <article class="project-card">
-                    <div class="project-mark">
-                        <img src="images/projects/spkb.png" alt="SPKB PUTD emblem" width="256" height="256" loading="lazy" decoding="async">
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-layer-group"></i></span>
+                    <div>
+                        <h3>Frameworks</h3>
+                        <span class="mono">web &amp; mobile</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>SPKB PUTD</h5>
-                            <span class="badge badge--gov">Government</span>
-                        </div>
-                        <p class="project-expansion">
-                            Sistem Pengurusan Komputer Bersepadu, Pasukan Udara Tentera Darat
-                        </p>
-                        <p class="project-desc">
-                            Integrated computer and equipment management for an
-                            army air corps — inventory, servicing and reporting.
-                        </p>
-                        <div class="tags">
-                            <span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>PostgreSQL</span>
-                        </div>
-                    </div>
-                    <span class="project-lock" title="Private repository">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        <span class="sr-only">Private repository</span>
-                    </span>
+                    <ul class="stack-list">
+                        <li class="lvl-expert">Laravel</li>
+                        <li class="lvl-expert">Android Studio</li>
+                        <li>Flutter</li>
+                        <li>Filament</li>
+                        <li>Vue 3</li>
+                        <li>Swift</li>
+                    </ul>
                 </article>
 
-                <article class="project-card">
-                    <div class="project-mark">
-                        <img src="images/projects/fms.png" alt="FMS emblem" width="256" height="256" loading="lazy" decoding="async">
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-database"></i></span>
+                    <div>
+                        <h3>Data</h3>
+                        <span class="mono">storage &amp; reporting</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>FMS</h5>
-                            <span class="badge badge--gov">Government</span>
-                        </div>
-                        <p class="project-expansion">
-                            Fleet Management System
-                        </p>
-                        <p class="project-desc">
-                            Fleet management across web and mobile — vehicles,
-                            bookings, journeys and live location tracking.
-                        </p>
-                        <div class="tags">
-                            <span>Laravel</span><span>Vue 3</span><span>Flutter</span><span>Redis</span>
-                        </div>
+                    <ul class="stack-list">
+                        <li class="lvl-expert">MySQL</li>
+                        <li>MS SQL Server</li>
+                        <li>PostgreSQL</li>
+                        <li>Supabase</li>
+                        <li>Redis</li>
+                        <li>MongoDB</li>
+                        <li>phpMyAdmin</li>
+                    </ul>
+                </article>
+
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-server"></i></span>
+                    <div>
+                        <h3>Platform &amp; DevOps</h3>
+                        <span class="mono">ship, host, keep it up</span>
                     </div>
-                    <span class="project-lock" title="Private repository">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        <span class="sr-only">Private repository</span>
-                    </span>
+                    <ul class="stack-list">
+                        <li class="lvl-expert">Linux / Open source OS</li>
+                        <li>Docker</li>
+                        <li>GitLab CI/CD</li>
+                        <li>GCP</li>
+                        <li>RunCloud</li>
+                        <li>VMware vSphere</li>
+                        <li>Hyper-V</li>
+                        <li>Nutanix</li>
+                        <li>Veeam</li>
+                        <li>Cisco</li>
+                    </ul>
+                </article>
+
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-industry"></i></span>
+                    <div>
+                        <h3>Enterprise &amp; analysis</h3>
+                        <span class="mono">the domain half of the job</span>
+                    </div>
+                    <ul class="stack-list">
+                        <li>SAP Business One</li>
+                        <li>MES / ERP</li>
+                        <li>Electronic Data Capture</li>
+                        <li>B2B modules</li>
+                        <li>UAT / FAT cycles</li>
+                        <li>Requirements gathering</li>
+                    </ul>
+                </article>
+
+                <article class="panel stack-card">
+                    <span class="stack-icon" aria-hidden="true"><i class="fas fa-chart-line"></i></span>
+                    <div>
+                        <h3>Data science</h3>
+                        <span class="mono">trained 2022–2023</span>
+                    </div>
+                    <ul class="stack-list">
+                        <li>Python</li>
+                        <li>SQL</li>
+                        <li>Data visualisation</li>
+                        <li>Visual Studio</li>
+                        <li>SQL Server Management</li>
+                    </ul>
                 </article>
             </div>
 
-            <h4 class="project-group-label">
-                <span class="group-dot group-dot--personal" aria-hidden="true"></span>
-                Personal projects
-            </h4>
-            <div class="project-grid">
-                <article class="project-card project-card--feature">
-                    <div class="project-mark">
-                        <img src="images/projects/kamitrack.png" alt="KamiTrack emblem" width="256" height="256" loading="lazy" decoding="async">
+            <div class="legend" aria-hidden="true">
+                <span><i class="k-expert"></i> Expert</span>
+                <span><i class="k-working"></i> Working proficiency</span>
+            </div>
+        </section>
+
+        <!-- ============ EXPERIENCE ============ -->
+        <section id="experience" class="container reveal">
+            <div class="section-head">
+                <span class="idx">03</span>
+                <h2>Experience</h2>
+                <span class="rule" aria-hidden="true"></span>
+            </div>
+
+            <div class="timeline">
+                <article class="tl-item is-current">
+                    <div class="tl-meta">
+                        <span class="tl-date">Jan 2025 — Present</span>
+                        <span class="tl-loc">Wangsa Maju, KL</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>KamiTrack</h5>
+                    <h3>Senior Programmer</h3>
+                    <span class="tl-company">YHCM Sdn Bhd</span>
+                    <p>
+                        Lead the design and implementation of scalable, enterprise-grade applications
+                        driving digital transformation. Mentor junior developers and run rigorous code
+                        reviews, collaborate cross-functionally to integrate new technology and tune
+                        system performance, and drive process optimisations that streamline how the
+                        team develops and ships.
+                    </p>
+                    <div class="tl-tags">
+                        <span>Laravel</span><span>Vue 3</span><span>Filament</span><span>Docker</span><span>Code
+                            review</span><span>Mentoring</span>
+                    </div>
+                </article>
+
+                <article class="tl-item">
+                    <div class="tl-meta">
+                        <span class="tl-date">Nov 2023 — Oct 2024</span>
+                        <span class="tl-loc">Kulim, Kedah</span>
+                    </div>
+                    <h3>Software Analyst</h3>
+                    <span class="tl-company">AIC Semiconductor Sdn Bhd</span>
+                    <p>
+                        Gathered requirements straight from production — engineers, supervisors, floor
+                        staff — and designed new workflows inside the in-house MES/ERP system, including
+                        purpose-built Electronic Data Capture. Built integrations that generated invoices
+                        and interfaced them into on-premise SAP Business One, and developed custom B2B
+                        modules adapted to country-specific regulatory invoice formats. Ran full UAT and
+                        FAT deployment cycles: training-database deploys for IT validation, key-user
+                        verification with lead engineers, and final system walk-throughs before mass rollout.
+                    </p>
+                    <div class="tl-tags">
+                        <span>MES / ERP</span><span>SAP Business One</span><span>EDC</span><span>B2B
+                            integration</span><span>UAT / FAT</span>
+                    </div>
+                </article>
+
+                <article class="tl-item">
+                    <div class="tl-meta">
+                        <span class="tl-date">May 2023 — Sep 2023</span>
+                        <span class="tl-loc">Cyberjaya, Selangor</span>
+                    </div>
+                    <h3>Software Engineer</h3>
+                    <span class="tl-company">RISAU IO Sdn Bhd</span>
+                    <p>
+                        Built and maintained Laravel web applications and Flutter apps, staging releases
+                        through GitLab. Managed domains on GCP via RunCloud — tuning performance and
+                        scalability — and supported the wider team on network and server issues.
+                    </p>
+                    <div class="tl-tags">
+                        <span>Laravel</span><span>Flutter</span><span>GitLab</span><span>GCP</span><span>RunCloud</span>
+                    </div>
+                </article>
+
+                <article class="tl-item">
+                    <div class="tl-meta">
+                        <span class="tl-date">Nov 2021 — Oct 2022</span>
+                        <span class="tl-loc">Bayan Lepas, Penang</span>
+                    </div>
+                    <h3>Solution Engineer</h3>
+                    <span class="tl-company">Mesiniaga Sdn Bhd</span>
+                    <p>
+                        Ran server infrastructure end to end — remote access, hardware and software
+                        troubleshooting, on-site resolution. Worked daily in VMware vSphere, Hyper-V and
+                        Nutanix, handled snapshots and recovery with Veeam, and wrote up the resolutions
+                        and recommendations that followed.
+                    </p>
+                    <div class="tl-tags">
+                        <span>VMware vSphere</span><span>Hyper-V</span><span>Nutanix</span><span>Veeam</span><span>Disaster
+                            recovery</span>
+                    </div>
+                </article>
+
+                <article class="tl-item">
+                    <div class="tl-meta">
+                        <span class="tl-date">Apr 2021 — Nov 2022</span>
+                        <span class="tl-loc">Kulim, Kedah</span>
+                    </div>
+                    <h3>Quality Assurance Specialist</h3>
+                    <span class="tl-company">Aspen Glove Sdn Bhd</span>
+                    <p>
+                        Ran glove inspections to keep AQL under 1.5, and put a structured inspection
+                        process in place to monitor production quality continuously.
+                    </p>
+                    <div class="tl-tags">
+                        <span>AQL &lt; 1.5</span><span>Process design</span><span>QA</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="panel tl-early">
+                <h4>Earlier</h4>
+                <ul class="early-list">
+                    <li>
+                        <strong>Equipment Specialist</strong> — Intel Technology Sdn Bhd, Kulim.
+                        Repaired TCUs at STHI to Intel guidelines, diagnosing error codes to replace
+                        faulty components before chipset corruption.
+                        <span class="yr">Jun 2020</span>
+                    </li>
+                    <li>
+                        <strong>Database Management</strong> — Raffelinna Sdn Bhd, Baling.
+                        Excel-based data visualisation for analysis and decision-making, plus server
+                        performance monitoring through phpMyAdmin.
+                        <span class="yr">Jun — Nov 2019</span>
+                    </li>
+                    <li>
+                        <strong>PPV Non-Medical Volunteer</strong> — Flextronic Technology Sdn Bhd, Perai.
+                        <span class="yr">Nov 2021</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ WORK ============ -->
+        <section id="work" class="container reveal">
+            <div class="section-head">
+                <span class="idx">04</span>
+                <h2>Selected work</h2>
+                <span class="rule" aria-hidden="true"></span>
+            </div>
+            <p class="section-sub">
+                Systems in production for Malaysian government agencies, alongside the
+                things I build on my own time.
+            </p>
+
+            <h3 class="group-label">
+                <span class="dot dot--gov" aria-hidden="true"></span>
+                Government systems
+                <span class="rule" aria-hidden="true"></span>
+            </h3>
+
+            <div class="project-grid stagger">
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark">
+                            <img src="images/projects/spake.png" alt="SPAKE 4.0 emblem" width="256" height="256"
+                                loading="lazy" decoding="async">
+                        </span>
+                        <span class="badge badge--gov">Government</span>
+                    </div>
+                    <div>
+                        <h4>SPAKE 4.0</h4>
+                        <span class="card-expand">Sistem Pengurusan Aset Komunikasi dan Elektronik</span>
+                    </div>
+                    <p class="card-desc">
+                        Asset management for communications and electronics equipment —
+                        registry, servicing and full lifecycle records.
+                    </p>
+                    <div class="tags">
+                        <span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>Docker</span><span class="tag-lock"><i class="fas fa-lock" aria-hidden="true"></i> Private repo</span>
+                    </div>
+                </article>
+
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark">
+                            <img src="images/projects/spkb.png" alt="SPKB PUTD emblem" width="256" height="256"
+                                loading="lazy" decoding="async">
+                        </span>
+                        <span class="badge badge--gov">Government</span>
+                    </div>
+                    <div>
+                        <h4>SPKB PUTD</h4>
+                        <span class="card-expand">Sistem Pengurusan Komputer Bersepadu, Pasukan Udara Tentera
+                            Darat</span>
+                    </div>
+                    <p class="card-desc">
+                        Integrated computer and equipment management for an army air corps —
+                        inventory, servicing and reporting.
+                    </p>
+                    <div class="tags">
+                        <span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>PostgreSQL</span><span class="tag-lock"><i class="fas fa-lock" aria-hidden="true"></i> Private repo</span>
+                    </div>
+                </article>
+
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark">
+                            <img src="images/projects/fms.png" alt="FMS emblem" width="256" height="256" loading="lazy"
+                                decoding="async">
+                        </span>
+                        <span class="badge badge--gov">Government</span>
+                    </div>
+                    <div>
+                        <h4>FMS</h4>
+                        <span class="card-expand">Fleet Management System</span>
+                    </div>
+                    <p class="card-desc">
+                        Fleet management across web and mobile — vehicles, bookings, journeys
+                        and live location tracking.
+                    </p>
+                    <div class="tags">
+                        <span>Laravel</span><span>Vue 3</span><span>Flutter</span><span>Redis</span><span class="tag-lock"><i class="fas fa-lock" aria-hidden="true"></i> Private repo</span>
+                    </div>
+                </article>
+            </div>
+
+            <h3 class="group-label">
+                <span class="dot dot--personal" aria-hidden="true"></span>
+                Personal projects
+                <span class="rule" aria-hidden="true"></span>
+            </h3>
+
+            <div class="project-grid stagger">
+                <article class="panel card card--feature">
+                    <span class="card-mark">
+                        <img src="images/projects/kamitrack.png" alt="KamiTrack emblem" width="256" height="256"
+                            loading="lazy" decoding="async">
+                    </span>
+                    <div class="feature-body">
+                        <div class="feature-head">
+                            <h4>KamiTrack</h4>
                             <span class="badge badge--personal">Personal</span>
+                            <span class="card-expand">Fitness tracking, built solo</span>
                         </div>
-                        <p class="project-expansion">
-                            Fitness tracking, built solo
-                        </p>
-                        <p class="project-desc">
-                            Android fitness app. Step and run tracking, self-completing
-                            tasks, group chat with games, and a social feed — designed,
-                            built and shipped solo.
+                        <p class="card-desc">
+                            Android fitness app — step and run tracking, self-completing tasks,
+                            group chat with games, and a social feed. Designed, built and shipped
+                            end to end by one person, including the foreground location service.
                         </p>
                         <div class="tags">
                             <span>Flutter</span><span>Dart</span><span>Supabase</span><span>PostgreSQL</span><span>FCM</span>
                         </div>
-                        <a href="update/" class="project-link">
-                            Download the app
-                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        <a href="update/" class="card-link">
+                            Download the app <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
                 </article>
 
-                <article class="project-card">
-                    <div class="project-mark project-mark--icon">
-                        <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark card-mark--icon"><i class="fas fa-shield-halved"
+                                aria-hidden="true"></i></span>
+                        <span class="badge badge--personal">Personal</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>RunCloud System Assessment</h5>
-                            <span class="badge badge--personal">Personal</span>
-                        </div>
-                        <p class="project-expansion">
-                            Server hardening review
-                        </p>
-                        <p class="project-desc">
-                            Security assessment of a RunCloud-managed stack —
-                            configuration, access control and exposure.
-                        </p>
-                        <div class="tags">
-                            <span>PHP</span><span>MySQL</span><span>Security</span>
-                        </div>
-                        <a href="https://github.com/KamizanAmir/runcloud/" target="_blank" rel="noopener"
-                            class="project-link project-link--ghost">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                            View on GitHub
-                        </a>
+                    <div>
+                        <h4>RunCloud System Assessment</h4>
+                        <span class="card-expand">Server hardening review</span>
                     </div>
+                    <p class="card-desc">
+                        Security assessment of a RunCloud-managed stack — configuration,
+                        access control and exposure.
+                    </p>
+                    <div class="tags">
+                        <span>PHP</span><span>MySQL</span><span>Security</span>
+                    </div>
+                    <a href="https://github.com/KamizanAmir/runcloud/" target="_blank" rel="noopener"
+                        class="card-link card-link--ghost">
+                        <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                    </a>
                 </article>
 
-                <article class="project-card">
-                    <div class="project-mark project-mark--icon">
-                        <i class="fas fa-dice-five" aria-hidden="true"></i>
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark card-mark--icon"><i class="fas fa-dice-five" aria-hidden="true"></i></span>
+                        <span class="badge badge--personal">Personal</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>Kamching</h5>
-                            <span class="badge badge--personal">Personal</span>
-                        </div>
-                        <p class="project-expansion">
-                            Flutter interactive app
-                        </p>
-                        <p class="project-desc">
-                            An interactive Flutter app built to work through game
-                            logic and state handling in Dart.
-                        </p>
-                        <div class="tags">
-                            <span>Dart</span><span>Flutter</span><span>Game Logic</span>
-                        </div>
-                        <a href="https://github.com/KamizanAmir/kamching/" target="_blank" rel="noopener"
-                            class="project-link project-link--ghost">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                            View on GitHub
-                        </a>
+                    <div>
+                        <h4>Kamching</h4>
+                        <span class="card-expand">Flutter interactive app</span>
                     </div>
+                    <p class="card-desc">
+                        An interactive Flutter app built to work through game logic and
+                        state handling in Dart.
+                    </p>
+                    <div class="tags">
+                        <span>Dart</span><span>Flutter</span><span>Game logic</span>
+                    </div>
+                    <a href="https://github.com/KamizanAmir/kamching/" target="_blank" rel="noopener"
+                        class="card-link card-link--ghost">
+                        <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                    </a>
                 </article>
 
-                <article class="project-card">
-                    <div class="project-mark project-mark--icon">
-                        <i class="fas fa-book-open" aria-hidden="true"></i>
+                <article class="panel card">
+                    <div class="card-top">
+                        <span class="card-mark card-mark--icon"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+                        <span class="badge badge--personal">Personal</span>
                     </div>
-                    <div class="project-info">
-                        <div class="project-heading">
-                            <h5>Enterprise API Docs</h5>
-                            <span class="badge badge--personal">Personal</span>
-                        </div>
-                        <p class="project-expansion">
-                            API design &amp; documentation
-                        </p>
-                        <p class="project-desc">
-                            Documented and structured a Laravel API surface with
-                            Swagger, covering contracts and versioning.
-                        </p>
-                        <div class="tags">
-                            <span>Laravel</span><span>Swagger</span><span>System Design</span>
-                        </div>
+                    <div>
+                        <h4>Enterprise API Docs</h4>
+                        <span class="card-expand">API design &amp; documentation</span>
                     </div>
-                    <span class="project-lock" title="Private repository">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        <span class="sr-only">Private repository</span>
-                    </span>
+                    <p class="card-desc">
+                        Documented and structured a Laravel API surface with Swagger,
+                        covering contracts and versioning.
+                    </p>
+                    <div class="tags">
+                        <span>Laravel</span><span>Swagger</span><span>System design</span><span class="tag-lock"><i class="fas fa-lock" aria-hidden="true"></i> Private repo</span>
+                    </div>
                 </article>
             </div>
         </section>
 
+        <!-- ============ EDUCATION ============ -->
         <section id="education" class="container reveal">
-            <div class="glass-card">
-                <div class="section-header">
-                    <span class="section-number">05</span>
-                    <h3>Certifications</h3>
-                </div>
-                <div class="cert-grid">
-                    <div class="cert-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <div>
-                            <h5>CompTIA Security+</h5>
-                            <span class="cert-year">2021</span>
-                        </div>
+            <div class="section-head">
+                <span class="idx">05</span>
+                <h2>Education &amp; training</h2>
+                <span class="rule" aria-hidden="true"></span>
+            </div>
+
+            <div class="edu-grid stagger">
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></span>
+                    <div>
+                        <h3>Diploma in Information Technology</h3>
+                        <span class="edu-org">Politeknik Tuanku Syed Sirajuddin, Perlis</span>
+                        <p class="edu-note">CGPA 3.27</p>
+                        <span class="edu-when">2016 — 2019</span>
                     </div>
-                    <div class="cert-item">
-                        <i class="fas fa-server"></i>
-                        <div>
-                            <h5>Windows Server Admin</h5>
-                            <span class="cert-year">Mesiniaga</span>
-                        </div>
+                </article>
+
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-chart-simple"></i></span>
+                    <div>
+                        <h3>Data Science with Python &amp; SQL</h3>
+                        <span class="edu-org">Perak Human Capital Development Center</span>
+                        <p class="edu-note">
+                            Visual Studio and MS SQL Server Management; contributed data
+                            visualisation and graphical data creation on a training project.
+                        </p>
+                        <span class="edu-when">Dec 2022 — Mar 2023</span>
                     </div>
-                    <div class="cert-item">
-                        <i class="fas fa-cloud"></i>
-                        <div>
-                            <h5>Cloud Computing</h5>
-                            <span class="cert-year">RunCloud</span>
-                        </div>
+                </article>
+
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-shield-halved"></i></span>
+                    <div>
+                        <h3>CompTIA Security+</h3>
+                        <span class="edu-org">Certification</span>
+                        <span class="edu-when">2021</span>
                     </div>
-                </div>
+                </article>
+
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-server"></i></span>
+                    <div>
+                        <h3>Windows Server Administration</h3>
+                        <span class="edu-org">Mesiniaga</span>
+                        <span class="edu-when">Internal certification</span>
+                    </div>
+                </article>
+
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-cloud"></i></span>
+                    <div>
+                        <h3>Cloud Computing</h3>
+                        <span class="edu-org">RunCloud</span>
+                        <span class="edu-when">Certification</span>
+                    </div>
+                </article>
+
+                <article class="panel edu-card">
+                    <span class="edu-icon" aria-hidden="true"><i class="fas fa-language"></i></span>
+                    <div>
+                        <h3>Languages</h3>
+                        <span class="edu-org">Bahasa Malaysia — native</span>
+                        <p class="edu-note">English — conversational</p>
+                    </div>
+                </article>
             </div>
         </section>
 
+        <!-- ============ CONTACT ============ -->
         <section id="contact" class="container reveal">
-            <div class="contact-wrapper">
-                <div class="contact-text">
-                    <h2>Let's Build Something<br><span class="text-gradient">Extraordinary.</span></h2>
-                    <p>I am currently available for consulting and senior leadership roles.</p>
+            <div class="section-head">
+                <span class="idx">06</span>
+                <h2>Contact</h2>
+                <span class="rule" aria-hidden="true"></span>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-copy">
+                    <h3>Let's build something<br><span class="text-gradient">worth maintaining.</span></h3>
+                    <p>
+                        Open to senior engineering and system analyst roles, and to consulting
+                        work. Based in Petaling Jaya, willing to relocate.
+                    </p>
+
                     <div class="contact-methods">
                         <a href="mailto:kamizan980505@gmail.com" class="method">
-                            <i class="fas fa-envelope"></i> kamizan980505@gmail.com
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <span>
+                                <span class="method-label">Email</span>
+                                <span class="method-value">kamizan980505@gmail.com</span>
+                            </span>
                         </a>
                         <a href="https://wasap.my/60134718690" target="_blank" rel="noopener" class="method">
-                            <i class="fab fa-whatsapp"></i> +6013-471 8690
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                            <span>
+                                <span class="method-label">WhatsApp</span>
+                                <span class="method-value">+60 13-471 8690</span>
+                            </span>
                         </a>
+                        <span class="method">
+                            <i class="fas fa-location-dot" aria-hidden="true"></i>
+                            <span>
+                                <span class="method-label">Based in</span>
+                                <span class="method-value">Bandar Sunway, Petaling Jaya</span>
+                            </span>
+                        </span>
                     </div>
-                    <div class="socials-large">
+
+                    <div class="socials">
                         <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank" rel="noopener"
-                            aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-                        <a href="https://github.com/KamizanAmir" target="_blank" rel="noopener"
-                            aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+                            aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="https://github.com/KamizanAmir" target="_blank" rel="noopener" aria-label="GitHub"><i
+                                class="fab fa-github" aria-hidden="true"></i></a>
+                        <a href="resume/resume.pdf" download aria-label="Download resume"><i
+                                class="fas fa-file-arrow-down" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
-                <form action="https://formsubmit.co/kamizan980505@gmail.com" method="POST" class="glass-form">
-                    <div class="input-group">
-                        <input type="text" name="name" required placeholder=" ">
-                        <label>Name</label>
+                <form action="https://formsubmit.co/kamizan980505@gmail.com" method="POST" class="panel form">
+                    <div class="field">
+                        <input type="text" id="f-name" name="name" required placeholder=" " autocomplete="name">
+                        <label for="f-name">Name</label>
                     </div>
-                    <div class="input-group">
-                        <input type="email" name="email" required placeholder=" ">
-                        <label>Email</label>
+                    <div class="field">
+                        <input type="email" id="f-email" name="email" required placeholder=" " autocomplete="email">
+                        <label for="f-email">Email</label>
                     </div>
-                    <div class="input-group">
-                        <textarea name="message" rows="4" required placeholder=" "></textarea>
-                        <label>Message</label>
+                    <div class="field">
+                        <textarea id="f-msg" name="message" rows="4" required placeholder=" "></textarea>
+                        <label for="f-msg">Message</label>
                     </div>
                     <input type="hidden" name="_next" value="https://kamizanamir.github.io/thanks.html" />
-                    <button type="submit" class="btn primary full-width">Send Transmission</button>
+                    <input type="hidden" name="_captcha" value="false" />
+                    <button type="submit" class="btn btn--primary btn--block">
+                        Send message <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                    <p class="form-note">
+                        <i class="fas fa-lock" aria-hidden="true"></i>
+                        Goes straight to my inbox. Usually a reply within a day.
+                    </p>
                 </form>
             </div>
         </section>
 
-        <footer>
-            <p>© 2025 Kamizan Amirudin. Engineered with <i class="fas fa-code"></i> & <i class="fas fa-star"></i></p>
+        <footer class="footer">
+            <div class="footer-inner">
+                <p>© <span id="year">2026</span> Kamizan Amirudin — hand-built, no template.</p>
+                <div class="footer-links">
+                    <a href="privacy-policy.html">Privacy</a>
+                    <a href="update/">KamiTrack</a>
+                    <a href="#top">Back to top</a>
+                </div>
+            </div>
         </footer>
     </main>
 
