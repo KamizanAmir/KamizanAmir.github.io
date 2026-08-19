@@ -57,6 +57,10 @@
     --s9: 96px;
     --s10: 128px;
 
+    /* Vertical gap between two sections is twice this value. 56 -> 112px,
+       which is the standard rhythm for a 1180px measure; 96 read as a hole. */
+    --section-pad: 56px;
+
     --r-sm: 10px;
     --r-md: 14px;
     --r-lg: 20px;
@@ -297,7 +301,7 @@ body::after {
 }
 
 section.container {
-    padding-block: var(--s9);
+    padding-block: var(--section-pad);
 }
 
 /* Mono is the *machine* voice: indices, dates, tags, statuses. Never prose. */
@@ -1094,7 +1098,9 @@ section.container {
 /* ================= STACK ================= */
 .stack-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    /* Six cards, laid out 3 x 2. auto-fit gave four across and stranded two
+       on the second row, which read as an unfinished grid. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s4);
 }
 
@@ -1239,13 +1245,13 @@ section.container {
     -webkit-backdrop-filter: blur(12px);
     transition: background var(--t-mid) var(--ease),
         border-color var(--t-mid) var(--ease),
-        transform var(--t-mid) var(--ease);
+        box-shadow var(--t-mid) var(--ease);
 }
 
 .tl-item:hover {
     background: var(--surface-2);
     border-color: rgba(61, 220, 151, 0.28);
-    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
 }
 
 .tl-item.is-current {
@@ -1256,8 +1262,12 @@ section.container {
 .tl-item::before {
     content: '';
     position: absolute;
+    /* Rail sits at left:11px, 2px wide -> centre line at x=12px. The dot is
+       12px wide with border-box, so left:6px puts its centre on the rail. */
     left: calc(var(--s7) * -1 + 6px);
-    top: calc(var(--s5) + 9px);
+    /* Padding-top, plus half the date row (0.72rem x 1.65 line-height),
+       minus half the dot. */
+    top: calc(var(--s5) + (0.72rem * 1.65 / 2) - 6px);
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -1655,13 +1665,10 @@ section.container {
 /* ================= EDUCATION & CERTS ================= */
 .edu-grid {
     display: grid;
-    /* 280px squeezed the text column to ~200px next to the icon, which broke
-       "Information Technology" across three lines. */
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    /* Three across, matching the Stack grid above it. 330px min kept
+       "Information Technology" from breaking across three lines. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s4);
-    /* Cards hug their content instead of stretching to the tallest in the row,
-       which was leaving dead space under the two-line certificates. */
-    align-items: start;
 }
 
 .edu-card {
@@ -1670,6 +1677,15 @@ section.container {
     gap: var(--s4);
     align-items: flex-start;
     transition: transform var(--t-mid) var(--ease), border-color var(--t-mid) var(--ease);
+}
+
+/* The text column fills the card so the date can sit on the baseline of every
+   card in the row, however much copy sits above it. */
+.edu-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100%;
 }
 
 .edu-card:hover {
@@ -1705,18 +1721,50 @@ section.container {
 }
 
 .edu-when {
-    display: inline-block;
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--text-dim);
-    margin-top: var(--s3);
     letter-spacing: 0.04em;
+    /* Pushed to the bottom of the equal-height card */
+    margin-top: auto;
+    padding-top: var(--s4);
 }
 
 .edu-note {
     color: var(--text-dim);
     font-size: 0.86rem;
     margin-top: var(--s2);
+}
+
+/* Languages read as a small table of pairs rather than a run-on sentence, so
+   the level sits against each language instead of being inferred. */
+.lang-list {
+    display: grid;
+    gap: 6px;
+    margin-top: var(--s3);
+}
+
+.lang-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s3);
+    font-size: 0.86rem;
+    color: var(--text-soft);
+}
+
+.lang-list li [lang="ja"] {
+    /* Kanji needs a touch more size to match the x-height of the Latin rows */
+    font-size: 0.95rem;
+}
+
+.lang-lvl {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
 }
 
 /* ================= CONTACT ================= */
@@ -1960,6 +2008,12 @@ section.container {
 @media (max-width: 1024px) {
     :root {
         --s9: 72px;
+        --section-pad: 44px;
+    }
+
+    .stack-grid,
+    .edu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .hero-inner {
@@ -2039,7 +2093,14 @@ section.container {
 @media (max-width: 600px) {
     :root {
         --s9: 64px;
+        --section-pad: 36px;
         --nav-h: 62px;
+    }
+
+    .stack-grid,
+    .edu-grid,
+    .project-grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .container {
@@ -2084,7 +2145,7 @@ section.container {
 
     .tl-item::before {
         left: calc(var(--s6) * -1 + 5px);
-        top: calc(var(--s4) + 8px);
+        top: calc(var(--s4) + (0.72rem * 1.65 / 2) - 6px);
     }
 
     .hero-actions .btn {
