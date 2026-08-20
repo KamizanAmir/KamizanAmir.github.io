@@ -60,6 +60,8 @@
     const overlay = $('overlay');
     const hint = $('hint');
     const pad = $('pad');
+    const portal = $('portal');
+    const flash = $('flash');
     const announce = $('announce');
     const railMarks = $('rail-marks');
     const railFill = $('rail-fill');
@@ -89,7 +91,13 @@
         paused: false,
         jumpUntil: 0,
         travelTo: null,   // fast-travel target, or null
-        lastTime: 0
+        lastTime: 0,
+
+        // Portal sequence: null while playing, otherwise the current phase.
+        // While set, player input is ignored and the loop drives the character.
+        cinematic: null,
+        heroOffset: 0,    // screen-space nudge, used only by the portal walk
+        warp: 1           // hero scale during the warp-out
     };
 
     const held = new Set();
@@ -189,6 +197,7 @@
     // that zone in the middle of the screen. Passing a zone x straight through
     // as a camera position is what left every jump landing half a screen short.
     function travelTo(zoneX) {
+        if (state.cinematic) return;
         const x = zoneX - window.innerWidth / 2;
         startGame();
         closeOverlay();
@@ -241,6 +250,7 @@
 
         if (e.code === 'Escape') {
             e.preventDefault();
+            if (state.cinematic) return;
             overlay.hasAttribute('hidden') || overlay.classList.contains('is-hiding')
                 ? openOverlay()
                 : closeOverlay();
@@ -259,6 +269,7 @@
 
         if (LEFT_KEYS.includes(e.code) || RIGHT_KEYS.includes(e.code) || e.code === 'Space') {
             e.preventDefault();
+            if (state.cinematic) return;
             startGame();
             if (e.code === 'Space') jump();
             else held.add(e.code);
@@ -339,7 +350,98 @@
 
     $('btn-start').addEventListener('click', startGame);
     $('btn-help').addEventListener('click', openOverlay);
-    $('btn-restart')?.addEventListener('click', () => travelTo(0));
+    $('btn-restart')?.addEventListener('click', runPortal);
+
+    /* =========================================================================
+       PORTAL SEQUENCE
+
+       PLAY AGAIN opens a portal a little ahead of the character, walks them
+       into it, and warps back to the start screen. Four phases, each one
+       handing to the next; the loop below owns 'walk' and 'enter' because they
+       need per-frame movement, while 'open' and 'reset' are just timers.
+       ====================================================================== */
+    let portalScreenX = 0;
+
+    function runPortal() {
+        if (state.cinematic) return;
+
+        held.clear();
+        state.vx = 0;
+        state.cinematic = 'open';
+        document.body.classList.add('is-warping');
+
+        // Ahead of the character, but never off the right edge on a phone
+        portalScreenX = Math.min(
+            heroScreenX() + 250,
+            window.innerWidth - 150
+        );
+        portal.style.left = (portalScreenX - 64) + 'px';
+        portal.hidden = false;
+
+        // Force a reflow so the opening transition actually runs from scale(0.1)
+        void portal.offsetWidth;
+        portal.classList.add('is-open');
+
+        setTimeout(() => { state.cinematic = 'walk'; }, reduceMotion ? 120 : 620);
+    }
+
+    // Phases the render loop owns. 'open' and 'reset' are handled by timers;
+    // these two need to move something every frame.
+    function stepPortal(dt) {
+        const target = portalScreenX - heroScreenX() - 29;   // portal centre, minus half the sprite
+
+        if (state.cinematic === 'walk') {
+            const step = (reduceMotion ? 40 : 4.6) * dt;
+            state.heroOffset = Math.min(state.heroOffset + step, target);
+            state.facing = 1;
+
+            if (state.heroOffset >= target - 0.5) {
+                state.heroOffset = target;
+                state.cinematic = 'enter';
+            }
+        } else if (state.cinematic === 'enter') {
+            // Shrink and fade into the mouth of the portal. Driven here rather
+            // than by a CSS transition because the loop rewrites this element's
+            // transform every frame and the two would fight.
+            state.warp = Math.max(0, state.warp - (reduceMotion ? 0.5 : 0.055) * dt);
+            if (state.warp <= 0.01) {
+                state.warp = 0;
+                state.cinematic = 'done';
+                finishPortal();
+            }
+        }
+    }
+
+    function finishPortal() {
+        flash.classList.add('is-on');
+
+        setTimeout(() => {
+            // Back to the opening frame, exactly as the page loads
+            state.x = clampX(Number(zones[0].dataset.x) - window.innerWidth / 2);
+            state.vx = 0;
+            state.heroOffset = 0;
+            state.warp = 1;
+            state.facing = 1;
+            hero.style.opacity = '1';
+
+            portal.classList.remove('is-open');
+            document.body.classList.remove('is-warping');
+            setTimeout(() => { portal.hidden = true; }, 300);
+
+            hero.style.left = heroScreenX() + 'px';
+            hero.style.setProperty('--warp', '1');
+            hero.style.setProperty('--jump', '0px');
+            hero.style.setProperty('--face', '1');
+            hero.classList.remove('is-walking');
+            held.clear();
+
+            state.cinematic = null;
+            updateHud(state.x + heroScreenX(), 0);
+            openOverlay();
+
+            flash.classList.remove('is-on');
+        }, reduceMotion ? 60 : 240);
+    }
 
     /* =========================================================================
        JUMP
@@ -387,7 +489,9 @@
         if (state.paused) return;
 
         /* ---- Movement ---- */
-        if (state.travelTo !== null) {
+        if (state.cinematic) {
+            stepPortal(dt);
+        } else if (state.travelTo !== null) {
             const delta = state.travelTo - state.x;
             if (Math.abs(delta) <= TRAVEL_SPEED * dt) {
                 state.x = state.travelTo;
@@ -417,7 +521,7 @@
             state.x += state.vx * dt;
         }
 
-        state.x = clampX(state.x);
+        if (!state.cinematic) state.x = clampX(state.x);
 
         /* ---- Camera ---- */
         const alt = altitudeAt(state.x + heroScreenX());
@@ -435,10 +539,18 @@
         const flying = alt > 4;
 
         hero.style.bottom = (groundH() + platform) + 'px';
+        hero.style.left = (heroScreenX() + state.heroOffset) + 'px';
         hero.style.setProperty('--jump', lift + 'px');
         hero.style.setProperty('--face', state.facing < 0 ? '-1' : '1');
-        hero.classList.toggle('is-walking', Math.abs(state.vx) > 0.5 && !flying && lift === 0);
-        hero.style.opacity = flying ? '0' : '1';
+        hero.style.setProperty('--warp', String(state.warp));
+
+        const walking = state.cinematic === 'walk'
+            || (!state.cinematic && Math.abs(state.vx) > 0.5 && !flying && lift === 0);
+        hero.classList.toggle('is-walking', walking);
+
+        // Fade out with the warp scale so the character dissolves into the
+        // portal rather than vanishing at full size.
+        hero.style.opacity = flying ? '0' : String(state.warp);
 
         // The balloon is only ever drawn where the hero actually is, so it
         // cannot drift away from them the way the old state machine allowed.

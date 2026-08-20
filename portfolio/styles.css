@@ -640,7 +640,7 @@ kbd {
     will-change: transform;
     /* One transform, two variables — the jump and the facing direction can't
        overwrite each other the way two separate style writes would. */
-    transform: translateY(calc(var(--jump, 0px) * -1)) scaleX(var(--face, 1));
+    transform: translateY(calc(var(--jump, 0px) * -1)) scale(var(--warp, 1)) scaleX(var(--face, 1));
 }
 
 /* Sprite drawn in box-shadow pixels: no image request, scales cleanly, and
@@ -1575,6 +1575,25 @@ kbd {
     border: 3px solid #3B2715;
 }
 
+/* Passenger: head and shoulders above the basket rim, in the same palette as
+   the walking sprite so it's recognisably the same character. */
+.balloon-rider {
+    position: absolute;
+    bottom: 46px;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    margin-left: -13px;
+    background: transparent;
+    box-shadow:
+        4px 0 #1B2230, 8px 0 #1B2230, 12px 0 #1B2230,
+        0 4px #1B2230, 4px 4px #F0C9A0, 8px 4px #F0C9A0, 12px 4px #1B2230,
+        4px 8px #F0C9A0, 8px 8px #F0C9A0,
+        0 12px #3DDC97, 4px 12px #3DDC97, 8px 12px #3DDC97, 12px 12px #3DDC97;
+    transform: scale(1.5);
+    transform-origin: bottom center;
+}
+
 .balloon-rope {
     position: absolute;
     bottom: 42px;
@@ -1587,6 +1606,8 @@ kbd {
 }
 
 .balloon-float {
+    position: absolute;
+    inset: 0;
     animation: float 3.4s ease-in-out infinite;
 }
 
@@ -1856,3 +1877,124 @@ body.has-pad .hint {
         animation: none !important;
     }
 }
+
+/* ================= PORTAL =================
+   Spawned in front of the character when PLAY AGAIN is pressed. Screen-fixed
+   rather than world-placed: at the end zone the camera is already clamped, so
+   the character walks across the screen into it instead of the world scrolling.
+   ========================================== */
+#portal {
+    position: fixed;
+    bottom: var(--ground-h);
+    /* Above the world and its panels, below the start overlay (1500). */
+    z-index: 1200;
+    width: 128px;
+    height: 172px;
+    pointer-events: none;
+    transform: scale(0.1);
+    opacity: 0;
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 260ms var(--ease);
+}
+
+#portal[hidden] {
+    display: none;
+}
+
+#portal.is-open {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Outer ring — a conic sweep through the site's three accents, rotating */
+.portal-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+            var(--accent) 0deg,
+            var(--accent-2) 90deg,
+            var(--accent-3) 180deg,
+            var(--accent-2) 270deg,
+            var(--accent) 360deg);
+    /* Ring, not disc: punch the middle out so the core shows through */
+    -webkit-mask: radial-gradient(closest-side, transparent 66%, #000 68%);
+    mask: radial-gradient(closest-side, transparent 66%, #000 68%);
+    animation: portal-spin 2.6s linear infinite;
+    filter: drop-shadow(0 0 14px rgba(61, 220, 151, 0.6));
+}
+
+/* Inner void, pulsing so it reads as active rather than painted on */
+.portal-core {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 45%,
+            rgba(167, 139, 250, 0.55) 0%,
+            rgba(76, 201, 240, 0.35) 35%,
+            rgba(7, 10, 16, 0.95) 72%);
+    box-shadow: inset 0 0 30px rgba(61, 220, 151, 0.5);
+    animation: portal-pulse 1.5s ease-in-out infinite;
+}
+
+/* Ground glow under the mouth */
+.portal-spark {
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 150px;
+    height: 22px;
+    margin-left: -75px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(61, 220, 151, 0.55), transparent 70%);
+    filter: blur(4px);
+    animation: portal-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes portal-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes portal-pulse {
+
+    0%,
+    100% {
+        opacity: 0.75;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.06);
+    }
+}
+
+/* While the portal sequence runs, the panel you just pressed the button on
+   steps out of the way — otherwise the character walks behind a wall of text. */
+body.is-warping .zone,
+body.is-warping .marker {
+    opacity: 0;
+    transition: opacity 320ms var(--ease);
+    pointer-events: none;
+}
+
+/* ---- Warp flash ---- */
+#flash {
+    position: fixed;
+    inset: 0;
+    z-index: 1400;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(circle at center, #EAFFF6 0%, var(--accent) 45%, rgba(7, 10, 16, 0) 78%);
+    transition: opacity 220ms var(--ease);
+}
+
+#flash.is-on {
+    opacity: 1;
+}
+
+/* The character is scaled and faded frame-by-frame in JS rather than by a CSS
+   transition, because its transform is rewritten every frame by the game loop
+   and a transition on that would fight the camera. */
