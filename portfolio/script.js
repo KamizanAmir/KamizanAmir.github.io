@@ -61,6 +61,9 @@
     const hint = $('hint');
     const pad = $('pad');
     const portal = $('portal');
+    const sheet = $('zones');
+    const sheetList = $('zones-list');
+    const zoneCount = $('zone-count');
     const flash = $('flash');
     const announce = $('announce');
     const railMarks = $('rail-marks');
@@ -110,7 +113,13 @@
     const JUMP_MS = 520;
     const JUMP_H = 150;
 
-    const heroScreenX = () => (window.innerWidth < 600 ? 42 : 200);
+    const heroScreenX = () => {
+        if (window.innerWidth < 600) return 42;
+        // Landscape phones: the panel is narrowed and centred, and 200px puts
+        // the character right on top of its text. Stand in the left gutter.
+        if (window.innerHeight <= 460 && window.innerWidth > window.innerHeight) return 92;
+        return 200;
+    };
     const groundH = () =>
         parseInt(getComputedStyle(document.documentElement).getPropertyValue('--ground-h'), 10) || 74;
 
@@ -196,6 +205,50 @@
     // Takes a zone's world x and converts it to the camera position that puts
     // that zone in the middle of the screen. Passing a zone x straight through
     // as a camera position is what left every jump landing half a screen short.
+    /* =========================================================================
+       ZONE SHEET
+       The phone replacement for the rail. Built from the same zone list, so
+       the two controls can never disagree about what exists.
+       ====================================================================== */
+    function buildSheet() {
+        zones.forEach((z, i) => {
+            const x = Number(z.dataset.x);
+            const row = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'sheet-row';
+            btn.innerHTML =
+                `<b>0${i + 1}</b><span>${ZONE_LABELS[z.dataset.zone]}</span>` +
+                `<i class="fas fa-check" aria-hidden="true"></i>`;
+            btn.addEventListener('click', () => {
+                closeSheet();
+                travelTo(x);
+            });
+            row.appendChild(btn);
+            sheetList.appendChild(row);
+        });
+    }
+
+    function openSheet() {
+        sheet.hidden = false;
+        state.paused = true;
+        sheetList.querySelector('.sheet-row')?.focus();
+    }
+
+    function closeSheet() {
+        sheet.hidden = true;
+        state.paused = false;
+    }
+
+    $('btn-zones').addEventListener('click', () => {
+        sheet.hidden ? openSheet() : closeSheet();
+    });
+    $('btn-zones-close').addEventListener('click', closeSheet);
+    sheet.addEventListener('click', (e) => {
+        // Tapping the dimmed area outside the panel dismisses it
+        if (e.target === sheet) closeSheet();
+    });
+
     function travelTo(zoneX) {
         if (state.cinematic) return;
         const x = zoneX - window.innerWidth / 2;
@@ -250,6 +303,7 @@
 
         if (e.code === 'Escape') {
             e.preventDefault();
+            if (!sheet.hidden) { closeSheet(); return; }
             if (state.cinematic) return;
             overlay.hasAttribute('hidden') || overlay.classList.contains('is-hiding')
                 ? openOverlay()
@@ -308,6 +362,67 @@
         btn.addEventListener('contextmenu', (e) => e.preventDefault());
     });
 
+    /* ---- Drag the world ----
+       Pointer-based, so it works with a finger or a trackpad. Ignored when the
+       gesture starts inside a panel (those scroll their own content) or on any
+       control, and only engages past a small threshold so taps still register. */
+    let drag = null;
+
+    document.addEventListener('pointerdown', (e) => {
+        if (state.cinematic) return;
+        // Fixed UI keeps its own gestures
+        if (e.target.closest('.hud, #pad, .sheet, .overlay')) return;
+
+        // With a mouse, a horizontal drag inside a panel is someone selecting
+        // text — don't walk the world out from under them. Touch has no
+        // competing meaning for that gesture, and needs it, because a panel
+        // covers most of a phone screen.
+        const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        if (!coarsePointer && e.target.closest('.panel')) return;
+        drag = {
+            id: e.pointerId,
+            startX: e.clientX,
+            startY: e.clientY,
+            camera: state.x,
+            active: false,
+            dead: false
+        };
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!drag || e.pointerId !== drag.id || drag.dead) return;
+
+        const dx = e.clientX - drag.startX;
+        const dy = e.clientY - drag.startY;
+
+        if (!drag.active) {
+            // Below the threshold this is still a tap, not a drag
+            if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+
+            // A panel fills most of a phone screen, so drags have to be allowed
+            // to start inside one. The axis decides who gets the gesture:
+            // mostly-vertical scrolls the panel (the browser already owns it,
+            // via touch-action: pan-y), mostly-horizontal walks the world.
+            if (Math.abs(dy) > Math.abs(dx)) { drag.dead = true; return; }
+
+            drag.active = true;
+            startGame();
+        }
+
+        state.travelTo = null;
+        state.vx = 0;
+        // Drag left to go right, the way a map behaves
+        state.x = clampX(drag.camera - dx);
+        state.facing = dx < 0 ? 1 : -1;
+    });
+
+    const endDrag = (e) => {
+        if (!drag || (e && e.pointerId !== drag.id)) return;
+        drag = null;
+    };
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
+
     // Show the pad only where there is no fine pointer — a laptop gets the
     // keyboard legend instead of thumb buttons covering the world.
     const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
@@ -315,6 +430,10 @@
         pad.classList.toggle('is-on', coarse.matches);
         // Panels and the hint lift out from behind the pad only when it's there
         document.body.classList.toggle('has-pad', coarse.matches);
+        // "HOLD RIGHT" means nothing without a keyboard
+        hint.innerHTML = coarse.matches
+            ? '<i class="fas fa-hand-pointer" aria-hidden="true"></i> SWIPE OR USE THE PAD'
+            : '<i class="fas fa-arrow-right" aria-hidden="true"></i> HOLD RIGHT TO WALK';
     };
     coarse.addEventListener('change', syncPad);
     syncPad();
@@ -592,11 +711,26 @@
         hud.zone.textContent = key ? ZONE_LABELS[key] : '—';
 
         const marks = railMarks.children;
+        const rows = sheetList.children;
+        let currentIdx = 0;
+
         zones.forEach((z, i) => {
             const zx = Number(z.dataset.x);
-            marks[i].classList.toggle('is-passed', (zx - state.x) <= centre);
-            marks[i].classList.toggle('is-current', z === inZone);
+            const passed = (zx - state.x) <= centre;
+            const current = z === inZone;
+            if (passed) currentIdx = i;
+
+            marks[i].classList.toggle('is-passed', passed);
+            marks[i].classList.toggle('is-current', current);
+
+            const row = rows[i]?.firstElementChild;
+            if (row) {
+                row.classList.toggle('is-passed', passed && !current);
+                row.setAttribute('aria-current', String(current));
+            }
         });
+
+        zoneCount.textContent = `${currentIdx + 1}/${zones.length}`;
 
         // Announce arrival once, for screen readers and for the HUD label
         if (key !== lastZone) {
@@ -687,12 +821,24 @@
        BOOT
        ====================================================================== */
     let resizeTimer;
+    let lastWidth = window.innerWidth;
+
     window.addEventListener('resize', () => {
+        // What the middle of the screen is pointing at, in world coordinates.
+        // Captured before the debounce so a rotation mid-read keeps its place.
+        const worldCentre = state.x + lastWidth / 2;
+
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(layoutWorld, 150);
+        resizeTimer = setTimeout(() => {
+            layoutWorld();
+            lastWidth = window.innerWidth;
+            // Re-centre on the same point rather than keeping the old camera x
+            state.x = clampX(worldCentre - lastWidth / 2);
+        }, 150);
     });
 
     buildRail();
+    buildSheet();
     layoutWorld();
 
     // Open with the first zone centred instead of pinned to the left gutter.

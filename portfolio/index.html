@@ -51,6 +51,11 @@
         </div>
 
         <div class="hud-actions">
+            <button type="button" class="icon-btn icon-btn--zones" id="btn-zones" aria-label="Jump to a zone"
+                aria-haspopup="dialog">
+                <i class="fas fa-map" aria-hidden="true"></i>
+                <span class="zone-count" id="zone-count">1/8</span>
+            </button>
             <button type="button" class="icon-btn" id="btn-help" aria-label="Controls and help">
                 <i class="fas fa-question" aria-hidden="true"></i>
             </button>
@@ -650,6 +655,19 @@
     <p class="hint" id="hint" hidden>
         <i class="fas fa-arrow-right" aria-hidden="true"></i> HOLD RIGHT TO WALK
     </p>
+
+    <!-- ============ ZONE SHEET (small screens) ============ -->
+    <div class="sheet" id="zones" hidden>
+        <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="zones-title">
+            <div class="sheet-head">
+                <h2 id="zones-title">JUMP TO ZONE</h2>
+                <button type="button" class="icon-btn" id="btn-zones-close" aria-label="Close">
+                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul class="sheet-list" id="zones-list"></ul>
+        </div>
+    </div>
 
     <!-- ============ START / HELP OVERLAY ============ -->
     <div class="overlay" id="overlay">

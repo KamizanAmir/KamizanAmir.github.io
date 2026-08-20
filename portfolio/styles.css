@@ -59,7 +59,10 @@
 html,
 body {
     height: 100%;
+    /* hidden first as the fallback; clip also blocks programmatic and
+       focus-driven scrolling, which hidden does not. */
     overflow: hidden;
+    overflow: clip;
 }
 
 body {
@@ -73,6 +76,14 @@ body {
     -webkit-font-smoothing: antialiased;
     -webkit-touch-callout: none;
     overscroll-behavior: none;
+    touch-action: none;
+}
+
+/* The only scrollable surfaces in the game — these keep vertical panning */
+.panel,
+.sheet-list,
+.overlay-card {
+    touch-action: pan-y;
 }
 
 /* Selection is disabled only on the play surface, never on readable copy —
@@ -1819,12 +1830,7 @@ body.has-pad .hint {
         display: none;
     }
 
-    .hud-stats .stat {
-        min-width: 60px;
-        padding: 4px 6px;
-    }
-
-    .hud-stats .stat:nth-child(n+2) {
+    .hud-stats {
         display: none;
     }
 
@@ -1998,3 +2004,268 @@ body.is-warping .marker {
 /* The character is scaled and faded frame-by-frame in JS rather than by a CSS
    transition, because its transform is rewritten every frame by the game loop
    and a transition on that would fight the camera. */
+
+/* ================= ZONE SHEET =================
+   The rail is a good desktop control and a bad phone one: at 320px its eight
+   markers sit 2px apart with 44px hit areas stacked on top of each other. On
+   small screens the markers are hidden, the bar stays as a progress readout,
+   and this sheet takes over the jumping.
+   ============================================== */
+.icon-btn--zones {
+    display: none;
+    width: auto;
+    min-width: 44px;
+    gap: 7px;
+    padding-inline: 10px;
+}
+
+.zone-count {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--accent);
+}
+
+.sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1600;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(4, 6, 10, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.sheet[hidden] {
+    display: none;
+}
+
+.sheet-panel {
+    width: min(520px, 100%);
+    max-height: 82dvh;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid var(--accent-deep);
+    border-bottom: 0;
+    border-radius: 16px 16px 0 0;
+    background: var(--panel-bg);
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: sheet-up 260ms var(--ease);
+}
+
+@keyframes sheet-up {
+    from {
+        transform: translateY(100%);
+    }
+}
+
+.sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 14px 12px;
+    border-bottom: 2px solid var(--line);
+}
+
+.sheet-head h2 {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--accent);
+}
+
+.sheet-list {
+    overflow-y: auto;
+    padding: 10px;
+    display: grid;
+    gap: 8px;
+}
+
+.sheet-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    /* Comfortably past the 44px floor — this is the primary way to navigate */
+    min-height: 56px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 2px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    text-align: left;
+}
+
+.sheet-row b {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    color: var(--text-dim);
+    font-weight: 400;
+    min-width: 22px;
+}
+
+.sheet-row span {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+.sheet-row i {
+    margin-left: auto;
+    color: var(--accent);
+    font-size: 13px;
+    opacity: 0;
+}
+
+.sheet-row[aria-current="true"] {
+    border-color: var(--accent-deep);
+    background: rgba(61, 220, 151, 0.1);
+}
+
+.sheet-row[aria-current="true"] i,
+.sheet-row.is-passed i {
+    opacity: 1;
+}
+
+.sheet-row.is-passed i {
+    color: var(--accent-deep);
+}
+
+/* ================= MOBILE PASS =================
+   Measured on real device metrics (320/375/390/412 portrait and 844x390
+   landscape), not guessed from breakpoints.
+   =============================================== */
+
+/* Every interactive thing clears 44px once there's a finger on the screen
+   rather than a cursor. On desktop the tighter sizes are kept. */
+@media (hover: none) and (pointer: coarse) {
+
+    .filter-btn,
+    .loot-link,
+    .link-btn,
+    .rail-mark {
+        min-height: 44px;
+    }
+
+    .skip-link {
+        padding: 16px 18px;
+    }
+
+    .hud-brand {
+        min-height: 44px;
+        min-width: 44px;
+        justify-content: center;
+    }
+
+    .icon-btn {
+        min-height: 44px;
+    }
+
+    /* 42px at the default padding — under the floor by a hair */
+    .field input,
+    .field textarea {
+        min-height: 46px;
+    }
+}
+
+/* Below 700px the rail becomes a read-only progress bar and the sheet takes
+   over navigation. Its markers were 2-9px apart here — untappable. */
+@media (max-width: 700px) {
+    .rail-mark {
+        display: none;
+    }
+
+    .rail {
+        padding-inline: 0;
+        height: 12px;
+        flex: 1;
+    }
+
+    .rail-track {
+        left: 0;
+        right: 0;
+    }
+
+    .icon-btn--zones {
+        display: flex;
+    }
+}
+
+@media (max-width: 600px) {
+
+    /* 100vh is the *largest* viewport on mobile browsers, so a panel measured
+       against it overflows whenever the URL bar is showing. dvh tracks the
+       viewport that is actually visible. */
+    .panel {
+        max-height: calc(100dvh - var(--ground-h) - var(--hud-h) - 96px);
+    }
+
+    body.has-pad .panel {
+        max-height: calc(100dvh - var(--ground-h) - var(--hud-h) - 168px);
+    }
+
+    :root {
+        /* Matches the measured HUD height, so the panel maths is honest */
+        --hud-h: 60px;
+    }
+}
+
+/* ---- Landscape phones ----
+   At 844x390 the quest panel came out 106px tall, which is unreadable. The
+   HUD and pad give back their padding so the panel can have the room. */
+@media (orientation: landscape) and (max-height: 460px) {
+    :root {
+        --ground-h: 44px;
+        --hud-h: 50px;
+    }
+
+    .hud {
+        padding-block: 5px;
+    }
+
+    .hud-stats {
+        display: none;
+    }
+
+    .panel {
+        max-height: calc(100dvh - var(--ground-h) - var(--hud-h) - 22px);
+    }
+
+    body.has-pad .panel {
+        max-height: calc(100dvh - var(--ground-h) - var(--hud-h) - 38px);
+    }
+
+    .zone {
+        bottom: calc(var(--ground-h) + 10px);
+    }
+
+    body.has-pad .zone {
+        bottom: calc(var(--ground-h) + 26px);
+    }
+
+    .panel--wide,
+    .panel {
+        width: min(620px, 62vw);
+    }
+
+    .pad-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
+    }
+
+    .pad-btn--jump {
+        width: 76px;
+        font-size: 8px;
+    }
+
+    #pad {
+        padding-bottom: max(6px, env(safe-area-inset-bottom));
+    }
+
+    .scroll-cue,
+    .hint {
+        display: none;
+    }
+}
