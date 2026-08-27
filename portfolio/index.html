@@ -45,12 +45,17 @@
         </nav>
 
         <div class="hud-stats" aria-hidden="true">
+            <div class="stat stat--score"><b>SCORE</b><i id="hud-score">000000</i></div>
             <div class="stat"><b>PROGRESS</b><i id="hud-progress">0%</i></div>
             <div class="stat"><b>ALTITUDE</b><i id="hud-alt">0 ft</i></div>
             <div class="stat"><b>ZONE</b><i id="hud-zone">START</i></div>
         </div>
 
         <div class="hud-actions">
+            <a class="btn-hud-app" href="../kamitrack.html" title="KamiTrack Fitness App Landing Page" aria-label="KamiTrack Fitness App Landing Page">
+                <i class="fas fa-mobile-screen-button" aria-hidden="true"></i>
+                <span>KAMITRACK</span>
+            </a>
             <button type="button" class="icon-btn icon-btn--zones" id="btn-zones" aria-label="Jump to a zone"
                 aria-haspopup="dialog">
                 <i class="fas fa-map" aria-hidden="true"></i>
@@ -99,9 +104,16 @@
             </div>
         </section>
 
-        <div class="marker" data-x="1150"><span class="marker-plate">PROFILE &rsaquo;</span><span
+        <div class="arcade-enemy" data-x="1000" data-min="880" data-max="1080"></div>
+        <div class="interactive-block block-mystery" data-x="1060" data-y="130" data-item="mushroom"></div>
+        <div class="interactive-block block-brick" data-x="1106" data-y="130"></div>
+        <div class="interactive-block block-brick" data-x="1152" data-y="130"></div>
+        <div class="marker" data-x="1180"><span class="marker-plate">PROFILE &rsaquo;</span><span
                 class="marker-post"></span></div>
-        <div class="obstacle pipe" data-x="1330" data-h="90" style="height:90px"></div>
+        <div class="obstacle pipe warp-pipe" data-x="1330" data-h="90" data-target-x="4500" style="height:90px">
+            <span class="warp-prompt">↓ WARP</span>
+        </div>
+        <div class="arcade-enemy" data-x="1600" data-min="1480" data-max="1720"></div>
 
         <!-- ---------- 02 PROFILE ---------- -->
         <section class="zone" data-zone="profile" data-x="1900">
@@ -137,12 +149,17 @@
             </div>
         </section>
 
+        <div class="arcade-enemy" data-x="2200" data-min="2100" data-max="2280"></div>
+        <div class="interactive-block block-mystery" data-x="2300" data-y="130" data-item="mushroom"></div>
+        <div class="interactive-block block-brick" data-x="2346" data-y="130"></div>
+        <div class="interactive-block block-brick" data-x="2392" data-y="130"></div>
         <div class="obstacle block" data-x="2500" data-h="150" style="height:150px">
             <div class="win lit" style="top:22px; left:22px"></div>
             <div class="win" style="top:22px; right:22px"></div>
             <div class="win" style="top:86px; left:22px"></div>
             <div class="win lit" style="top:86px; right:22px"></div>
         </div>
+        <div class="arcade-enemy" data-x="2750" data-min="2650" data-max="2850"></div>
         <div class="marker" data-x="2900"><span class="marker-plate">INVENTORY &rsaquo;</span><span
                 class="marker-post"></span></div>
 
@@ -233,7 +250,14 @@
             </div>
         </section>
 
-        <div class="obstacle pipe" data-x="4500" data-h="130" style="height:130px"></div>
+        <div class="arcade-enemy" data-x="4150" data-min="4050" data-max="4250"></div>
+        <div class="interactive-block block-mystery" data-x="4300" data-y="130" data-item="mushroom"></div>
+        <div class="interactive-block block-brick" data-x="4346" data-y="130"></div>
+        <div class="interactive-block block-brick" data-x="4392" data-y="130"></div>
+        <div class="obstacle pipe warp-pipe" data-x="4500" data-h="130" data-target-x="1330" style="height:130px">
+            <span class="warp-prompt">↓ WARP</span>
+        </div>
+        <div class="arcade-enemy" data-x="4750" data-min="4650" data-max="4820"></div>
         <div class="marker" data-x="4820"><span class="marker-plate">QUEST LOG &rsaquo;</span><span
                 class="marker-post"></span></div>
 
@@ -336,8 +360,15 @@
             </div>
         </section>
 
+        <div class="arcade-enemy" data-x="6100" data-min="5950" data-max="6150"></div>
+        <div class="interactive-block block-mystery" data-x="6200" data-y="130" data-item="mushroom"></div>
+        <div class="interactive-block block-brick" data-x="6246" data-y="130"></div>
+        <div class="interactive-block block-brick" data-x="6292" data-y="130"></div>
         <div class="marker" data-x="6700"><span class="marker-plate">&uarr; BALLOON AHEAD</span><span
                 class="marker-post"></span></div>
+        <div class="obstacle pipe warp-pipe" data-x="6800" data-h="100" data-target-x="12100" style="height:100px">
+            <span class="warp-prompt">↓ WARP</span>
+        </div>
 
         <div id="balloon" aria-hidden="true">
             <div class="balloon-float">
@@ -345,6 +376,18 @@
                 <div class="balloon-rope"></div>
                 <div class="balloon-basket"></div>
                 <div class="balloon-rider"></div>
+            </div>
+        </div>
+
+        <div id="cyber-cloud" aria-hidden="true" style="display:none">
+            <div class="cloud-body">
+                <div class="cloud-deck"></div>
+                <div class="cloud-puff puff-1"></div>
+                <div class="cloud-puff puff-2"></div>
+                <div class="cloud-puff puff-3"></div>
+                <div class="cloud-puff puff-4"></div>
+                <div class="cloud-aura"></div>
+                <div class="cloud-lightning">⚡</div>
             </div>
         </div>
 
@@ -422,13 +465,18 @@
                                 <h4>KAMITRACK</h4>
                                 <span class="sub">Fitness tracking, built solo</span>
                             </div>
-                            <p>Android fitness app — step and run tracking, self-completing tasks,
-                                group chat with games and a social feed. Shipped end to end by one person.</p>
-                            <div class="loot-tags"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>FCM</span>
+                            <p>Android fitness app — precision foreground GPS tracking, auto-completing tasks,
+                                intermittent fasting, live leaderboards &amp; Gemini AI diet scanner.</p>
+                            <div class="loot-tags"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>GPS</span><span>Play Store</span>
                             </div>
-                            <a class="loot-link" href="../kamitrack.html">
-                                <i class="fas fa-download" aria-hidden="true"></i> GET THE APP
-                            </a>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                                <a class="loot-link" href="../kamitrack.html">
+                                    <i class="fas fa-sparkles" aria-hidden="true"></i> APP SHOWCASE
+                                </a>
+                                <a class="loot-link loot-link--play" href="https://play.google.com/store/apps/details?id=com.kamitrack.app" target="_blank" rel="noopener">
+                                    <i class="fab fa-google-play" aria-hidden="true"></i> PLAY STORE
+                                </a>
+                            </div>
                         </article>
 
                         <article class="loot-item" data-cat="own">
@@ -545,7 +593,14 @@
             <div class="win lit" style="top:92px; left:24px"></div>
             <div class="win" style="top:92px; right:24px"></div>
         </div>
-        <div class="marker" data-x="12100"><span class="marker-plate">CONTACT &rsaquo;</span><span
+        <div class="obstacle pipe warp-pipe" data-x="12100" data-h="100" data-target-x="6800" style="height:100px">
+            <span class="warp-prompt">↓ WARP</span>
+        </div>
+        <div class="arcade-enemy" data-x="12350" data-min="12250" data-max="12450"></div>
+        <div class="interactive-block block-mystery" data-x="12450" data-y="130" data-item="mushroom"></div>
+        <div class="interactive-block block-brick" data-x="12496" data-y="130"></div>
+        <div class="interactive-block block-brick" data-x="12542" data-y="130"></div>
+        <div class="marker" data-x="12600"><span class="marker-plate">CONTACT &rsaquo;</span><span
                 class="marker-post"></span></div>
 
         <!-- ---------- 07 CONTACT ---------- -->
@@ -620,8 +675,9 @@
                     <h3>THANKS FOR PLAYING</h3>
                     <p>That's the whole CV. If you'd rather have it without the jumping,
                         the standard version has the same content in one scroll.</p>
-                    <div class="btn-row">
+                    <div class="btn-row" style="flex-wrap:wrap; justify-content:center; gap:8px;">
                         <a href="../index.html" class="btn btn--primary">STANDARD CV</a>
+                        <a href="../kamitrack.html" class="btn btn--ghost"><i class="fas fa-mobile-screen-button"></i> KAMITRACK APP</a>
                         <button type="button" class="btn btn--ghost" id="btn-restart">PLAY AGAIN</button>
                     </div>
                 </div>
@@ -634,6 +690,9 @@
         <div class="pad-group">
             <button type="button" class="pad-btn" data-dir="-1" aria-label="Move left">
                 <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="pad-btn pad-btn--down" id="pad-down" data-action="down" aria-label="Crouch or Warp Down">
+                <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </button>
             <button type="button" class="pad-btn" data-dir="1" aria-label="Move right">
                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
@@ -669,26 +728,45 @@
         </div>
     </div>
 
+    <!-- ============ IN-PIPE TRANSIT HUD (PEEKING MODE) ============ -->
+    <div class="pipe-transit-hud" id="pipe-transit-hud" hidden>
+        <div class="transit-title">
+            <i class="fas fa-satellite-dish"></i>
+            <span id="transit-pipe-name">PEEKING: ZONE 01 / 02 PIPE</span>
+        </div>
+        <div class="transit-controls-row">
+            <button type="button" class="transit-btn" id="btn-peek-prev" aria-label="Peek previous pipe">
+                <i class="fas fa-arrow-left"></i> PREV
+            </button>
+            <button type="button" class="transit-btn transit-emerge-btn" id="btn-peek-emerge" aria-label="Emerge out of pipe">
+                <i class="fas fa-arrow-up"></i> EMERGE [UP / W]
+            </button>
+            <button type="button" class="transit-btn" id="btn-peek-next" aria-label="Peek next pipe">
+                NEXT <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- ============ START / HELP OVERLAY ============ -->
     <div class="overlay" id="overlay">
         <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="ov-title">
             <h1 id="ov-title">KAMIZAN<br>AMIRUDIN</h1>
             <p class="sub">SENIOR PROGRAMMER · SYSTEM ANALYST · DEVOPS</p>
-            <p>A side-scrolling CV. Walk right through eight zones, or use the
-                map in the header to jump straight to any section.</p>
+            <p>A playable retro arcade CV. Jump to stomp enemies, smash bricks for super mushrooms, and press <b>DOWN</b> on warp pipes to teleport!</p>
 
             <div class="keys">
-                <div class="key-row"><kbd><i class="fas fa-arrow-left" aria-hidden="true"></i></kbd><kbd><i class="fas fa-arrow-right" aria-hidden="true"></i></kbd><small>Walk</small></div>
-                <div class="key-row"><kbd>A</kbd><kbd>D</kbd><small>Walk</small></div>
-                <div class="key-row"><kbd>Space</kbd><small>Jump</small></div>
-                <div class="key-row"><kbd>1</kbd>&ndash;<kbd>8</kbd><small>Jump to zone</small></div>
-                <div class="key-row"><kbd>Esc</kbd><small>This menu</small></div>
-                <div class="key-row"><kbd>Tab</kbd><small>Read without playing</small></div>
+                <div class="key-row"><kbd><i class="fas fa-arrow-left" aria-hidden="true"></i></kbd><kbd><i class="fas fa-arrow-right" aria-hidden="true"></i></kbd><small>Walk Left / Right</small></div>
+                <div class="key-row"><kbd><i class="fas fa-arrow-down" aria-hidden="true"></i></kbd><kbd>S</kbd><small>Enter Warp Pipe</small></div>
+                <div class="key-row"><kbd>Space</kbd><kbd>W</kbd><small>Jump / Stomp / Hit Blocks</small></div>
+                <div class="key-row"><kbd>1</kbd>&ndash;<kbd>8</kbd><small>Jump to Zone</small></div>
+                <div class="key-row"><kbd>🍄</kbd><small>Super Mushroom = Giant Mode!</small></div>
+                <div class="key-row"><kbd>Esc</kbd><small>Pause / Controls</small></div>
             </div>
 
             <div class="btn-row">
-                <button type="button" class="btn btn--primary" id="btn-start">START</button>
+                <button type="button" class="btn btn--primary" id="btn-start">START GAME</button>
                 <a class="btn btn--ghost" href="../index.html">STANDARD CV</a>
+                <a class="btn btn--ghost" href="../kamitrack.html"><i class="fas fa-mobile-screen-button"></i> KAMITRACK</a>
             </div>
         </div>
     </div>
