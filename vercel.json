@@ -1,13 +1,26 @@
 {
   "rewrites": [
-    { "source": "/m/:id", "destination": "/api/m?id=:id" }
+    {
+      "source": "/m/:id",
+      "destination": "/api/m?id=:id"
+    },
+    {
+      "source": "/u/:u",
+      "destination": "/api/u?u=:u"
+    }
   ],
   "headers": [
     {
       "source": "/.well-known/assetlinks.json",
       "headers": [
-        { "key": "Content-Type", "value": "application/json" },
-        { "key": "Cache-Control", "value": "public, max-age=300" }
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
       ]
     }
   ]
