@@ -1,147 +1,178 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Thank you for contacting Kamizan Amirudin." />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Thank you for contacting Kamizan Amirudin."
+    />
     <meta name="theme-color" content="#070A10" />
     <meta name="robots" content="noindex" />
     <title>Message sent | Kamizan Amirudin</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="images/icon.ico" type="image/x-icon" />
 
     <style>
-        /* Page-specific: a single centred confirmation panel. Everything else
+      /* Page-specific: a single centred confirmation panel. Everything else
            it needs — tokens, panel, buttons, chips — comes from styles.css. */
-        .thanks {
-            min-height: 100svh;
-            display: grid;
-            place-items: center;
-            padding: calc(var(--nav-h) + var(--s7)) var(--s5) var(--s8);
-        }
+      .thanks {
+        min-height: 75svh;
+        display: grid;
+        place-items: center;
+        padding: 70px 5%;
+      }
 
+      .thanks-panel {
+        max-width: 560px;
+        width: 100%;
+        padding: 45px 35px;
+        text-align: center;
+        display: grid;
+        justify-items: center;
+        gap: 22px;
+      }
+
+      .thanks-mark {
+        display: grid;
+        place-items: center;
+        width: 76px;
+        height: 76px;
+        border-radius: 24px;
+        font-size: 1.9rem;
+        color: var(--green);
+        background: rgba(61, 220, 151, 0.1);
+        border: 1px solid rgba(61, 220, 151, 0.3);
+        box-shadow: 0 0 0 0 rgba(61, 220, 151, 0.5);
+        animation: pulse-ring 2.6s ease-out infinite;
+      }
+
+      .thanks-panel h1 {
+        font-size: clamp(1.7rem, 5vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+      }
+
+      .thanks-panel p {
+        color: var(--muted);
+        max-width: 46ch;
+      }
+
+      .thanks-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        justify-content: center;
+        margin-top: 14px;
+      }
+
+      @media (max-width: 600px) {
         .thanks-panel {
-            max-width: 560px;
-            width: 100%;
-            padding: var(--s8) var(--s7);
-            text-align: center;
-            display: grid;
-            justify-items: center;
-            gap: var(--s4);
+          padding: 30px 22px;
         }
 
-        .thanks-mark {
-            display: grid;
-            place-items: center;
-            width: 76px;
-            height: 76px;
-            border-radius: 24px;
-            font-size: 1.9rem;
-            color: var(--accent);
-            background: rgba(61, 220, 151, 0.1);
-            border: 1px solid rgba(61, 220, 151, 0.3);
-            box-shadow: 0 0 0 0 rgba(61, 220, 151, 0.5);
-            animation: pulse-ring 2.6s var(--ease-out) infinite;
+        .thanks-actions .btn {
+          flex: 1 1 100%;
         }
-
-        .thanks-panel h1 {
-            font-size: clamp(1.7rem, 5vw, 2.4rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.1;
-        }
-
-        .thanks-panel p {
-            color: var(--text-soft);
-            max-width: 46ch;
-        }
-
-        .thanks-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--s3);
-            justify-content: center;
-            margin-top: var(--s3);
-        }
-
-        @media (max-width: 600px) {
-            .thanks-panel {
-                padding: var(--s6) var(--s5);
-            }
-
-            .thanks-actions .btn {
-                flex: 1 1 100%;
-            }
-        }
+      }
     </style>
     <script>
-        /* Set before first paint: the reveal animations only hide their targets
+      /* Set before first paint: the reveal animations only hide their targets
            when JS is present, so a blocked script leaves a readable page. */
-        document.documentElement.classList.add('js');
+      document.documentElement.classList.add("js");
     </script>
-</head>
+  </head>
 
-<body>
-    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <body>
     <div class="bg-grid" aria-hidden="true"></div>
-    <div class="bg-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="bg-aurora" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
 
     <nav class="nav is-stuck">
-        <a href="index.html" class="nav-brand" aria-label="Kamizan Amirudin — home">
-            <span class="brand-mark" aria-hidden="true">KA</span>
-            <span class="brand-text">kamizan<span>.dev</span></span>
-        </a>
-        <a href="index.html" class="nav-cta">
-            <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to site
-        </a>
+      <a
+        href="index.html"
+        class="nav-brand"
+        aria-label="Kamizan Amirudin — home"
+      >
+        <span class="brand-mark" aria-hidden="true">ka.</span>
+        <span class="brand-text">kamizan<span>.dev</span></span>
+      </a>
+      <a href="index.html" class="nav-cta">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to site
+      </a>
     </nav>
 
     <main class="thanks">
-        <div class="panel thanks-panel">
-            <span class="thanks-mark" aria-hidden="true"><i class="fas fa-check"></i></span>
+      <div class="panel thanks-panel">
+        <span class="thanks-mark" aria-hidden="true"
+          ><i class="fas fa-check"></i
+        ></span>
 
-            <span class="chip chip--live">
-                <span class="pulse-dot" aria-hidden="true"></span> 200 — delivered
-            </span>
+        <span class="chip chip--live">
+          <span class="pulse-dot" aria-hidden="true"></span> 200 — delivered
+        </span>
 
-            <h1>Message sent.</h1>
+        <h1>Message sent.</h1>
 
-            <p>
-                Thanks for reaching out. It's landed in my inbox and I usually
-                reply within a day. If it's urgent, WhatsApp is faster.
-            </p>
+        <p>
+          Thanks for reaching out. It's landed in my inbox and I usually reply
+          within a day. If it's urgent, WhatsApp is faster.
+        </p>
 
-            <div class="thanks-actions">
-                <a href="index.html" class="btn btn--primary">
-                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to homepage
-                </a>
-                <a href="https://wasap.my/60134718690" target="_blank" rel="noopener" class="btn btn--ghost">
-                    <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp me
-                </a>
-            </div>
+        <div class="thanks-actions">
+          <a href="index.html" class="btn btn--primary">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to
+            homepage
+          </a>
+          <a
+            href="https://wasap.my/60134718690"
+            target="_blank"
+            rel="noopener"
+            class="btn btn--ghost"
+          >
+            <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp me
+          </a>
         </div>
+      </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-inner">
-            <p>© <span id="year">2026</span> Muhamad Kamizan Amirudin</p>
-            <div class="footer-links">
-                <a href="https://github.com/KamizanAmir" target="_blank" rel="noopener">GitHub</a>
-                <a href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank" rel="noopener">LinkedIn</a>
-            </div>
+    <footer class="footer container">
+      <div class="footer-inner">
+        <p>© <span id="year">2026</span> Muhamad Kamizan Amirudin</p>
+        <div class="footer-links">
+          <a
+            href="https://github.com/KamizanAmir"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+          <a
+            href="https://www.linkedin.com/in/kamizan-amirudin"
+            target="_blank"
+            rel="noopener"
+            >LinkedIn</a
+          >
         </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>

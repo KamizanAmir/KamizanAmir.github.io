@@ -1,23 +1,19 @@
-# Arcade CV
+# Systems Arena
 
-A side-scrolling, playable version of the CV at [`../index.html`](../index.html).
-Same content, same palette, different register.
+A responsive 3D combat arcade that introduces Kamizan's integration, mobile and infrastructure experience. Built with vanilla JavaScript and a local, pinned Three.js 0.170.0 module (MIT license in `../assets/vendor/THREE-LICENSE.txt`). No build step or runtime CDN is needed for the game.
 
-- **Eight zones** along one continuous world: start, profile, stack, quests,
-  work, skills, contact, end.
-- **Zone rail** in the header is a map *and* a fast-travel control — click a
-  marker, or press `1`–`8`. Nobody hiring should have to walk 15,000 pixels to
-  reach the experience section.
-- **Controls**: arrows or `WASD` to walk, `Space` to jump, `Esc` for the menu.
-- **On a phone**: swipe horizontally anywhere to walk, or use the on-screen
-  pad. Vertical swipes scroll the panel you're reading. The rail is replaced by
-  a **zone sheet** (the map button in the header) — eight markers on a 320px
-  rail sit 2px apart, which is not a control.
-- **Deep links** work: `/portfolio/#quests` lands on that zone.
-- **Escape hatch**: `Tab` reveals a skip link to the plain CV, so the game
-  never traps a keyboard or screen-reader user.
+Serve the repository over HTTP, for example `python3 -m http.server 8080`, and visit `/portfolio/`. JavaScript modules need an HTTP server; opening the HTML directly with `file://` is unsupported.
 
-No build step, no dependencies — `index.html`, `styles.css`, `script.js`.
+- Move with WASD / arrows, pulse with Space, dash with Shift, shield with E.
+- Touch devices have a direction pad and three ability buttons; controls support simultaneous touches.
+- P, Escape, or the pause button pauses. Losing focus and switching tabs also pause.
+- Defeat 5, 7, then 9 bugs. Pulses do one damage within 3.25 world units. Enemy health and speed increase each wave.
+- Waves restore up to 25 integrity and award 500 points; bugs award 100 points.
+- Cooldowns: pulse 0.6s, dash 3s, shield 7s. Dash protects for 0.35s, shield for 2s.
+- Ability cards expose actual career details without requiring a win. The main portfolio is always linked, including on WebGL failure.
+- Sound is opt-in. Only the personal best is stored locally; blocked storage does not stop play.
+- Reduced motion disables decorative bobbing. Game movement remains necessary to play.
 
-The content here is a mirror of the main site. When the CV changes, both need
-updating; the resume PDF in `resume/` is a copy of the one at the site root.
+`game-state.js` contains combat rules; `script.js` handles rendering, controls and UI. Run the combat checks from the repository root with `node --test tests/arena-state.test.mjs` (Node 22+).
+
+Keep the three skill descriptions in `script.js` in sync with the main portfolio. All original portfolio content is available on the main page; the arcade is a complementary experience.

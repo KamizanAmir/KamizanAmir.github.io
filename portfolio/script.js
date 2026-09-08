@@ -1,1325 +1,683 @@
-/* =============================================================================
-   KAMIZAN AMIRUDIN — ARCADE PORTFOLIO ENGINE
-   Vanilla, no build step, no dependencies.
-
-   Features:
-   - Fluid requestAnimationFrame loop with acceleration & friction
-   - Smoothstep altitude curve
-   - Precise Mario-style Goomba/Bug enemies with tight hitboxes & stomping
-   - Interactive ? mystery blocks & breakable bricks (shatters on Giant impact)
-   - Super Mushroom power-up for Giant Mode (1.85x scale, smash bricks, invincible)
-   - Giant Cloud Rider floating high in the sky zones with open sky below
-   - In-Pipe Transit & Interactive Peek Navigation (Left/Right to peek, Up to emerge)
-   - Non-destructive CSS transform pipeline preserving jump & directional flip
-   - Retro 6-digit score system & HUD counter
-   ========================================================================== */
-
-(() => {
-    'use strict';
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* =========================================================================
-       WORLD LAYOUT
-       ====================================================================== */
-    const WORLD_END = 15000;
-
-    const ALT_CURVE = [
-        [0, 0],
-        [7000, 0],       // balloon / cloud pickup
-        [8000, 560],     // cruising altitude
-        [11400, 560],    // stay up through sky zones
-        [12400, 0],      // descend
-        [WORLD_END, 0]
-    ];
-
-    const ZONE_LABELS = {
-        intro: 'START',
-        profile: 'PROFILE',
-        stack: 'STACK',
-        quests: 'QUESTS',
-        loot: 'WORK',
-        skills: 'SKILLS',
-        contact: 'CONTACT',
-        end: 'END'
-    };
-
-    const WARP_PIPES = [
-        { x: 1330, name: 'ZONE 01 / 02 (PROFILE)' },
-        { x: 4500, name: 'ZONE 03 / 04 (QUESTS)' },
-        { x: 6800, name: 'ZONE 04 / 05 (SKY LAUNCH)' },
-        { x: 12100, name: 'ZONE 07 / 08 (CONTACT)' }
-    ];
-
-    /* =========================================================================
-       ELEMENTS
-       ====================================================================== */
-    const $ = (id) => document.getElementById(id);
-
-    const world = $('world');
-    const hero = $('hero');
-    const balloon = $('balloon');
-    const cyberCloud = $('cyber-cloud');
-    const overlay = $('overlay');
-    const pipeTransitHud = $('pipe-transit-hud');
-    const transitPipeName = $('transit-pipe-name');
-    const btnPeekPrev = $('btn-peek-prev');
-    const btnPeekNext = $('btn-peek-next');
-    const btnPeekEmerge = $('btn-peek-emerge');
-    const hint = $('hint');
-    const pad = $('pad');
-    const portal = $('portal');
-    const sheet = $('zones');
-    const sheetList = $('zones-list');
-    const zoneCount = $('zone-count');
-    const flash = $('flash');
-    const announce = $('announce');
-    const railMarks = $('rail-marks');
-    const railFill = $('rail-fill');
-    const layers = {
-        stars: $('layer-stars'),
-        far: $('layer-far'),
-        near: $('layer-near')
-    };
-    const hud = {
-        progress: $('hud-progress'),
-        alt: $('hud-alt'),
-        zone: $('hud-zone'),
-        score: $('hud-score')
-    };
-
-    const zones = Array.from(document.querySelectorAll('.zone'));
-    const obstacles = Array.from(document.querySelectorAll('.obstacle'));
-    let placeables = Array.from(document.querySelectorAll('[data-x]'));
-
-    /* =========================================================================
-       STATE
-       ====================================================================== */
-    const state = {
-        x: 0,             // camera position in world units
-        vx: 0,            // velocity, px per frame at 60fps
-        facing: 1,
-        started: false,
-        paused: false,
-        jumpUntil: 0,
-        travelTo: null,   // fast-travel target, or null
-        lastTime: 0,
-
-        // Cinematic & warp states
-        cinematic: null,
-        heroOffset: 0,
-        warp: 1,
-
-        // Arcade Gameplay states
-        score: 0,
-        isGiant: false,
-        giantUntil: 0,
-        invulnerableUntil: 0,
-        isWarping: false,
-
-        // In-Pipe Peek Transit system
-        inPipeTransit: false,
-        pipeTransitIndex: 0
-    };
-
-    const held = new Set();
-
-    // Config
-    const ACCEL = 1.5;
-    const MAX_SPEED = 15;
-    const FRICTION = 0.82;
-    const TRAVEL_SPEED = 90;
-    const JUMP_MS = 520;
-    const JUMP_H = 150;
-
-    const heroScreenX = () => {
-        if (window.innerWidth < 600) return 42;
-        if (window.innerHeight <= 460 && window.innerWidth > window.innerHeight) return 92;
-        return 200;
-    };
-    const groundH = () =>
-        parseInt(getComputedStyle(document.documentElement).getPropertyValue('--ground-h'), 10) || 74;
-
-    /* =========================================================================
-       ALTITUDE CURVE
-       ====================================================================== */
-    function altitudeAt(x) {
-        for (let i = 0; i < ALT_CURVE.length - 1; i++) {
-            const [x0, a0] = ALT_CURVE[i];
-            const [x1, a1] = ALT_CURVE[i + 1];
-            if (x < x0 || x > x1) continue;
-            if (a0 === a1) return a0;
-            const t = (x - x0) / (x1 - x0);
-            const e = t * t * (3 - 2 * t);
-            return a0 + (a1 - a0) * e;
-        }
-        return ALT_CURVE[ALT_CURVE.length - 1][1];
-    }
-
-    /* =========================================================================
-       ARCADE SCORE & POPUPS
-       ====================================================================== */
-    function addScore(points, worldX, worldY, text, isGiant) {
-        state.score += points;
-        if (hud.score) {
-            hud.score.textContent = String(state.score).padStart(6, '0');
-        }
-        if (worldX !== undefined && worldY !== undefined) {
-            spawnScorePopup(worldX, worldY, text || `+${points}`, isGiant);
-        }
-    }
-
-    function spawnScorePopup(x, y, text, isGiant) {
-        const popup = document.createElement('div');
-        popup.className = 'score-popup' + (isGiant ? ' giant-popup' : '');
-        popup.textContent = text;
-        popup.style.left = x + 'px';
-        popup.style.bottom = y + 'px';
-        world.appendChild(popup);
-        setTimeout(() => popup.remove(), 850);
-    }
-
-    /* =========================================================================
-       ENEMIES SYSTEM (GOOMBAS / BUG BOTS)
-       ====================================================================== */
-    let enemies = [];
-
-    function initEnemies() {
-        enemies.forEach(e => {
-            if (e.el && e.el.parentNode) e.el.remove();
-        });
-        enemies = [];
-
-        const rawEnemies = Array.from(document.querySelectorAll('.arcade-enemy'));
-        rawEnemies.forEach((el) => {
-            const startX = Number(el.dataset.x) || 0;
-            const minX = Number(el.dataset.min) || (startX - 80);
-            const maxX = Number(el.dataset.max) || (startX + 80);
-
-            el.innerHTML = `
-                <div class="enemy-body">
-                    <div class="enemy-eyes">
-                        <div class="enemy-eye"></div>
-                        <div class="enemy-eye"></div>
-                    </div>
-                    <div class="enemy-teeth">
-                        <div class="enemy-tooth"></div>
-                        <div class="enemy-tooth"></div>
-                    </div>
-                </div>
-                <div class="enemy-feet">
-                    <div class="enemy-foot"></div>
-                    <div class="enemy-foot"></div>
-                </div>
-            `;
-            el.style.left = startX + 'px';
-            el.classList.remove('is-stomped', 'is-blasted', 'walk-step-1', 'walk-step-2');
-
-            enemies.push({
-                el,
-                x: startX,
-                initialX: startX,
-                minX,
-                maxX,
-                dir: -1,
-                speed: 1.25,
-                dead: false,
-                stepTime: 0
-            });
-        });
-    }
-
-    /* =========================================================================
-       INTERACTIVE BLOCKS & BRICKS
-       ====================================================================== */
-    let blocks = [];
-
-    function initBlocks() {
-        blocks = [];
-        const rawBlocks = Array.from(document.querySelectorAll('.interactive-block'));
-        rawBlocks.forEach((el) => {
-            const x = Number(el.dataset.x) || 0;
-            const y = Number(el.dataset.y) || 130;
-            const isMystery = el.classList.contains('block-mystery');
-            const hasMushroom = el.dataset.item === 'mushroom';
-
-            el.style.left = x + 'px';
-            el.style.bottom = (groundH() + y) + 'px';
-            el.classList.remove('is-bumped', 'is-empty');
-            el.style.display = 'flex';
-
-            blocks.push({
-                el,
-                x,
-                y,
-                type: isMystery ? 'mystery' : 'brick',
-                hasMushroom,
-                empty: false,
-                broken: false,
-                lastHitTime: 0
-            });
-        });
-    }
-
-    function shatterBrick(block) {
-        if (block.broken) return;
-        block.broken = true;
-        block.el.style.display = 'none';
-
-        world.classList.add('is-shaking');
-        setTimeout(() => world.classList.remove('is-shaking'), 200);
-
-        const shards = [
-            { dx: -45, dy: 85 },
-            { dx: 45, dy: 85 },
-            { dx: -25, dy: 120 },
-            { dx: 25, dy: 120 }
-        ];
-
-        shards.forEach((s) => {
-            const shard = document.createElement('div');
-            shard.className = 'brick-shard';
-            shard.style.left = (block.x + 12) + 'px';
-            shard.style.bottom = (groundH() + block.y + 12) + 'px';
-            shard.style.setProperty('--dx', s.dx + 'px');
-            shard.style.setProperty('--dy', s.dy + 'px');
-            world.appendChild(shard);
-            setTimeout(() => shard.remove(), 650);
-        });
-    }
-
-    /* =========================================================================
-       SUPER MUSHROOM & GIANT POWER-UP
-       ====================================================================== */
-    let mushrooms = [];
-
-    function spawnMushroom(x, y) {
-        const shroomEl = document.createElement('div');
-        shroomEl.className = 'super-mushroom';
-        shroomEl.innerHTML = `
-            <div class="shroom-cap">
-                <div class="shroom-spot spot-center"></div>
-                <div class="shroom-spot spot-left"></div>
-                <div class="shroom-spot spot-right"></div>
-            </div>
-            <div class="shroom-stem">
-                <div class="shroom-eye left"></div>
-                <div class="shroom-eye right"></div>
-            </div>
-        `;
-        const shroomX = x + 4;
-        const shroomY = y + 48;
-        shroomEl.style.left = shroomX + 'px';
-        shroomEl.style.bottom = (groundH() + shroomY) + 'px';
-        world.appendChild(shroomEl);
-
-        const shroomObj = {
-            el: shroomEl,
-            x: shroomX,
-            y: shroomY,
-            active: true
-        };
-        mushrooms.push(shroomObj);
-
-        shroomEl.addEventListener('click', () => collectMushroom(shroomObj));
-    }
-
-    function collectMushroom(m) {
-        if (!m.active) return;
-        m.active = false;
-        m.el.remove();
-        mushrooms = mushrooms.filter(item => item !== m);
-
-        addScore(1000, m.x, groundH() + m.y + 30, '🍄 GIANT MODE! +1000', true);
-
-        state.isGiant = true;
-        state.giantUntil = performance.now() + 9000;
-        announce.textContent = '🍄 SUPER GIANT MODE ACTIVATED!';
-    }
-
-    /* =========================================================================
-       IN-PIPE TRANSIT & PEEK NAVIGATION
-       ====================================================================== */
-    function checkWarpPipes() {
-        if (state.isWarping || state.cinematic || state.inPipeTransit) return;
-        const heroX = state.x + heroScreenX() + 29;
-        const warpPipes = Array.from(document.querySelectorAll('.warp-pipe'));
-
-        warpPipes.forEach(pipe => {
-            const px = Number(pipe.dataset.x) || 0;
-            const prompt = pipe.querySelector('.warp-prompt');
-            const near = Math.abs(heroX - (px + 42)) < 55;
-            if (prompt) prompt.style.display = near ? 'block' : 'none';
-        });
-    }
-
-    function enterPipeTransit(pipe) {
-        if (state.inPipeTransit || state.isWarping || state.cinematic) return;
-
-        const currentX = Number(pipe.dataset.x) || 0;
-        let matchedIdx = WARP_PIPES.findIndex(p => Math.abs(p.x - currentX) < 80);
-        if (matchedIdx === -1) matchedIdx = 0;
-
-        state.inPipeTransit = true;
-        state.pipeTransitIndex = matchedIdx;
-        held.clear();
-        state.vx = 0;
-
-        // Slide down into pipe
-        hero.style.transition = 'opacity 220ms ease';
-        hero.style.setProperty('--pipe-y', '75px');
-        hero.style.opacity = '0';
-
-        setTimeout(() => {
-            flash.classList.add('is-on');
-            setTimeout(() => {
-                flash.classList.remove('is-on');
-                showPipeTransitHud();
-            }, reduceMotion ? 50 : 180);
-        }, 220);
-    }
-
-    function showPipeTransitHud() {
-        if (!pipeTransitHud) return;
-        const currentPipe = WARP_PIPES[state.pipeTransitIndex];
-
-        // Center camera smoothly on peeked pipe
-        state.x = clampX(currentPipe.x - window.innerWidth / 2);
-        const alt = altitudeAt(currentPipe.x);
-        world.style.transform = `translate3d(${-state.x}px, ${alt}px, 0)`;
-
-        // Highlight peeked pipe
-        Array.from(document.querySelectorAll('.warp-pipe')).forEach(p => {
-            const px = Number(p.dataset.x) || 0;
-            p.classList.toggle('is-peeking', Math.abs(px - currentPipe.x) < 80);
-        });
-
-        if (transitPipeName) {
-            transitPipeName.textContent = `PEEKING: ${currentPipe.name}`;
-        }
-        pipeTransitHud.removeAttribute('hidden');
-        announce.textContent = `Inside pipe network. Peeking: ${currentPipe.name}. Press UP to emerge.`;
-    }
-
-    function peekPipe(dir) {
-        if (!state.inPipeTransit) return;
-        state.pipeTransitIndex = (state.pipeTransitIndex + dir + WARP_PIPES.length) % WARP_PIPES.length;
-        showPipeTransitHud();
-    }
-
-    function emergeFromPipe() {
-        if (!state.inPipeTransit) return;
-        const targetPipe = WARP_PIPES[state.pipeTransitIndex];
-
-        if (pipeTransitHud) pipeTransitHud.setAttribute('hidden', '');
-        Array.from(document.querySelectorAll('.warp-pipe')).forEach(p => p.classList.remove('is-peeking'));
-
-        state.inPipeTransit = false;
-        state.isWarping = true;
-        flash.classList.add('is-on');
-
-        setTimeout(() => {
-            state.x = clampX(targetPipe.x - window.innerWidth / 2);
-            const alt = altitudeAt(targetPipe.x);
-            world.style.transform = `translate3d(${-state.x}px, ${alt}px, 0)`;
-
-            hero.style.transition = 'none';
-            hero.style.setProperty('--pipe-y', '75px');
-            void hero.offsetWidth;
-
-            hero.style.transition = 'opacity 260ms ease';
-            hero.style.setProperty('--pipe-y', '0px');
-            hero.style.opacity = '1';
-
-            flash.classList.remove('is-on');
-
-            addScore(300, targetPipe.x, groundH() + 80, '🌀 WARPED! +300', true);
-            announce.textContent = `Emerged at ${targetPipe.name}!`;
-
-            setTimeout(() => {
-                hero.style.transition = '';
-                hero.style.setProperty('--pipe-y', '0px');
-                state.isWarping = false;
-            }, 300);
-        }, reduceMotion ? 50 : 200);
-    }
-
-    btnPeekPrev?.addEventListener('click', () => peekPipe(-1));
-    btnPeekNext?.addEventListener('click', () => peekPipe(1));
-    btnPeekEmerge?.addEventListener('click', emergeFromPipe);
-
-    function tryWarpDown() {
-        if (state.inPipeTransit || state.isWarping || state.cinematic) return false;
-        const heroX = state.x + heroScreenX() + 29;
-        const warpPipes = Array.from(document.querySelectorAll('.warp-pipe'));
-
-        for (const pipe of warpPipes) {
-            const px = Number(pipe.dataset.x) || 0;
-            if (Math.abs(heroX - (px + 42)) < 55) {
-                enterPipeTransit(pipe);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Clicking directly on a warp pipe also enters transit
-    Array.from(document.querySelectorAll('.warp-pipe')).forEach(pipe => {
-        pipe.addEventListener('click', () => {
-            enterPipeTransit(pipe);
-        });
+import {
+  WAVES,
+  freshState,
+  useAbility,
+  damagePlayer,
+  clearWave,
+} from "./game-state.js";
+const $ = (id) => document.getElementById(id);
+const skills = [
+  [
+    "Connected by design.",
+    "From SAP Business One invoicing to Laravel and Vue platforms, I connect complex systems into workflows people can use.",
+    "../index.html#work",
+    "Explore the work ↗",
+  ],
+  [
+    "Built for life on the move.",
+    "I designed, built and shipped KamiTrack solo: Flutter fitness tracking, foreground location, social features and a Supabase backend.",
+    "../kamitrack.html",
+    "Discover KamiTrack ↗",
+  ],
+  [
+    "Reliable from the ground up.",
+    "Docker, Linux, GCP and RunCloud support my delivery work. At Mesiniaga, I managed VMware, Hyper-V, Nutanix and Veeam recovery.",
+    "../index.html#experience",
+    "Explore my experience ↗",
+  ],
+];
+function selectSkill(index) {
+  document.querySelectorAll("[data-skill]").forEach((el, i) => {
+    el.classList.toggle("selected", i === index);
+    el.setAttribute("aria-pressed", String(i === index));
+  });
+  const [title, copy, href, label] = skills[index];
+  $("skill-title").textContent = title;
+  $("skill-copy").textContent = copy;
+  $("skill-link").href = href;
+  $("skill-link").textContent = label;
+}
+document
+  .querySelectorAll("[data-skill]")
+  .forEach((el) =>
+    el.addEventListener("click", () => selectSkill(Number(el.dataset.skill))),
+  );
+selectSkill(0);
+let state = freshState(),
+  best = 0,
+  available = false,
+  audioContext,
+  sound = false;
+try {
+  best = Number(localStorage.getItem("systems-arena-best")) || 0;
+} catch {
+  /* Private browsing still supports play. */
+}
+$("best").textContent = String(best).padStart(5, "0");
+$("sound").addEventListener("click", () => {
+  sound = !sound;
+  $("sound").textContent = sound ? "Sound on" : "Sound off";
+  $("sound").setAttribute("aria-pressed", String(sound));
+  if (sound) tone(420);
+});
+function tone(frequency, duration = 0.08) {
+  if (!sound) return;
+  try {
+    audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+    if (audioContext.state === "suspended")
+      audioContext.resume().catch(() => {});
+    const osc = audioContext.createOscillator(),
+      gain = audioContext.createGain();
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(
+      frequency / 2,
+      audioContext.currentTime + duration,
+    );
+    gain.gain.setValueAtTime(0.035, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioContext.currentTime + duration,
+    );
+    osc.start();
+    osc.stop(audioContext.currentTime + duration);
+  } catch {
+    /* Audio is optional. */
+  }
+}
+function saveBest() {
+  if (state.score > best) {
+    best = state.score;
+    $("best").textContent = String(best).padStart(5, "0");
+    try {
+      localStorage.setItem("systems-arena-best", String(best));
+    } catch {}
+  }
+}
+function showOverlay(kicker, title, copy, button) {
+  $("overlay-kicker").textContent = kicker;
+  $("overlay-title").textContent = title;
+  $("overlay-copy").textContent = copy;
+  $("start").textContent = button;
+  $("overlay").hidden = false;
+  $("pause").disabled = true;
+  $("start").focus({ preventScroll: true });
+}
+const keys = new Set(),
+  held = new Set();
+function clearInput() {
+  keys.clear();
+  held.clear();
+}
+function pause() {
+  if (state.mode !== "playing") return;
+  state.mode = "paused";
+  clearInput();
+  showOverlay(
+    "TAKE A BREATHER",
+    "Systems on standby.",
+    "Your run is right where you left it. Resume when you’re ready.",
+    "Resume run →",
+  );
+}
+$("pause").addEventListener("click", pause);
+$("help").addEventListener("click", () => {
+  pause();
+  $("help-dialog").showModal();
+});
+$("close-help").addEventListener("click", () => $("help-dialog").close());
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) pause();
+});
+window.addEventListener("blur", () => {
+  clearInput();
+  pause();
+});
+window.addEventListener("keydown", (e) => {
+  if ($("help-dialog").open || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName))
+    return;
+  if ((e.code === "Escape" || e.code === "KeyP") && state.mode === "playing") {
+    e.preventDefault();
+    pause();
+    return;
+  }
+  if (state.mode !== "playing") return;
+  // Keep normal keyboard activation available on navigation and ability buttons.
+  if (
+    e.target.closest("button,a") &&
+    (e.code === "Space" || e.code === "Enter")
+  )
+    return;
+  if (
+    [
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "Space",
+      "ShiftLeft",
+      "ShiftRight",
+      "KeyW",
+      "KeyA",
+      "KeyS",
+      "KeyD",
+      "KeyE",
+    ].includes(e.code)
+  ) {
+    e.preventDefault();
+    keys.add(e.code);
+  }
+});
+window.addEventListener("keyup", (e) => keys.delete(e.code));
+for (const button of document.querySelectorAll("[data-move],[data-action]")) {
+  const key = button.dataset.move || button.dataset.action;
+  button.addEventListener("pointerdown", (e) => {
+    if (state.mode !== "playing") return;
+    e.preventDefault();
+    button.setPointerCapture(e.pointerId);
+    held.add(key);
+  });
+  for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
+    button.addEventListener(event, () => held.delete(key));
+}
+try {
+  const THREE = await import("../assets/vendor/three.module.min.js");
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x172521);
+  scene.fog = new THREE.Fog(0x172521, 28, 65);
+  const viewport = $("viewport");
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    powerPreference: "low-power",
+  });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.25;
+  viewport.appendChild(renderer.domElement);
+  renderer.domElement.setAttribute("aria-hidden", "true");
+  const camera = new THREE.OrthographicCamera(-15, 15, 12, -12, 0.1, 100);
+  camera.position.set(15, 21, 19);
+  camera.lookAt(0, 0, 0);
+  scene.add(new THREE.HemisphereLight(0xe6f3d5, 0x3a5549, 2.6));
+  const sun = new THREE.DirectionalLight(0xf1ffca, 3.5);
+  sun.position.set(-8, 16, 7);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, {
+    left: -16,
+    right: 16,
+    top: 16,
+    bottom: -16,
+  });
+  sun.shadow.bias = -0.001;
+  scene.add(sun);
+  function material(color, extra = {}) {
+    return new THREE.MeshStandardMaterial({
+      color,
+      roughness: 0.7,
+      metalness: 0.12,
+      ...extra,
     });
-
-    /* =========================================================================
-       LAYOUT
-       ====================================================================== */
-    function layoutWorld() {
-        placeables = Array.from(document.querySelectorAll('[data-x]'));
-        placeables.forEach((el) => {
-            const x = Number(el.dataset.x) || 0;
-            el.style.left = x + 'px';
-
-            el.style.bottom = '';
-            const alt = altitudeAt(x);
-            if (alt <= 0) return;
-
-            const base = parseFloat(getComputedStyle(el).bottom) || 0;
-            el.style.bottom = (base + alt) + 'px';
-        });
-
-        zones.forEach((z) => {
-            z.style.width = '100vw';
-            z.style.left = (Number(z.dataset.x) - window.innerWidth / 2) + 'px';
-        });
-
-        world.style.width = WORLD_END + 'px';
-        hero.style.left = heroScreenX() + 'px';
-
-        const max = camMax();
-        Array.from(railMarks.children).forEach((mark) => {
-            const target = clampX(Number(mark.dataset.target) - window.innerWidth / 2);
-            mark.style.left = ((target / max) * 100) + '%';
-        });
-    }
-
-    /* =========================================================================
-       ZONE RAIL
-       ====================================================================== */
-    function buildRail() {
-        zones.forEach((z, i) => {
-            const x = Number(z.dataset.x);
-            const key = z.dataset.zone;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'rail-mark';
-            btn.dataset.target = String(x);
-            btn.setAttribute('aria-label', `Zone ${i + 1}: ${ZONE_LABELS[key]}`);
-            btn.innerHTML = `<span>${ZONE_LABELS[key]}</span>`;
-            btn.addEventListener('click', () => travelTo(x));
-            railMarks.appendChild(btn);
-        });
-    }
-
-    /* =========================================================================
-       ZONE SHEET
-       ====================================================================== */
-    function buildSheet() {
-        zones.forEach((z, i) => {
-            const x = Number(z.dataset.x);
-            const row = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'sheet-row';
-            btn.innerHTML =
-                `<b>0${i + 1}</b><span>${ZONE_LABELS[z.dataset.zone]}</span>` +
-                `<i class="fas fa-check" aria-hidden="true"></i>`;
-            btn.addEventListener('click', () => {
-                closeSheet();
-                travelTo(x);
-            });
-            row.appendChild(btn);
-            sheetList.appendChild(row);
-        });
-    }
-
-    function openSheet() {
-        sheet.hidden = false;
-        state.paused = true;
-        sheetList.querySelector('.sheet-row')?.focus();
-    }
-
-    function closeSheet() {
-        sheet.hidden = true;
-        state.paused = false;
-    }
-
-    $('btn-zones').addEventListener('click', () => {
-        sheet.hidden ? openSheet() : closeSheet();
+  }
+  const floorMat = material(0x63775b),
+    edgeMat = material(0x2d453a),
+    lightMat = material(0xd0ed9b, {
+      emissive: 0x9bbf57,
+      emissiveIntensity: 0.55,
     });
-    $('btn-zones-close').addEventListener('click', closeSheet);
-    sheet.addEventListener('click', (e) => {
-        if (e.target === sheet) closeSheet();
+  function mesh(geometry, mat, parent = scene, x = 0, y = 0, z = 0) {
+    const m = new THREE.Mesh(geometry, mat);
+    m.position.set(x, y, z);
+    m.castShadow = true;
+    m.receiveShadow = true;
+    parent.add(m);
+    return m;
+  }
+  mesh(
+    new THREE.CylinderGeometry(11, 11.5, 0.7, 8),
+    edgeMat,
+    scene,
+    0,
+    -0.5,
+    0,
+  );
+  mesh(
+    new THREE.CylinderGeometry(10.85, 10.85, 0.12, 8),
+    floorMat,
+    scene,
+    0,
+    -0.09,
+    0,
+  );
+  const gridPoints = [];
+  for (let i = -9; i <= 9; i++) {
+    const extent = Math.min(9.7, Math.sqrt(9.7 ** 2 - i ** 2));
+    gridPoints.push(
+      new THREE.Vector3(i, 0.005, -extent),
+      new THREE.Vector3(i, 0.005, extent),
+    );
+    gridPoints.push(
+      new THREE.Vector3(-extent, 0.005, i),
+      new THREE.Vector3(extent, 0.005, i),
+    );
+  }
+  scene.add(
+    new THREE.LineSegments(
+      new THREE.BufferGeometry().setFromPoints(gridPoints),
+      new THREE.LineBasicMaterial({
+        color: 0x829672,
+        transparent: true,
+        opacity: 0.5,
+      }),
+    ),
+  );
+  const border = mesh(
+    new THREE.TorusGeometry(10.35, 0.055, 6, 8),
+    lightMat,
+    scene,
+    0,
+    0.04,
+    0,
+  );
+  border.rotation.x = Math.PI / 2;
+  border.rotation.z = Math.PI / 8;
+  for (let i = 0; i < 8; i++) {
+    const angle = (i * Math.PI) / 4 + Math.PI / 8;
+    const x = Math.cos(angle) * 10.55,
+      z = Math.sin(angle) * 10.55;
+    mesh(new THREE.BoxGeometry(0.5, 0.55, 0.5), edgeMat, scene, x, 0.25, z);
+    mesh(new THREE.BoxGeometry(0.4, 0.08, 0.4), lightMat, scene, x, 0.57, z);
+  }
+  // Distant infrastructure makes the arena feel like a world, without imported art.
+  for (let i = 0; i < 26; i++) {
+    const angle = i * 2.39996,
+      radius = 16 + (i % 4) * 3,
+      height = 1 + (i % 5) * 1.7;
+    mesh(
+      new THREE.BoxGeometry(1.6, height, 1.6),
+      edgeMat,
+      scene,
+      Math.cos(angle) * radius,
+      height / 2 - 3,
+      Math.sin(angle) * radius,
+    );
+  }
+  const bodyMat = material(0xd3f7b5),
+    darkMat = material(0x243b32),
+    visorMat = material(0x102a2b),
+    eyeMat = material(0xbaf5ba, { emissive: 0x8affad, emissiveIntensity: 1 });
+  function robot(color, enemy = false) {
+    const g = new THREE.Group(),
+      armor = enemy ? material(color) : bodyMat;
+    mesh(new THREE.BoxGeometry(0.78, 0.8, 0.53), armor, g, 0, 0.85, 0);
+    mesh(new THREE.BoxGeometry(0.86, 0.57, 0.63), armor, g, 0, 1.52, 0);
+    mesh(new THREE.BoxGeometry(0.66, 0.22, 0.05), visorMat, g, 0, 1.54, 0.34);
+    mesh(
+      new THREE.BoxGeometry(0.12, 0.075, 0.06),
+      enemy ? lightMat : eyeMat,
+      g,
+      -0.18,
+      1.54,
+      0.38,
+    );
+    mesh(
+      new THREE.BoxGeometry(0.12, 0.075, 0.06),
+      enemy ? lightMat : eyeMat,
+      g,
+      0.18,
+      1.54,
+      0.38,
+    );
+    const limbs = [];
+    for (const x of [-0.55, 0.55])
+      limbs.push(
+        mesh(new THREE.BoxGeometry(0.23, 0.62, 0.3), armor, g, x, 0.87, 0),
+      );
+    for (const x of [-0.23, 0.23])
+      limbs.push(
+        mesh(new THREE.BoxGeometry(0.26, 0.42, 0.4), darkMat, g, x, 0.25, 0),
+      );
+    mesh(
+      new THREE.CylinderGeometry(0.035, 0.035, 0.23, 6),
+      darkMat,
+      g,
+      0,
+      1.9,
+      0,
+    );
+    mesh(
+      new THREE.SphereGeometry(0.085, 8, 8),
+      enemy ? lightMat : eyeMat,
+      g,
+      0,
+      2.03,
+      0,
+    );
+    scene.add(g);
+    g.userData.limbs = limbs;
+    return g;
+  }
+  const player = robot();
+  const marker = mesh(
+    new THREE.ConeGeometry(0.16, 0.25, 3),
+    lightMat,
+    scene,
+    0,
+    2.6,
+    0,
+  );
+  marker.rotation.z = Math.PI;
+  const rangeRing = mesh(
+    new THREE.TorusGeometry(3.25, 0.012, 4, 64),
+    new THREE.MeshBasicMaterial({
+      color: 0xe1ffc3,
+      transparent: true,
+      opacity: 0.22,
+    }),
+    scene,
+  );
+  rangeRing.rotation.x = Math.PI / 2;
+  const shield = mesh(
+    new THREE.SphereGeometry(1.3, 20, 12),
+    material(0xc3ef9c, { transparent: true, opacity: 0.19, wireframe: true }),
+    player,
+    0,
+    1,
+    0,
+  );
+  shield.visible = false;
+  const playerRing = mesh(
+    new THREE.TorusGeometry(0.8, 0.035, 6, 32),
+    lightMat,
+    scene,
+  );
+  playerRing.rotation.x = Math.PI / 2;
+  let enemies = [],
+    effects = [],
+    lastTime = 0,
+    face = new THREE.Vector3(0, 0, 1),
+    dashDirection = face.clone(),
+    ambientTime = 0,
+    contextLost = false;
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function removeEnemy(enemy) {
+    scene.remove(enemy.object);
+    enemy.object.traverse((o) => {
+      if (o.isMesh) {
+        o.geometry.dispose();
+      }
     });
-
-    function travelTo(zoneX) {
-        if (state.cinematic || state.isWarping || state.inPipeTransit) return;
-        const x = zoneX - window.innerWidth / 2;
-        startGame();
-        closeOverlay();
-        if (reduceMotion) {
-            state.x = clampX(x);
-            state.vx = 0;
-            state.travelTo = null;
-            requestAnimationFrame(focusNearestPanel);
-        } else {
-            state.travelTo = clampX(x);
-        }
+    const armor = enemy.object.children[0].material;
+    armor.dispose();
+  }
+  function spawnWave() {
+    for (const e of enemies) removeEnemy(e);
+    enemies = [];
+    const wave = WAVES[state.wave];
+    for (let i = 0; i < wave.count; i++) {
+      const angle = (i / wave.count) * Math.PI * 2;
+      const object = robot(state.wave === 2 ? 0xc77d69 : 0xc49670, true);
+      object.position.set(Math.cos(angle) * 8.3, 0, Math.sin(angle) * 8.3);
+      enemies.push({ object, hp: wave.health, speed: wave.speed, flash: 0 });
     }
-
-    function camMax() {
-        const endX = Number(zones[zones.length - 1].dataset.x);
-        return Math.max(1, endX - window.innerWidth / 2);
+    player.position.set(0, 0, 0);
+    state.invulnerable = state.time + 1.2;
+    $("mission").textContent = wave.name;
+    $("wave-label").textContent = `WAVE 0${state.wave + 1} / 03`;
+    selectSkill(state.wave);
+  }
+  function pulseEffect(position, color, radius = 3.25) {
+    const effect = mesh(
+      new THREE.TorusGeometry(1, 0.04, 5, 40),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 }),
+      scene,
+      position.x,
+      0.16,
+      position.z,
+    );
+    effect.rotation.x = Math.PI / 2;
+    effects.push({ object: effect, life: 0, radius });
+  }
+  function ability(name) {
+    if (!useAbility(state, name)) return;
+    if (name === "attack") {
+      pulseEffect(player.position, 0xdbffac);
+      tone(230);
+      for (const enemy of enemies) {
+        const distance = enemy.object.position.distanceTo(player.position);
+        if (distance < 3.25) {
+          enemy.hp--;
+          enemy.flash = 0.18;
+          const push = enemy.object.position
+            .clone()
+            .sub(player.position)
+            .normalize();
+          enemy.object.position.addScaledVector(push, 0.65);
+          clampPosition(enemy.object.position, 8.7);
+          if (enemy.hp <= 0) {
+            state.score += 100;
+            pulseEffect(enemy.object.position, 0xf5d3a0, 1);
+          }
+        }
+      }
+      const dead = enemies.filter((e) => e.hp <= 0);
+      dead.forEach(removeEnemy);
+      enemies = enemies.filter((e) => e.hp > 0);
     }
-
-    const clampX = (x) => Math.max(0, Math.min(x, camMax()));
-
-    function focusNearestPanel() {
-        const centre = window.innerWidth / 2;
-        let nearest = null;
-        let best = Infinity;
-        zones.forEach((z) => {
-            const d = Math.abs((Number(z.dataset.x) - state.x) - centre);
-            if (d < best) { best = d; nearest = z; }
-        });
-        if (nearest && best < centre) {
-            nearest.querySelector('.panel')?.focus({ preventScroll: true });
-        }
+    if (name === "dash") {
+      dashDirection.copy(face);
+      pulseEffect(player.position, 0xa2dfec, 1.5);
+      tone(460);
     }
-
-    /* =========================================================================
-       INPUT
-       ====================================================================== */
-    const LEFT_KEYS = ['ArrowLeft', 'KeyA'];
-    const RIGHT_KEYS = ['ArrowRight', 'KeyD'];
-    const DOWN_KEYS = ['ArrowDown', 'KeyS'];
-    const UP_KEYS = ['ArrowUp', 'KeyW', 'Space'];
-
-    window.addEventListener('keydown', (e) => {
-        const t = e.target;
-        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
-
-        // While in Pipe Transit:
-        if (state.inPipeTransit) {
-            if (LEFT_KEYS.includes(e.code)) {
-                e.preventDefault();
-                peekPipe(-1);
-                return;
-            }
-            if (RIGHT_KEYS.includes(e.code)) {
-                e.preventDefault();
-                peekPipe(1);
-                return;
-            }
-            if (UP_KEYS.includes(e.code)) {
-                e.preventDefault();
-                emergeFromPipe();
-                return;
-            }
-            if (e.code === 'Escape') {
-                e.preventDefault();
-                emergeFromPipe();
-                return;
-            }
-            return;
-        }
-
-        if (e.code === 'Escape') {
-            e.preventDefault();
-            if (!sheet.hidden) { closeSheet(); return; }
-            if (state.cinematic || state.isWarping) return;
-            overlay.hasAttribute('hidden') || overlay.classList.contains('is-hiding')
-                ? openOverlay()
-                : closeOverlay();
-            return;
-        }
-
-        if (/^Digit[1-8]$/.test(e.code)) {
-            const idx = Number(e.code.slice(5)) - 1;
-            if (zones[idx]) {
-                e.preventDefault();
-                travelTo(Number(zones[idx].dataset.x));
-            }
-            return;
-        }
-
-        if (DOWN_KEYS.includes(e.code)) {
-            e.preventDefault();
-            if (state.cinematic || state.isWarping) return;
-            startGame();
-            tryWarpDown();
-            return;
-        }
-
-        if (LEFT_KEYS.includes(e.code) || RIGHT_KEYS.includes(e.code) || UP_KEYS.includes(e.code)) {
-            e.preventDefault();
-            if (state.cinematic || state.isWarping) return;
-            startGame();
-            if (UP_KEYS.includes(e.code)) jump();
-            else held.add(e.code);
-        }
-    });
-
-    window.addEventListener('keyup', (e) => held.delete(e.code));
-    window.addEventListener('blur', () => held.clear());
-
-    /* ---- Touch pad controls ---- */
-    pad.querySelectorAll('.pad-btn').forEach((btn) => {
-        const dir = btn.dataset.dir;
-        const action = btn.dataset.action;
-
-        const down = (e) => {
-            e.preventDefault();
-            btn.classList.add('is-down');
-            btn.setPointerCapture?.(e.pointerId);
-
-            if (state.inPipeTransit) {
-                if (dir === '-1') peekPipe(-1);
-                else if (dir === '1') peekPipe(1);
-                else emergeFromPipe();
-                return;
-            }
-
-            startGame();
-            if (action === 'down') {
-                tryWarpDown();
-            } else if (dir) {
-                held.add(dir === '1' ? 'ArrowRight' : 'ArrowLeft');
-            } else {
-                jump();
-            }
-        };
-
-        const up = () => {
-            btn.classList.remove('is-down');
-            if (dir) held.delete(dir === '1' ? 'ArrowRight' : 'ArrowLeft');
-        };
-
-        btn.addEventListener('pointerdown', down);
-        btn.addEventListener('pointerup', up);
-        btn.addEventListener('pointercancel', up);
-        btn.addEventListener('pointerleave', up);
-        btn.addEventListener('contextmenu', (e) => e.preventDefault());
-    });
-
-    /* ---- Drag the world ---- */
-    let drag = null;
-
-    document.addEventListener('pointerdown', (e) => {
-        if (state.cinematic || state.isWarping || state.inPipeTransit) return;
-        if (e.target.closest('.hud, #pad, .sheet, .overlay, .super-mushroom, .pipe-transit-hud')) return;
-
-        const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-        if (!coarsePointer && e.target.closest('.panel')) return;
-        drag = {
-            id: e.pointerId,
-            startX: e.clientX,
-            startY: e.clientY,
-            camera: state.x,
-            active: false,
-            dead: false
-        };
-    });
-
-    window.addEventListener('pointermove', (e) => {
-        if (!drag || e.pointerId !== drag.id || drag.dead) return;
-
-        const dx = e.clientX - drag.startX;
-        const dy = e.clientY - drag.startY;
-
-        if (!drag.active) {
-            if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-            if (Math.abs(dy) > Math.abs(dx)) { drag.dead = true; return; }
-
-            drag.active = true;
-            startGame();
-        }
-
-        state.travelTo = null;
-        state.vx = 0;
-        state.x = clampX(drag.camera - dx);
-        state.facing = dx < 0 ? 1 : -1;
-    });
-
-    const endDrag = (e) => {
-        if (!drag || (e && e.pointerId !== drag.id)) return;
-        drag = null;
-    };
-    window.addEventListener('pointerup', endDrag);
-    window.addEventListener('pointercancel', endDrag);
-
-    const coarse = window.matchMedia('(hover: none) and (pointer: coarse)');
-    const syncPad = () => {
-        pad.classList.toggle('is-on', coarse.matches);
-        document.body.classList.toggle('has-pad', coarse.matches);
-        hint.innerHTML = coarse.matches
-            ? '<i class="fas fa-hand-pointer" aria-hidden="true"></i> SWIPE OR USE PAD · DOWN ON PIPES'
-            : '<i class="fas fa-arrow-right" aria-hidden="true"></i> HOLD RIGHT TO WALK · DOWN ON PIPES TO WARP';
-    };
-    coarse.addEventListener('change', syncPad);
-    syncPad();
-
-    /* =========================================================================
-       OVERLAY
-       ====================================================================== */
-    function openOverlay() {
-        state.paused = true;
-        overlay.removeAttribute('hidden');
-        overlay.classList.remove('is-hiding');
-        held.clear();
-        $('btn-start').focus();
+    if (name === "shield") {
+      tone(640, 0.2);
     }
-
-    function closeOverlay() {
-        state.paused = false;
-        overlay.classList.add('is-hiding');
-        setTimeout(() => overlay.setAttribute('hidden', ''), 260);
+  }
+  // Controls are screen-relative despite the angled camera.
+  const right = new THREE.Vector3(19, 0, -15).normalize(),
+    forward = new THREE.Vector3(-15, 0, -19).normalize();
+  function clampPosition(p, radius = 8.6) {
+    const length = Math.hypot(p.x, p.z);
+    if (length > radius) {
+      p.x *= radius / length;
+      p.z *= radius / length;
     }
-
-    function startGame() {
-        if (!state.started) {
-            state.started = true;
-            hint.hidden = false;
-            setTimeout(() => {
-                hint.classList.add('is-fading');
-                setTimeout(() => { hint.hidden = true; }, 300);
-            }, 4200);
-        }
-        if (!overlay.hasAttribute('hidden')) closeOverlay();
+  }
+  function updateHud() {
+    $("hp-label").textContent = `${state.hp}%`;
+    $("hp-bar").style.width = `${state.hp}%`;
+    $("score").textContent = String(state.score).padStart(5, "0");
+    for (const name of ["attack", "dash", "shield"]) {
+      const left = Math.max(0, state.readyAt[name] - state.time);
+      const labels = {
+        attack: "SPACE / ATTACK",
+        dash: "SHIFT / EVADE",
+        shield: "E / DEFEND",
+      };
+      $(name + "-status").textContent =
+        left > 0 ? `RECHARGING ${left.toFixed(1)}s` : labels[name];
     }
-
-    $('btn-start').addEventListener('click', startGame);
-    $('btn-help').addEventListener('click', openOverlay);
-    $('btn-restart')?.addEventListener('click', runPortal);
-
-    /* =========================================================================
-       PORTAL SEQUENCE
-       ====================================================================== */
-    let portalScreenX = 0;
-
-    function runPortal() {
-        if (state.cinematic || state.isWarping || state.inPipeTransit) return;
-
-        held.clear();
-        state.vx = 0;
-        state.cinematic = 'open';
-        document.body.classList.add('is-warping');
-
-        portalScreenX = Math.min(
-            heroScreenX() + 250,
-            window.innerWidth - 150
+  }
+  function finish() {
+    clearInput();
+    saveBest();
+    updateHud();
+    if (state.mode === "lost")
+      showOverlay(
+        "A BUG GOT THROUGH",
+        "Debug. Retry. Improve.",
+        `You reached wave ${state.wave + 1} with ${state.score} points. Keep moving, pulse at close range, and use your shield when surrounded.`,
+        "Try again →",
+      );
+    else
+      showOverlay(
+        "RELEASE SUCCESSFULLY DEPLOYED",
+        "Built to ship.",
+        `All three waves cleared. ${state.score} points earned. You’ve played through my integration, mobile and infrastructure skills — now explore the real work.`,
+        "Play again →",
+      );
+  }
+  function tick(dt) {
+    state.time += dt;
+    let x =
+      Number(keys.has("KeyD") || keys.has("ArrowRight") || held.has("right")) -
+      Number(keys.has("KeyA") || keys.has("ArrowLeft") || held.has("left"));
+    let y =
+      Number(keys.has("KeyW") || keys.has("ArrowUp") || held.has("up")) -
+      Number(keys.has("KeyS") || keys.has("ArrowDown") || held.has("down"));
+    const direction = right
+      .clone()
+      .multiplyScalar(x)
+      .addScaledVector(forward, y);
+    if (direction.lengthSq()) {
+      direction.normalize();
+      face.copy(direction);
+    }
+    if (keys.has("Space") || held.has("attack")) ability("attack");
+    if (keys.has("ShiftLeft") || keys.has("ShiftRight") || held.has("dash"))
+      ability("dash");
+    if (keys.has("KeyE") || held.has("shield")) ability("shield");
+    if (state.time < state.dashUntil)
+      player.position.addScaledVector(dashDirection, 20 * dt);
+    else player.position.addScaledVector(direction, 4.8 * dt);
+    clampPosition(player.position);
+    player.rotation.y = Math.atan2(face.x, face.z);
+    player.userData.limbs.forEach(
+      (limb, i) =>
+        (limb.rotation.x = direction.lengthSq()
+          ? Math.sin(state.time * 13 + i * Math.PI) * 0.4
+          : 0),
+    );
+    player.visible = true;
+    bodyMat.emissive.setHex(state.time < state.invulnerable ? 0x304421 : 0);
+    shield.visible = state.time < state.shieldUntil;
+    for (const enemy of enemies) {
+      const delta = player.position.clone().sub(enemy.object.position),
+        distance = delta.length();
+      enemy.object.rotation.y = Math.atan2(delta.x, delta.z);
+      if (distance > 0.9)
+        enemy.object.position.addScaledVector(
+          delta.normalize(),
+          enemy.speed * dt,
         );
-        portal.style.left = (portalScreenX - 64) + 'px';
-        portal.hidden = false;
-
-        void portal.offsetWidth;
-        portal.classList.add('is-open');
-
-        setTimeout(() => { state.cinematic = 'walk'; }, reduceMotion ? 120 : 620);
+      enemy.object.position.y = reduceMotion
+        ? 0
+        : Math.sin(state.time * 5 + enemy.object.id) * 0.06;
+      enemy.flash = Math.max(0, enemy.flash - dt);
+      enemy.object.children[0].material.emissive.setHex(
+        enemy.flash > 0 ? 0x735d30 : 0,
+      );
+      if (distance < 1.1 && damagePlayer(state)) tone(90, 0.15);
     }
-
-    function stepPortal(dt) {
-        const target = portalScreenX - heroScreenX() - 29;
-
-        if (state.cinematic === 'walk') {
-            const step = (reduceMotion ? 40 : 4.6) * dt;
-            state.heroOffset = Math.min(state.heroOffset + step, target);
-            state.facing = 1;
-
-            if (state.heroOffset >= target - 0.5) {
-                state.heroOffset = target;
-                state.cinematic = 'enter';
-            }
-        } else if (state.cinematic === 'enter') {
-            state.warp = Math.max(0, state.warp - (reduceMotion ? 0.5 : 0.055) * dt);
-            if (state.warp <= 0.01) {
-                state.warp = 0;
-                state.cinematic = 'done';
-                finishPortal();
-            }
-        }
+    if (state.mode === "lost") {
+      finish();
+      return;
     }
-
-    function finishPortal() {
-        flash.classList.add('is-on');
-
-        setTimeout(() => {
-            state.x = clampX(Number(zones[0].dataset.x) - window.innerWidth / 2);
-            state.vx = 0;
-            state.heroOffset = 0;
-            state.warp = 1;
-            state.facing = 1;
-            state.score = 0;
-            state.isGiant = false;
-            state.giantUntil = 0;
-            state.inPipeTransit = false;
-            if (pipeTransitHud) pipeTransitHud.setAttribute('hidden', '');
-            if (hud.score) hud.score.textContent = '000000';
-
-            hero.style.opacity = '1';
-            portal.classList.remove('is-open');
-            document.body.classList.remove('is-warping');
-            setTimeout(() => { portal.hidden = true; }, 300);
-
-            hero.style.left = heroScreenX() + 'px';
-            hero.style.setProperty('--warp', '1');
-            hero.style.setProperty('--size', '1');
-            hero.style.setProperty('--jump', '0px');
-            hero.style.setProperty('--pipe-y', '0px');
-            hero.style.setProperty('--face', '1');
-            hero.classList.remove('is-walking', 'is-giant', 'is-giant-warning', 'is-invulnerable');
-            held.clear();
-
-            state.cinematic = null;
-            updateHud(state.x + heroScreenX(), 0);
-
-            initEnemies();
-            initBlocks();
-
-            openOverlay();
-            flash.classList.remove('is-on');
-        }, reduceMotion ? 60 : 240);
+    if (!enemies.length) {
+      clearWave(state);
+      saveBest();
+      clearInput();
+      if (state.mode === "won") finish();
+      else
+        showOverlay(
+          `WAVE ${state.wave} COMPLETE / +500 POINTS`,
+          ["", "Integration online.", "Mobility unlocked."][state.wave],
+          `Integrity restored by up to 25%. Next: ${WAVES[state.wave].name.toLowerCase()}. ${state.wave === 1 ? "Use Flutter Dash to evade faster bugs." : "Use DevOps Shield when the swarm closes in."}`,
+          "Deploy next wave →",
+        );
     }
-
-    /* =========================================================================
-       JUMP & COLLISION
-       ====================================================================== */
-    function jump() {
-        if (performance.now() < state.jumpUntil) return;
-        const dur = state.isGiant ? 580 : JUMP_MS;
-        state.jumpUntil = performance.now() + dur;
-    }
-
-    function jumpOffset(now) {
-        const left = state.jumpUntil - now;
-        if (left <= 0) return 0;
-        const dur = state.isGiant ? 580 : JUMP_MS;
-        const h = state.isGiant ? 190 : JUMP_H;
-        const t = 1 - left / dur;
-        return Math.sin(Math.max(0, Math.min(1, t)) * Math.PI) * h;
-    }
-
-    function platformUnder(worldX) {
-        let top = 0;
-        for (const obs of obstacles) {
-            const left = Number(obs.dataset.x);
-            const w = obs.offsetWidth;
-            const h = Number(obs.dataset.h) || 0;
-            if (worldX + 26 > left && worldX + 8 < left + w) top = Math.max(top, h);
-        }
-        return top;
-    }
-
-    /* =========================================================================
-       MAIN GAME LOOP
-       ====================================================================== */
-    function frame(now) {
-        requestAnimationFrame(frame);
-
-        const dt = state.lastTime ? Math.min((now - state.lastTime) / 16.667, 3) : 1;
-        state.lastTime = now;
-
-        if (state.paused) return;
-
-        /* ---- Movement ---- */
-        if (state.cinematic) {
-            stepPortal(dt);
-        } else if (state.inPipeTransit || state.isWarping) {
-            // Suspended during pipe transit / teleport
-        } else if (state.travelTo !== null) {
-            const delta = state.travelTo - state.x;
-            if (Math.abs(delta) <= TRAVEL_SPEED * dt) {
-                state.x = state.travelTo;
-                state.travelTo = null;
-                state.vx = 0;
-                focusNearestPanel();
-            } else {
-                const dir = Math.sign(delta);
-                state.x += dir * TRAVEL_SPEED * dt;
-                state.facing = dir;
-            }
-        } else {
-            const right = RIGHT_KEYS.some((k) => held.has(k));
-            const left = LEFT_KEYS.some((k) => held.has(k));
-            const dir = (right ? 1 : 0) - (left ? 1 : 0);
-
-            if (dir !== 0) {
-                state.vx += dir * ACCEL * dt;
-                state.facing = dir;
-            } else {
-                state.vx *= Math.pow(FRICTION, dt);
-                if (Math.abs(state.vx) < 0.12) state.vx = 0;
-            }
-
-            state.vx = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, state.vx));
-            state.x += state.vx * dt;
-        }
-
-        if (!state.cinematic && !state.isWarping && !state.inPipeTransit) state.x = clampX(state.x);
-
-        /* ---- Camera ---- */
-        const alt = altitudeAt(state.x + heroScreenX());
-        world.style.transform = `translate3d(${-state.x}px, ${alt}px, 0)`;
-
-        layers.stars.style.transform = `translate3d(${-state.x * 0.06}px, ${alt * 0.10}px, 0)`;
-        layers.far.style.transform = `translate3d(${-state.x * 0.18}px, ${alt * 0.35}px, 0)`;
-        layers.near.style.transform = `translate3d(${-state.x * 0.42}px, ${alt * 0.7}px, 0)`;
-
-        /* ---- Giant Mode & Invulnerability Timers ---- */
-        const giantLeft = state.giantUntil - now;
-        if (giantLeft > 0) {
-            state.isGiant = true;
-            hero.classList.add('is-giant');
-            hero.classList.toggle('is-giant-warning', giantLeft < 2500);
-            hero.style.setProperty('--size', '1.85');
-        } else if (state.isGiant) {
-            state.isGiant = false;
-            hero.classList.remove('is-giant', 'is-giant-warning');
-            hero.style.setProperty('--size', '1');
-        }
-
-        const invulnLeft = state.invulnerableUntil - now;
-        hero.classList.toggle('is-invulnerable', invulnLeft > 0);
-
-        /* ---- Hero Rendering & Sky Vehicles (Balloon vs Floating Cyber Cloud) ---- */
-        const worldX = state.x + heroScreenX();
-        const platform = alt > 4 ? 0 : platformUnder(worldX);
-        const lift = jumpOffset(now);
-        const inSky = alt > 4;
-
-        if (!state.isWarping && !state.inPipeTransit) {
-            // When in the sky with Giant Cloud, elevate the Giant hero to stand ON the cloud deck
-            if (inSky && state.isGiant) {
-                hero.style.bottom = (groundH() + 140 + 36) + 'px';
-                hero.style.opacity = '1';
-            } else {
-                hero.style.bottom = (groundH() + platform) + 'px';
-                hero.style.opacity = inSky ? '0' : String(state.warp);
-            }
-
-            hero.style.left = (heroScreenX() + state.heroOffset) + 'px';
-            hero.style.setProperty('--jump', lift + 'px');
-            hero.style.setProperty('--face', state.facing < 0 ? '-1' : '1');
-            hero.style.setProperty('--warp', String(state.warp));
-
-            const walking = state.cinematic === 'walk'
-                || (!state.cinematic && Math.abs(state.vx) > 0.5 && !inSky && lift === 0);
-            hero.classList.toggle('is-walking', walking);
-        }
-
-        /* ---- Sky Vehicles Handling ---- */
-        if (inSky) {
-            if (state.isGiant) {
-                // Giant mode rides the Cyber Cloud high in the sky!
-                if (balloon) balloon.style.display = 'none';
-                if (cyberCloud) {
-                    cyberCloud.style.display = 'block';
-                    cyberCloud.style.left = (worldX - 85) + 'px';
-                    cyberCloud.style.bottom = (groundH() + alt + 140) + 'px';
-                }
-            } else {
-                // Normal mode rides the Hot Air Balloon
-                if (cyberCloud) cyberCloud.style.display = 'none';
-                if (balloon) {
-                    balloon.style.display = 'block';
-                    balloon.style.left = (worldX - 53) + 'px';
-                    balloon.style.bottom = (groundH() + alt) + 'px';
-                }
-            }
-        } else {
-            if (balloon) balloon.style.display = 'none';
-            if (cyberCloud) cyberCloud.style.display = 'none';
-        }
-
-        /* ---- Interactive Blocks Collision & Giant Smash ---- */
-        const heroCenterX = worldX + 29;
-        const heroFeetY = groundH() + platform + lift;
-        const heroHeadY = heroFeetY + (state.isGiant ? 160 : 92);
-
-        if (!state.isWarping && !state.cinematic && !state.inPipeTransit && !inSky) {
-            blocks.forEach((block) => {
-                if (block.broken) return;
-
-                const blockCenterX = block.x + 22;
-                const blockBottom = groundH() + block.y;
-                const blockTop = blockBottom + 44;
-
-                const dx = Math.abs(heroCenterX - blockCenterX);
-                const isOverlappingX = dx < (state.isGiant ? 42 : 28);
-
-                // Giant mode: any contact shatters the brick immediately!
-                if (state.isGiant && block.type === 'brick' && isOverlappingX) {
-                    if (heroFeetY <= blockTop + 8 && heroHeadY >= blockBottom - 8) {
-                        shatterBrick(block);
-                        addScore(250, block.x, groundH() + block.y + 55, '💥 CRUSH! +250', true);
-                        return;
-                    }
-                }
-
-                // Head hit from underneath (jumping)
-                if (lift > 20 && isOverlappingX) {
-                    if (heroHeadY >= blockBottom && heroHeadY <= blockBottom + 40) {
-                        if (now - block.lastHitTime > 300) {
-                            block.lastHitTime = now;
-                            block.el.classList.add('is-bumped');
-                            setTimeout(() => block.el.classList.remove('is-bumped'), 120);
-
-                            if (block.type === 'mystery' && !block.empty) {
-                                block.empty = true;
-                                block.el.classList.add('is-empty');
-                                addScore(100, block.x, groundH() + block.y + 55, '+100');
-                                if (block.hasMushroom) {
-                                    spawnMushroom(block.x, block.y);
-                                }
-                            } else if (block.type === 'brick') {
-                                if (state.isGiant) {
-                                    shatterBrick(block);
-                                    addScore(250, block.x, groundH() + block.y + 55, '💥 CRUSH! +250', true);
-                                } else {
-                                    addScore(50, block.x, groundH() + block.y + 55, '+50');
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        /* ---- Super Mushroom Collision ---- */
-        mushrooms.forEach((m) => {
-            if (!m.active) return;
-            const mCenterX = m.x + 18;
-            const mBottom = groundH() + m.y;
-            const mTop = mBottom + 36;
-
-            const dx = Math.abs(heroCenterX - mCenterX);
-            if (dx < 32 && heroFeetY < mTop && heroHeadY > mBottom) {
-                collectMushroom(m);
-            }
-        });
-
-        /* ---- Arcade Enemies Patrol & Stomp Collision (Tight Hitboxes, No Phantom Damage) ---- */
-        if (!inSky && !state.isWarping && !state.cinematic && !state.inPipeTransit) {
-            enemies.forEach((enemy) => {
-                if (enemy.dead) return;
-
-                enemy.x += enemy.dir * enemy.speed * dt;
-                if (enemy.x <= enemy.minX) {
-                    enemy.x = enemy.minX;
-                    enemy.dir = 1;
-                } else if (enemy.x >= enemy.maxX) {
-                    enemy.x = enemy.maxX;
-                    enemy.dir = -1;
-                }
-                enemy.el.style.left = enemy.x + 'px';
-
-                enemy.stepTime += dt;
-                if (enemy.stepTime > 10) {
-                    enemy.stepTime = 0;
-                    enemy.el.classList.toggle('walk-step-1');
-                    enemy.el.classList.toggle('walk-step-2');
-                }
-
-                // Accurate Collision with Hero
-                const enemyCenterX = enemy.x + 18;
-                const enemyBottomY = groundH();
-                const enemyTopY = groundH() + 34;
-
-                const dx = Math.abs(heroCenterX - enemyCenterX);
-                const isOverlapX = dx < (state.isGiant ? 34 : 22);
-                const isOverlapY = (heroFeetY < enemyTopY + 6) && (heroHeadY > enemyBottomY);
-
-                if (isOverlapX && isOverlapY) {
-                    if (state.isGiant) {
-                        // Giant obliteration!
-                        enemy.dead = true;
-                        enemy.el.classList.add('is-blasted');
-                        addScore(400, enemy.x, groundH() + 45, '💥 SMASH! +400', true);
-                        setTimeout(() => enemy.el.remove(), 450);
-                    } else if (lift > 0 || heroFeetY >= enemyTopY - 14) {
-                        // Stomp success!
-                        enemy.dead = true;
-                        enemy.el.classList.add('is-stomped');
-                        state.jumpUntil = performance.now() + 380; // Mini bounce!
-                        addScore(200, enemy.x, groundH() + 45, '+200');
-                        setTimeout(() => enemy.el.remove(), 400);
-                    } else if (heroFeetY <= enemyTopY && now > state.invulnerableUntil) {
-                        // Side hit damage & knockback
-                        state.vx = -state.facing * 7.5;
-                        state.invulnerableUntil = now + 1200;
-                    }
-                }
-            });
-        }
-
-        checkWarpPipes();
-        updateHud(worldX, alt);
-    }
-
-    /* =========================================================================
-       HUD + ZONE TRACKING
-       ====================================================================== */
-    let lastZone = null;
-
-    function updateHud(worldX, alt) {
-        const pct = Math.round(Math.min(100, (state.x / camMax()) * 100));
-        hud.progress.textContent = pct + '%';
-        hud.alt.textContent = Math.round(alt) + ' ft';
-        railFill.style.width = pct + '%';
-
-        const centre = window.innerWidth / 2;
-        let nearest = null;
-        let best = Infinity;
-        zones.forEach((z) => {
-            const d = Math.abs((Number(z.dataset.x) - state.x) - centre);
-            if (d < best) { best = d; nearest = z; }
-        });
-
-        const inZone = best < centre * 0.8 ? nearest : null;
-        const key = inZone ? inZone.dataset.zone : null;
-        hud.zone.textContent = key ? ZONE_LABELS[key] : '—';
-
-        const marks = railMarks.children;
-        const rows = sheetList.children;
-        let currentIdx = 0;
-
-        zones.forEach((z, i) => {
-            const zx = Number(z.dataset.x);
-            const passed = (zx - state.x) <= centre;
-            const current = z === inZone;
-            if (passed) currentIdx = i;
-
-            marks[i].classList.toggle('is-passed', passed);
-            marks[i].classList.toggle('is-current', current);
-
-            const row = rows[i]?.firstElementChild;
-            if (row) {
-                row.classList.toggle('is-passed', passed && !current);
-                row.setAttribute('aria-current', String(current));
-            }
-        });
-
-        zoneCount.textContent = `${currentIdx + 1}/${zones.length}`;
-
-        if (key !== lastZone) {
-            lastZone = key;
-            if (key) announce.textContent = `Zone: ${ZONE_LABELS[key]}`;
-        }
-    }
-
-    /* =========================================================================
-       PROJECT FILTER
-       ====================================================================== */
-    const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
-    const lootItems = Array.from(document.querySelectorAll('.loot-item'));
-
-    filterBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const f = btn.dataset.filter;
-            filterBtns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-            lootItems.forEach((item) => {
-                item.hidden = !(f === 'all' || item.dataset.cat === f);
-            });
-        });
-    });
-
-    /* =========================================================================
-       CONTACT FORM
-       ====================================================================== */
-    const form = $('contact-form');
-
-    if (form) {
-        const rules = [
-            ['cf-name', (v) => v.trim().length >= 2, 'NAME IS TOO SHORT'],
-            ['cf-email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), 'CHECK THE EMAIL ADDRESS'],
-            ['cf-subject', (v) => v.trim().length >= 3, 'SUBJECT IS TOO SHORT'],
-            ['cf-message', (v) => v.trim().length >= 10, 'MESSAGE NEEDS 10+ CHARACTERS']
-        ];
-
-        const setError = (field, msg) => {
-            const box = document.getElementById('err-' + field.id.slice(3));
-            box.textContent = msg || '';
-            field.setAttribute('aria-invalid', msg ? 'true' : 'false');
-            if (msg) {
-                field.classList.remove('shake');
-                void field.offsetWidth;
-                field.classList.add('shake');
-            }
-        };
-
-        rules.forEach(([id, test]) => {
-            const field = $(id);
-            field.addEventListener('input', () => {
-                if (field.getAttribute('aria-invalid') === 'true' && test(field.value)) {
-                    setError(field, '');
-                }
-            });
-        });
-
-        form.addEventListener('submit', (e) => {
-            let firstBad = null;
-
-            rules.forEach(([id, test, msg]) => {
-                const field = $(id);
-                const ok = test(field.value);
-                setError(field, ok ? '' : msg);
-                if (!ok && !firstBad) firstBad = field;
-            });
-
-            if (firstBad) {
-                e.preventDefault();
-                firstBad.focus();
-                return;
-            }
-
-            const submit = $('cf-submit');
-            submit.textContent = 'SENDING…';
-            submit.disabled = true;
-        });
-    }
-
-    /* =========================================================================
-       BOOT
-       ====================================================================== */
-    let resizeTimer;
-    let lastWidth = window.innerWidth;
-
-    window.addEventListener('resize', () => {
-        const worldCentre = state.x + lastWidth / 2;
-
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            layoutWorld();
-            lastWidth = window.innerWidth;
-            state.x = clampX(worldCentre - lastWidth / 2);
-        }, 150);
-    });
-
-    buildRail();
-    buildSheet();
-    layoutWorld();
-    initEnemies();
-    initBlocks();
-
-    state.x = clampX(Number(zones[0].dataset.x) - window.innerWidth / 2);
-
+    updateHud();
+  }
+  $("start").addEventListener("click", () => {
+    if (!available || contextLost) return;
+    if (["ready", "lost", "won"].includes(state.mode)) {
+      state = freshState();
+      for (const e of effects) {
+        scene.remove(e.object);
+        e.object.geometry.dispose();
+        e.object.material.dispose();
+      }
+      effects = [];
+      spawnWave();
+    } else if (state.mode === "between") spawnWave();
+    state.mode = "playing";
+    clearInput();
+    player.visible = true;
+    $("overlay").hidden = true;
+    $("pause").disabled = false;
+    viewport.focus({ preventScroll: true });
+    tone(520);
+    updateHud();
+  });
+  function resize() {
+    const width = viewport.clientWidth,
+      height = viewport.clientHeight;
+    renderer.setSize(width, height, false);
+    const aspect = width / height;
+    const halfHeight = aspect < 1 ? 12.5 / aspect : 12;
+    camera.left = -halfHeight * aspect;
+    camera.right = halfHeight * aspect;
+    camera.top = halfHeight;
+    camera.bottom = -halfHeight;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(viewport);
+  resize();
+  renderer.domElement.addEventListener("webglcontextlost", (e) => {
+    e.preventDefault();
+    pause();
+    contextLost = true;
+    $("start").disabled = true;
+    $("overlay-title").textContent = "Graphics paused.";
+    $("overlay-copy").textContent =
+      "The graphics context was interrupted. Reload the page to restart, or explore the portfolio.";
+  });
+  renderer.domElement.addEventListener("webglcontextrestored", () =>
+    location.reload(),
+  );
+  function frame(timestamp) {
     requestAnimationFrame(frame);
-
-    const hash = location.hash.replace('#', '');
-    if (hash) {
-        const z = zones.find((el) => el.dataset.zone === hash);
-        if (z) {
-            state.x = clampX(Number(z.dataset.x) - window.innerWidth / 2);
-            startGame();
-        }
+    const dt = Math.min((timestamp - lastTime) / 1000, 0.04);
+    lastTime = timestamp;
+    if (document.hidden || contextLost) return;
+    if (state.mode === "playing") {
+      ambientTime += dt;
+      tick(dt);
+    } else if (state.mode === "ready" && !reduceMotion) {
+      ambientTime += dt;
+      player.rotation.y = Math.sin(ambientTime * 0.5) * 0.5;
     }
-})();
+    playerRing.position.set(player.position.x, 0.09, player.position.z);
+    rangeRing.position.set(player.position.x, 0.07, player.position.z);
+    marker.position.set(player.position.x, 2.65, player.position.z);
+    if (state.mode === "playing")
+      for (let i = effects.length - 1; i >= 0; i--) {
+        const e = effects[i];
+        e.life += dt;
+        const scale = 0.2 + e.life * e.radius * 3;
+        e.object.scale.setScalar(scale);
+        e.object.material.opacity = Math.max(0, 1 - e.life * 3);
+        if (e.life > 0.34) {
+          scene.remove(e.object);
+          e.object.geometry.dispose();
+          e.object.material.dispose();
+          effects.splice(i, 1);
+        }
+      }
+    renderer.render(scene, camera);
+  }
+  available = true;
+  $("start").disabled = false;
+  $("start").textContent = "Enter the arena →";
+  requestAnimationFrame(frame);
+} catch (error) {
+  console.error("Arena could not initialize:", error);
+  $("overlay-title").textContent = "The arena needs WebGL.";
+  $("overlay-copy").textContent =
+    "3D graphics could not start in this browser. Try a browser with hardware acceleration, or explore all of my skills and work on the portfolio.";
+  $("start").hidden = true;
+}

@@ -1,777 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <!-- user-scalable=no was here before. Blocking pinch-zoom fails WCAG 1.4.4
-         and is never worth it; the layout is fixed-camera and survives zoom. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description"
-        content="A playable, side-scrolling version of Kamizan Amirudin's CV — Senior Programmer, System Analyst and DevOps.">
-    <meta name="theme-color" content="#070A10">
-    <title>Kamizan Amirudin — Arcade CV</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="images/icon.ico" type="image/x-icon">
-</head>
-
-<body class="no-select">
-
-    <a class="skip-link" href="../index.html">Skip the game — read the plain CV</a>
-
-    <!-- ============ BACKDROP ============ -->
-    <div class="sky" aria-hidden="true"></div>
-    <div class="stars" id="layer-stars" aria-hidden="true"></div>
-    <div class="hills-far" id="layer-far" aria-hidden="true"></div>
-    <div class="hills-near" id="layer-near" aria-hidden="true"></div>
-    <div class="ground" aria-hidden="true"></div>
-
-    <!-- ============ HUD ============ -->
-    <header class="hud">
-        <a class="hud-brand" href="../index.html" title="Back to the main site">
-            <span class="hud-badge" aria-hidden="true">KA</span>
-            <span class="hud-name">KAMIZAN<span>ARCADE CV</span></span>
-        </a>
-
-        <nav class="rail" aria-label="Zone map — jump to a section">
-            <div class="rail-track" aria-hidden="true">
-                <div class="rail-fill" id="rail-fill"></div>
-            </div>
-            <div class="rail-marks" id="rail-marks"></div>
-        </nav>
-
-        <div class="hud-stats" aria-hidden="true">
-            <div class="stat stat--score"><b>SCORE</b><i id="hud-score">000000</i></div>
-            <div class="stat"><b>PROGRESS</b><i id="hud-progress">0%</i></div>
-            <div class="stat"><b>ALTITUDE</b><i id="hud-alt">0 ft</i></div>
-            <div class="stat"><b>ZONE</b><i id="hud-zone">START</i></div>
-        </div>
-
-        <div class="hud-actions">
-            <a class="btn-hud-app" href="../kamitrack.html" title="KamiTrack Fitness App Landing Page" aria-label="KamiTrack Fitness App Landing Page">
-                <i class="fas fa-mobile-screen-button" aria-hidden="true"></i>
-                <span>KAMITRACK</span>
-            </a>
-            <button type="button" class="icon-btn icon-btn--zones" id="btn-zones" aria-label="Jump to a zone"
-                aria-haspopup="dialog">
-                <i class="fas fa-map" aria-hidden="true"></i>
-                <span class="zone-count" id="zone-count">1/8</span>
-            </button>
-            <button type="button" class="icon-btn" id="btn-help" aria-label="Controls and help">
-                <i class="fas fa-question" aria-hidden="true"></i>
-            </button>
-            <a class="icon-btn" href="../index.html" aria-label="Open the standard CV page">
-                <i class="fas fa-file-lines" aria-hidden="true"></i>
-            </a>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#111b19" />
+    <meta
+      name="description"
+      content="Play Systems Arena: Kamizan Amirudin's 3D arcade portfolio. Fight bugs with Laravel, Flutter and DevOps abilities, and explore the experience behind each skill."
+    />
+    <title>Systems Arena — Kamizan's Arcade</title>
+    <link rel="icon" href="../images/icon.ico" />
+    <link rel="canonical" href="https://kamizanamir.my/portfolio/" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="../index.html#stack"
+      >Read my skills on the portfolio</a
+    >
+    <header class="topbar">
+      <a class="brand" href="../index.html"
+        ><b>ka.</b
+        ><span>KAMIZAN'S ARCADE<small>AN INTERACTIVE PORTFOLIO</small></span></a
+      >
+      <nav aria-label="Arcade navigation">
+        <a href="../index.html">← Portfolio</a
+        ><button id="help">How to play</button
+        ><button id="sound" aria-pressed="false">Sound off</button>
+      </nav>
     </header>
-
-    <p class="announce" id="announce" role="status" aria-live="polite"></p>
-
-    <!-- ============ HERO SPRITE ============ -->
-    <div id="hero" aria-hidden="true">
-        <div id="hero-sprite"></div>
-    </div>
-
-    <!-- ============ WORLD ============ -->
-    <main id="world">
-
-        <!-- ---------- 01 START ---------- -->
-        <section class="zone" data-zone="intro" data-x="760">
-            <div class="panel panel--narrow" tabindex="-1" aria-labelledby="z1">
-                <h2 class="panel-head" id="z1"><span class="idx">01</span> PLAYER SELECT</h2>
-                <div class="panel-body">
-                    <div class="hero-card">
-                        <img src="images/icon_new.jpg" alt="Portrait of Kamizan Amirudin" width="96" height="96">
-                        <div>
-                            <h2>KAMIZAN<br>AMIRUDIN</h2>
-                            <p class="role">SENIOR PROGRAMMER<br>SYSTEM ANALYST / DEVOPS</p>
-                            <div class="tag-row">
-                                <span class="tag tag--on">AVAILABLE</span>
-                                <span class="tag">7+ YEARS</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p style="margin-top:16px">
-                        Based in Bandar Sunway, Petaling Jaya. Open to relocate.
-                        Walk right to read the rest — or use the map above to jump.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <div class="arcade-enemy" data-x="1000" data-min="880" data-max="1080"></div>
-        <div class="interactive-block block-mystery" data-x="1060" data-y="130" data-item="mushroom"></div>
-        <div class="interactive-block block-brick" data-x="1106" data-y="130"></div>
-        <div class="interactive-block block-brick" data-x="1152" data-y="130"></div>
-        <div class="marker" data-x="1180"><span class="marker-plate">PROFILE &rsaquo;</span><span
-                class="marker-post"></span></div>
-        <div class="obstacle pipe warp-pipe" data-x="1330" data-h="90" data-target-x="4500" style="height:90px">
-            <span class="warp-prompt">↓ WARP</span>
+    <main>
+      <div class="heading">
+        <div>
+          <p class="eyebrow">PLAYABLE EXPERIMENT / 001</p>
+          <h1>Systems <em>Arena.</em></h1>
         </div>
-        <div class="arcade-enemy" data-x="1600" data-min="1480" data-max="1720"></div>
-
-        <!-- ---------- 02 PROFILE ---------- -->
-        <section class="zone" data-zone="profile" data-x="1900">
-            <div class="panel" tabindex="-1" aria-labelledby="z2">
-                <h2 class="panel-head" id="z2"><span class="idx">02</span> CHARACTER PROFILE</h2>
-                <div class="panel-body">
-                    <h3>I BUILD SYSTEMS<br>PRODUCTION FLOORS DEPEND ON</h3>
-                    <p>
-                        Seven years across <strong>manufacturing, semiconductor and government</strong>
-                        work has taught me that most software problems start as process problems.
-                        So I spend as much time on the floor with engineers and supervisors as I do
-                        in the editor — gathering requirements, then turning them into workflows
-                        people actually use.
-                    </p>
-                    <p>
-                        That's meant configuring in-house <strong>MES/ERP</strong> systems and
-                        Electronic Data Capture, wiring invoicing straight into on-premise
-                        <strong>SAP Business One</strong>, running full UAT and FAT deployment
-                        cycles, and shipping Laravel/Vue platforms and Flutter apps on top.
-                    </p>
-                    <div class="tiles">
-                        <div class="tile"><b>7+</b><span>YEARS</span></div>
-                        <div class="tile"><b>20+</b><span>SYSTEMS<br>SHIPPED</span></div>
-                        <div class="tile"><b>3</b><span>GOV<br>PLATFORMS</span></div>
-                        <div class="tile"><b>4</b><span>LANGUAGES<br>SPOKEN</span></div>
-                    </div>
-                    <div class="btn-row" style="margin-top:16px">
-                        <a href="resume/resume.pdf" download class="btn btn--primary">
-                            <i class="fas fa-download" aria-hidden="true"></i> DOWNLOAD CV
-                        </a>
-                    </div>
-                </div>
+        <p>Build. Defend. Deploy.<br />A few rounds inside my skill set.</p>
+      </div>
+      <div class="game-layout">
+        <section class="arena" aria-label="3D combat arena">
+          <div
+            id="viewport"
+            tabindex="0"
+            aria-label="Game. Move with WASD or arrows. Space to attack, Shift to dash, E to shield, P or Escape to pause."
+          ></div>
+          <div class="hud">
+            <div class="health">
+              <span>SYSTEM INTEGRITY <b id="hp-label">100%</b></span>
+              <div class="health-track"><i id="hp-bar"></i></div>
             </div>
+            <div class="wave-stat">
+              <span id="wave-label">WAVE 01 / 03</span><b id="score">00000</b>
+            </div>
+          </div>
+          <div class="arena-label">
+            <i></i> <span id="mission">AWAITING DEPLOYMENT</span>
+          </div>
+          <button id="pause" aria-label="Pause game" disabled>Ⅱ</button>
+          <div id="overlay" class="overlay">
+            <div class="overlay-card">
+              <p class="eyebrow" id="overlay-kicker">
+                YOUR SKILLS ARE YOUR SUPERPOWERS
+              </p>
+              <h2 id="overlay-title" aria-live="polite">
+                Meet your<br />inner engineer.
+              </h2>
+              <p id="overlay-copy">
+                Pilot a little robot. Take down bugs with API pulses, dash out
+                of trouble, and shield your systems. Clear three waves to ship
+                the release.
+              </p>
+              <div class="intro-pills">
+                <span>3D arena combat</span><span>~3 min playtime</span>
+              </div>
+              <button class="primary" id="start" disabled>Loading arena…</button
+              ><a class="skip-game" href="../index.html#stack"
+                >Prefer reading? Explore my skills ↗</a
+              >
+            </div>
+          </div>
+          <div class="touch-controls" aria-label="Touch game controls">
+            <div class="dpad">
+              <button data-move="up" aria-label="Move up">↑</button
+              ><button data-move="left" aria-label="Move left">←</button
+              ><button data-move="down" aria-label="Move down">↓</button
+              ><button data-move="right" aria-label="Move right">→</button>
+            </div>
+            <div class="touch-actions">
+              <button data-action="dash" aria-label="Flutter dash">
+                ↗<small>DASH</small></button
+              ><button data-action="shield" aria-label="DevOps shield">
+                ⬡<small>SHIELD</small></button
+              ><button data-action="attack" aria-label="API pulse attack">
+                ✳<small>PULSE</small>
+              </button>
+            </div>
+          </div>
         </section>
-
-        <div class="arcade-enemy" data-x="2200" data-min="2100" data-max="2280"></div>
-        <div class="interactive-block block-mystery" data-x="2300" data-y="130" data-item="mushroom"></div>
-        <div class="interactive-block block-brick" data-x="2346" data-y="130"></div>
-        <div class="interactive-block block-brick" data-x="2392" data-y="130"></div>
-        <div class="obstacle block" data-x="2500" data-h="150" style="height:150px">
-            <div class="win lit" style="top:22px; left:22px"></div>
-            <div class="win" style="top:22px; right:22px"></div>
-            <div class="win" style="top:86px; left:22px"></div>
-            <div class="win lit" style="top:86px; right:22px"></div>
+        <aside class="loadout">
+          <div class="loadout-title">
+            <span>YOUR LOADOUT</span><span>01 — 03</span>
+          </div>
+          <h2>
+            Real skills.<br />
+            Playable powers.
+          </h2>
+          <button class="ability selected" data-skill="0">
+            <span class="ability-icon">✳</span
+            ><span
+              ><strong>API Pulse</strong
+              ><small>Laravel · Vue · Integration</small
+              ><span class="cooldown" id="attack-status"
+                >SPACE / ATTACK</span
+              ></span
+            ><span class="ability-number">01</span></button
+          ><button class="ability" data-skill="1">
+            <span class="ability-icon">↗</span
+            ><span
+              ><strong>Flutter Dash</strong
+              ><small>Flutter · Dart · Mobile</small
+              ><span class="cooldown" id="dash-status"
+                >SHIFT / EVADE</span
+              ></span
+            ><span class="ability-number">02</span></button
+          ><button class="ability" data-skill="2">
+            <span class="ability-icon">⬡</span
+            ><span
+              ><strong>DevOps Shield</strong
+              ><small>Docker · Linux · Cloud</small
+              ><span class="cooldown" id="shield-status">E / DEFEND</span></span
+            ><span class="ability-number">03</span>
+          </button>
+          <div class="skill-detail" aria-live="polite">
+            <span class="eyebrow">BEHIND THE ABILITY</span>
+            <h3 id="skill-title">Connected by design.</h3>
+            <p id="skill-copy">
+              From SAP Business One invoicing to Laravel and Vue platforms, I
+              connect complex systems into workflows people can use.
+            </p>
+            <a id="skill-link" href="../index.html#work">Explore the work ↗</a>
+          </div>
+          <div class="best">
+            <span>PERSONAL BEST</span><b id="best">00000</b>
+          </div>
+        </aside>
+      </div>
+      <div class="bottom-bar">
+        <span
+          ><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to
+          move
+          <span class="desktop-hint"
+            >· <kbd>Space</kbd> pulse · <kbd>Shift</kbd> dash ·
+            <kbd>E</kbd> shield · <kbd>P</kbd> pause</span
+          ></span
+        ><span>BUILT WITH CURIOSITY. PLAYED WITH PURPOSE.</span>
+      </div>
+      <section class="field-notes">
+        <p class="eyebrow">THE MISSION BRIEF</p>
+        <div>
+          <article>
+            <span>01 / INTEGRATION</span>
+            <h3>Break the bottlenecks.</h3>
+            <p>
+              Clear rogue bugs with API pulses. Get close: your pulse hits
+              everything within the visible ring.
+            </p>
+          </article>
+          <article>
+            <span>02 / MOBILITY</span>
+            <h3>Keep things moving.</h3>
+            <p>
+              Faster bugs need faster thinking. Dash in your movement direction
+              to make space, with brief damage protection.
+            </p>
+          </article>
+          <article>
+            <span>03 / INFRASTRUCTURE</span>
+            <h3>Ship under pressure.</h3>
+            <p>
+              Shield against incoming damage and take down the final swarm. Each
+              cleared wave restores 25% integrity.
+            </p>
+          </article>
         </div>
-        <div class="arcade-enemy" data-x="2750" data-min="2650" data-max="2850"></div>
-        <div class="marker" data-x="2900"><span class="marker-plate">INVENTORY &rsaquo;</span><span
-                class="marker-post"></span></div>
-
-        <!-- ---------- 03 STACK ---------- -->
-        <section class="zone" data-zone="stack" data-x="3500">
-            <div class="panel panel--wide" tabindex="-1" aria-labelledby="z3">
-                <h2 class="panel-head" id="z3"><span class="idx">03</span> INVENTORY / TECH STACK</h2>
-                <div class="panel-body">
-                    <div class="inv">
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-code" aria-hidden="true"></i> LANGUAGES</h4>
-                            <ul>
-                                <li class="max">C++</li>
-                                <li>C#</li>
-                                <li>PHP</li>
-                                <li>Java</li>
-                                <li>Dart</li>
-                                <li>Python</li>
-                                <li>HTML / CSS</li>
-                                <li>JavaScript</li>
-                            </ul>
-                        </div>
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-layer-group" aria-hidden="true"></i> FRAMEWORKS</h4>
-                            <ul>
-                                <li class="max">Laravel</li>
-                                <li class="max">Android Studio</li>
-                                <li>Flutter</li>
-                                <li>Filament</li>
-                                <li>Vue 3</li>
-                                <li>Swift</li>
-                            </ul>
-                        </div>
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-database" aria-hidden="true"></i> DATA</h4>
-                            <ul>
-                                <li class="max">MySQL</li>
-                                <li>MS SQL Server</li>
-                                <li>PostgreSQL</li>
-                                <li>Supabase</li>
-                                <li>Redis</li>
-                                <li>MongoDB</li>
-                                <li>phpMyAdmin</li>
-                            </ul>
-                        </div>
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-server" aria-hidden="true"></i> PLATFORM / DEVOPS</h4>
-                            <ul>
-                                <li class="max">Linux</li>
-                                <li>Docker</li>
-                                <li>GitLab CI/CD</li>
-                                <li>GCP</li>
-                                <li>RunCloud</li>
-                                <li>VMware vSphere</li>
-                                <li>Hyper-V</li>
-                                <li>Nutanix</li>
-                                <li>Veeam</li>
-                                <li>Cisco</li>
-                            </ul>
-                        </div>
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-industry" aria-hidden="true"></i> ENTERPRISE</h4>
-                            <ul>
-                                <li>SAP Business One</li>
-                                <li>MES / ERP</li>
-                                <li>Electronic Data Capture</li>
-                                <li>B2B modules</li>
-                                <li>UAT / FAT cycles</li>
-                                <li>Requirements gathering</li>
-                            </ul>
-                        </div>
-                        <div class="inv-slot">
-                            <h4><i class="fas fa-chart-line" aria-hidden="true"></i> DATA SCIENCE</h4>
-                            <ul>
-                                <li>Python</li>
-                                <li>SQL</li>
-                                <li>Data visualisation</li>
-                                <li>Visual Studio</li>
-                                <li>SQL Server Mgmt</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="legend">
-                        <span><i class="swatch" aria-hidden="true"></i> Expert</span>
-                        <span><i class="swatch swatch--dim" aria-hidden="true"></i> Working proficiency</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="arcade-enemy" data-x="4150" data-min="4050" data-max="4250"></div>
-        <div class="interactive-block block-mystery" data-x="4300" data-y="130" data-item="mushroom"></div>
-        <div class="interactive-block block-brick" data-x="4346" data-y="130"></div>
-        <div class="interactive-block block-brick" data-x="4392" data-y="130"></div>
-        <div class="obstacle pipe warp-pipe" data-x="4500" data-h="130" data-target-x="1330" style="height:130px">
-            <span class="warp-prompt">↓ WARP</span>
-        </div>
-        <div class="arcade-enemy" data-x="4750" data-min="4650" data-max="4820"></div>
-        <div class="marker" data-x="4820"><span class="marker-plate">QUEST LOG &rsaquo;</span><span
-                class="marker-post"></span></div>
-
-        <!-- ---------- 04 EXPERIENCE ---------- -->
-        <section class="zone" data-zone="quests" data-x="5500">
-            <div class="panel panel--wide" tabindex="-1" aria-labelledby="z4">
-                <h2 class="panel-head" id="z4"><span class="idx">04</span> QUEST LOG / EXPERIENCE</h2>
-                <div class="panel-body">
-                    <div class="quests">
-                        <article class="quest quest--active">
-                            <div class="q-head">
-                                <h3 class="q-title">SENIOR PROGRAMMER</h3>
-                                <span class="q-when">JAN 2025 — NOW</span>
-                            </div>
-                            <span class="q-org">YHCM Sdn Bhd · Wangsa Maju, KL</span>
-                            <p>
-                                Lead the design and implementation of scalable, enterprise-grade
-                                applications. Mentor junior developers, run rigorous code reviews,
-                                and drive process optimisations that streamline how the team ships.
-                            </p>
-                            <div class="q-tags"><span>Laravel</span><span>Vue 3</span><span>Filament</span><span>Docker</span><span>Mentoring</span>
-                            </div>
-                        </article>
-
-                        <article class="quest">
-                            <div class="q-head">
-                                <h3 class="q-title">SOFTWARE ANALYST</h3>
-                                <span class="q-when">NOV 2023 — OCT 2024</span>
-                            </div>
-                            <span class="q-org">AIC Semiconductor Sdn Bhd · Kulim, Kedah</span>
-                            <p>
-                                Gathered requirements straight from production and designed new
-                                workflows inside the in-house MES/ERP system, including purpose-built
-                                Electronic Data Capture. Built integrations that generated invoices
-                                and interfaced them into on-premise SAP Business One, plus custom B2B
-                                modules for country-specific invoice formats. Ran full UAT and FAT
-                                deployment cycles through to mass rollout.
-                            </p>
-                            <div class="q-tags"><span>MES / ERP</span><span>SAP B1</span><span>EDC</span><span>B2B</span><span>UAT / FAT</span>
-                            </div>
-                        </article>
-
-                        <article class="quest">
-                            <div class="q-head">
-                                <h3 class="q-title">SOFTWARE ENGINEER</h3>
-                                <span class="q-when">MAY — SEP 2023</span>
-                            </div>
-                            <span class="q-org">RISAU IO Sdn Bhd · Cyberjaya, Selangor</span>
-                            <p>
-                                Built and maintained Laravel web applications and Flutter apps,
-                                staging releases through GitLab. Managed domains on GCP via RunCloud
-                                and supported the team on network and server issues.
-                            </p>
-                            <div class="q-tags"><span>Laravel</span><span>Flutter</span><span>GitLab</span><span>GCP</span><span>RunCloud</span>
-                            </div>
-                        </article>
-
-                        <article class="quest">
-                            <div class="q-head">
-                                <h3 class="q-title">SOLUTION ENGINEER</h3>
-                                <span class="q-when">NOV 2021 — OCT 2022</span>
-                            </div>
-                            <span class="q-org">Mesiniaga Sdn Bhd · Bayan Lepas, Penang</span>
-                            <p>
-                                Ran server infrastructure end to end. Daily work in VMware vSphere,
-                                Hyper-V and Nutanix, snapshots and recovery with Veeam, and the
-                                written resolutions that followed.
-                            </p>
-                            <div class="q-tags"><span>vSphere</span><span>Hyper-V</span><span>Nutanix</span><span>Veeam</span>
-                            </div>
-                        </article>
-
-                        <article class="quest">
-                            <div class="q-head">
-                                <h3 class="q-title">QA SPECIALIST</h3>
-                                <span class="q-when">APR 2021 — NOV 2022</span>
-                            </div>
-                            <span class="q-org">Aspen Glove Sdn Bhd · Kulim, Kedah</span>
-                            <p>
-                                Ran glove inspections to keep AQL under 1.5, and put a structured
-                                inspection process in place to monitor production quality.
-                            </p>
-                            <div class="q-tags"><span>AQL &lt; 1.5</span><span>Process design</span></div>
-                        </article>
-                    </div>
-
-                    <div class="earlier">
-                        <h4>EARLIER</h4>
-                        <ul>
-                            <li><b>PPV Non-Medical Volunteer</b> — Flextronic Technology Sdn Bhd, Perai.
-                                <i>NOV 2021</i>
-                            </li>
-                            <li><b>Equipment Specialist</b> — Intel Technology Sdn Bhd, Kulim. Repaired
-                                TCUs at STHI to Intel guidelines. <i>JUN 2020</i></li>
-                            <li><b>Database Management</b> — Raffelinna Sdn Bhd, Baling. Excel data
-                                visualisation and phpMyAdmin server monitoring. <i>JUN — NOV 2019</i></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="arcade-enemy" data-x="6100" data-min="5950" data-max="6150"></div>
-        <div class="interactive-block block-mystery" data-x="6200" data-y="130" data-item="mushroom"></div>
-        <div class="interactive-block block-brick" data-x="6246" data-y="130"></div>
-        <div class="interactive-block block-brick" data-x="6292" data-y="130"></div>
-        <div class="marker" data-x="6700"><span class="marker-plate">&uarr; BALLOON AHEAD</span><span
-                class="marker-post"></span></div>
-        <div class="obstacle pipe warp-pipe" data-x="6800" data-h="100" data-target-x="12100" style="height:100px">
-            <span class="warp-prompt">↓ WARP</span>
-        </div>
-
-        <div id="balloon" aria-hidden="true">
-            <div class="balloon-float">
-                <div class="balloon-envelope"></div>
-                <div class="balloon-rope"></div>
-                <div class="balloon-basket"></div>
-                <div class="balloon-rider"></div>
-            </div>
-        </div>
-
-        <div id="cyber-cloud" aria-hidden="true" style="display:none">
-            <div class="cloud-body">
-                <div class="cloud-deck"></div>
-                <div class="cloud-puff puff-1"></div>
-                <div class="cloud-puff puff-2"></div>
-                <div class="cloud-puff puff-3"></div>
-                <div class="cloud-puff puff-4"></div>
-                <div class="cloud-aura"></div>
-                <div class="cloud-lightning">⚡</div>
-            </div>
-        </div>
-
-        <!-- ---------- 05 PROJECTS (sky) ---------- -->
-        <section class="zone" data-zone="loot" data-x="8600">
-            <div class="panel panel--wide" tabindex="-1" aria-labelledby="z5">
-                <h2 class="panel-head" id="z5"><span class="idx">05</span> LOOT / SELECTED WORK</h2>
-                <div class="panel-body">
-                    <div class="filters" role="group" aria-label="Filter projects">
-                        <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">ALL</button>
-                        <button type="button" class="filter-btn" data-filter="gov" aria-pressed="false">GOVERNMENT</button>
-                        <button type="button" class="filter-btn" data-filter="own" aria-pressed="false">PERSONAL</button>
-                    </div>
-
-                    <div class="loot">
-                        <article class="loot-item" data-cat="gov">
-                            <div class="loot-top">
-                                <span class="loot-mark"><img src="images/projects/spake.png" alt="" width="256"
-                                        height="256" loading="lazy"></span>
-                                <span class="tag tag--gov">GOV</span>
-                            </div>
-                            <div>
-                                <h4>SPAKE 4.0</h4>
-                                <span class="sub">Sistem Pengurusan Aset Komunikasi dan Elektronik</span>
-                            </div>
-                            <p>Asset management for communications and electronics equipment — registry,
-                                servicing and lifecycle records.</p>
-                            <div class="loot-tags"><span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>Docker</span>
-                            </div>
-                            <span class="loot-locked"><i class="fas fa-lock" aria-hidden="true"></i> PRIVATE REPO</span>
-                        </article>
-
-                        <article class="loot-item" data-cat="gov">
-                            <div class="loot-top">
-                                <span class="loot-mark"><img src="images/projects/spkb.png" alt="" width="256"
-                                        height="256" loading="lazy"></span>
-                                <span class="tag tag--gov">GOV</span>
-                            </div>
-                            <div>
-                                <h4>SPKB PUTD</h4>
-                                <span class="sub">Sistem Pengurusan Komputer Bersepadu, Pasukan Udara Tentera
-                                    Darat</span>
-                            </div>
-                            <p>Integrated computer and equipment management for an army air corps —
-                                inventory, servicing and reporting.</p>
-                            <div class="loot-tags"><span>Laravel 12</span><span>Filament</span><span>Vue 3</span><span>PostgreSQL</span>
-                            </div>
-                            <span class="loot-locked"><i class="fas fa-lock" aria-hidden="true"></i> PRIVATE REPO</span>
-                        </article>
-
-                        <article class="loot-item" data-cat="gov">
-                            <div class="loot-top">
-                                <span class="loot-mark"><img src="images/projects/fms.png" alt="" width="256"
-                                        height="256" loading="lazy"></span>
-                                <span class="tag tag--gov">GOV</span>
-                            </div>
-                            <div>
-                                <h4>FMS</h4>
-                                <span class="sub">Fleet Management System</span>
-                            </div>
-                            <p>Fleet management across web and mobile — vehicles, bookings, journeys
-                                and live location tracking.</p>
-                            <div class="loot-tags"><span>Laravel</span><span>Vue 3</span><span>Flutter</span><span>Redis</span>
-                            </div>
-                            <span class="loot-locked"><i class="fas fa-lock" aria-hidden="true"></i> PRIVATE REPO</span>
-                        </article>
-
-                        <article class="loot-item" data-cat="own">
-                            <div class="loot-top">
-                                <span class="loot-mark"><img src="images/projects/kamitrack.png" alt="" width="256"
-                                        height="256" loading="lazy"></span>
-                                <span class="tag tag--own">OWN</span>
-                            </div>
-                            <div>
-                                <h4>KAMITRACK</h4>
-                                <span class="sub">Fitness tracking, built solo</span>
-                            </div>
-                            <p>Android fitness app — precision foreground GPS tracking, auto-completing tasks,
-                                intermittent fasting, live leaderboards &amp; Gemini AI diet scanner.</p>
-                            <div class="loot-tags"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>GPS</span><span>Play Store</span>
-                            </div>
-                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
-                                <a class="loot-link" href="../kamitrack.html">
-                                    <i class="fas fa-sparkles" aria-hidden="true"></i> APP SHOWCASE
-                                </a>
-                                <a class="loot-link loot-link--play" href="https://play.google.com/store/apps/details?id=com.kamitrack.app" target="_blank" rel="noopener">
-                                    <i class="fab fa-google-play" aria-hidden="true"></i> PLAY STORE
-                                </a>
-                            </div>
-                        </article>
-
-                        <article class="loot-item" data-cat="own">
-                            <div class="loot-top">
-                                <span class="loot-mark"><i class="fas fa-shield-halved" aria-hidden="true"></i></span>
-                                <span class="tag tag--own">OWN</span>
-                            </div>
-                            <div>
-                                <h4>RUNCLOUD REVIEW</h4>
-                                <span class="sub">Server hardening assessment</span>
-                            </div>
-                            <p>Security assessment of a RunCloud-managed stack — configuration,
-                                access control and exposure.</p>
-                            <div class="loot-tags"><span>PHP</span><span>MySQL</span><span>Security</span></div>
-                            <a class="loot-link" href="https://github.com/KamizanAmir/runcloud/" target="_blank"
-                                rel="noopener">
-                                <i class="fab fa-github" aria-hidden="true"></i> VIEW CODE
-                            </a>
-                        </article>
-
-                        <article class="loot-item" data-cat="own">
-                            <div class="loot-top">
-                                <span class="loot-mark"><i class="fas fa-dice-five" aria-hidden="true"></i></span>
-                                <span class="tag tag--own">OWN</span>
-                            </div>
-                            <div>
-                                <h4>KAMCHING</h4>
-                                <span class="sub">Flutter interactive app</span>
-                            </div>
-                            <p>An interactive Flutter app built to work through game logic and
-                                state handling in Dart.</p>
-                            <div class="loot-tags"><span>Dart</span><span>Flutter</span><span>Game logic</span></div>
-                            <a class="loot-link" href="https://github.com/KamizanAmir/kamching/" target="_blank"
-                                rel="noopener">
-                                <i class="fab fa-github" aria-hidden="true"></i> VIEW CODE
-                            </a>
-                        </article>
-
-                        <article class="loot-item" data-cat="own">
-                            <div class="loot-top">
-                                <span class="loot-mark"><i class="fas fa-book-open" aria-hidden="true"></i></span>
-                                <span class="tag tag--own">OWN</span>
-                            </div>
-                            <div>
-                                <h4>ENTERPRISE API DOCS</h4>
-                                <span class="sub">API design &amp; documentation</span>
-                            </div>
-                            <p>Documented and structured a Laravel API surface with Swagger,
-                                covering contracts and versioning.</p>
-                            <div class="loot-tags"><span>Laravel</span><span>Swagger</span><span>System design</span>
-                            </div>
-                            <span class="loot-locked"><i class="fas fa-lock" aria-hidden="true"></i> PRIVATE REPO</span>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ---------- 06 EDUCATION (sky) ---------- -->
-        <section class="zone" data-zone="skills" data-x="10600">
-            <div class="panel panel--wide" tabindex="-1" aria-labelledby="z6">
-                <h2 class="panel-head" id="z6"><span class="idx">06</span> SKILL TREE / EDUCATION</h2>
-                <div class="panel-body">
-                    <div class="certs">
-                        <div class="cert">
-                            <h4><i class="fas fa-graduation-cap" aria-hidden="true"></i> DIPLOMA IN INFORMATION
-                                TECHNOLOGY</h4>
-                            <span class="org">Politeknik Tuanku Syed Sirajuddin, Perlis</span>
-                            <span class="note">CGPA 3.27</span>
-                            <span class="when">2016 — 2019</span>
-                        </div>
-                        <div class="cert">
-                            <h4><i class="fas fa-chart-simple" aria-hidden="true"></i> DATA SCIENCE WITH PYTHON &amp;
-                                SQL</h4>
-                            <span class="org">Perak Human Capital Development Center</span>
-                            <span class="note">Visual Studio and MS SQL Server Management; data visualisation
-                                on a training project.</span>
-                            <span class="when">DEC 2022 — MAR 2023</span>
-                        </div>
-                        <div class="cert">
-                            <h4><i class="fas fa-shield-halved" aria-hidden="true"></i> COMPTIA SECURITY+</h4>
-                            <span class="org">Certification</span>
-                            <span class="when">2021</span>
-                        </div>
-                        <div class="cert">
-                            <h4><i class="fas fa-server" aria-hidden="true"></i> WINDOWS SERVER ADMINISTRATION</h4>
-                            <span class="org">Mesiniaga</span>
-                            <span class="when">INTERNAL CERTIFICATION</span>
-                        </div>
-                        <div class="cert">
-                            <h4><i class="fas fa-cloud" aria-hidden="true"></i> CLOUD COMPUTING</h4>
-                            <span class="org">RunCloud</span>
-                            <span class="when">CERTIFICATION</span>
-                        </div>
-                        <div class="cert">
-                            <h4><i class="fas fa-language" aria-hidden="true"></i> LANGUAGES</h4>
-                            <span class="org">Spoken &amp; studied</span>
-                            <ul class="langs">
-                                <li><span>Bahasa Malaysia</span><em>NATIVE</em></li>
-                                <li><span>English</span><em>CONVERSATIONAL</em></li>
-                                <li><span>Bahasa Indonesia</span><em>CONVERSATIONAL</em></li>
-                                <li><span lang="ja">日本語</span><em>LEARNING</em></li>
-                            </ul>
-                            <span class="when">4 LANGUAGES</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="obstacle block tower" data-x="11700" data-h="170" style="height:170px">
-            <div class="win" style="top:24px; left:24px"></div>
-            <div class="win lit" style="top:24px; right:24px"></div>
-            <div class="win lit" style="top:92px; left:24px"></div>
-            <div class="win" style="top:92px; right:24px"></div>
-        </div>
-        <div class="obstacle pipe warp-pipe" data-x="12100" data-h="100" data-target-x="6800" style="height:100px">
-            <span class="warp-prompt">↓ WARP</span>
-        </div>
-        <div class="arcade-enemy" data-x="12350" data-min="12250" data-max="12450"></div>
-        <div class="interactive-block block-mystery" data-x="12450" data-y="130" data-item="mushroom"></div>
-        <div class="interactive-block block-brick" data-x="12496" data-y="130"></div>
-        <div class="interactive-block block-brick" data-x="12542" data-y="130"></div>
-        <div class="marker" data-x="12600"><span class="marker-plate">CONTACT &rsaquo;</span><span
-                class="marker-post"></span></div>
-
-        <!-- ---------- 07 CONTACT ---------- -->
-        <section class="zone" data-zone="contact" data-x="12900">
-            <div class="panel panel--wide" tabindex="-1" aria-labelledby="z7">
-                <h2 class="panel-head" id="z7"><span class="idx">07</span> INITIALIZE HANDSHAKE</h2>
-                <div class="panel-body">
-                    <div class="contact-grid">
-                        <form class="retro-form" id="contact-form"
-                            action="https://formsubmit.co/kamizan980505@gmail.com" method="POST" novalidate>
-                            <div class="field">
-                                <label for="cf-name">NAME</label>
-                                <input type="text" id="cf-name" name="name" autocomplete="name" required
-                                    aria-describedby="err-name">
-                                <span class="err" id="err-name" role="alert"></span>
-                            </div>
-                            <div class="field">
-                                <label for="cf-email">EMAIL</label>
-                                <input type="email" id="cf-email" name="email" autocomplete="email" required
-                                    aria-describedby="err-email">
-                                <span class="err" id="err-email" role="alert"></span>
-                            </div>
-                            <div class="field">
-                                <label for="cf-subject">SUBJECT</label>
-                                <input type="text" id="cf-subject" name="subject" required
-                                    aria-describedby="err-subject">
-                                <span class="err" id="err-subject" role="alert"></span>
-                            </div>
-                            <div class="field">
-                                <label for="cf-message">MESSAGE</label>
-                                <textarea id="cf-message" name="message" rows="3" required
-                                    aria-describedby="err-message"></textarea>
-                                <span class="err" id="err-message" role="alert"></span>
-                            </div>
-                            <input type="hidden" name="_next" value="https://kamizanamir.github.io/portfolio/thanks.html">
-                            <input type="hidden" name="_captcha" value="false">
-                            <button type="submit" class="btn btn--primary" id="cf-submit" style="width:100%">
-                                SEND MESSAGE
-                            </button>
-                        </form>
-
-                        <div class="links">
-                            <a class="link-btn" href="mailto:kamizan980505@gmail.com">
-                                <i class="fas fa-envelope" aria-hidden="true"></i> kamizan980505@gmail.com
-                            </a>
-                            <a class="link-btn" href="https://wasap.my/60134718690" target="_blank" rel="noopener">
-                                <i class="fab fa-whatsapp" aria-hidden="true"></i> +60 13-471 8690
-                            </a>
-                            <a class="link-btn" href="https://www.linkedin.com/in/kamizan-amirudin" target="_blank"
-                                rel="noopener">
-                                <i class="fab fa-linkedin-in" aria-hidden="true"></i> LINKEDIN
-                            </a>
-                            <a class="link-btn" href="https://github.com/KamizanAmir" target="_blank" rel="noopener">
-                                <i class="fab fa-github" aria-hidden="true"></i> GITHUB
-                            </a>
-                            <a class="link-btn" href="resume/resume.pdf" download>
-                                <i class="fas fa-file-arrow-down" aria-hidden="true"></i> DOWNLOAD CV
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="flag" data-x="13750" aria-hidden="true"></div>
-
-        <!-- ---------- 08 END ---------- -->
-        <section class="zone" data-zone="end" data-x="14100">
-            <div class="panel panel--narrow" tabindex="-1" aria-labelledby="z8">
-                <h2 class="panel-head" id="z8"><span class="idx">08</span> MISSION COMPLETE</h2>
-                <div class="panel-body" style="text-align:center">
-                    <h3>THANKS FOR PLAYING</h3>
-                    <p>That's the whole CV. If you'd rather have it without the jumping,
-                        the standard version has the same content in one scroll.</p>
-                    <div class="btn-row" style="flex-wrap:wrap; justify-content:center; gap:8px;">
-                        <a href="../index.html" class="btn btn--primary">STANDARD CV</a>
-                        <a href="../kamitrack.html" class="btn btn--ghost"><i class="fas fa-mobile-screen-button"></i> KAMITRACK APP</a>
-                        <button type="button" class="btn btn--ghost" id="btn-restart">PLAY AGAIN</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+      </section>
+      <footer>
+        <a href="../index.html">← Back to Kamizan's portfolio</a
+        ><a href="../kamitrack.html">Discover KamiTrack ↗</a
+        ><span>No sign-up. Just play.</span>
+      </footer>
     </main>
-
-    <!-- ============ TOUCH PAD ============ -->
-    <div id="pad" aria-hidden="true">
-        <div class="pad-group">
-            <button type="button" class="pad-btn" data-dir="-1" aria-label="Move left">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="pad-btn pad-btn--down" id="pad-down" data-action="down" aria-label="Crouch or Warp Down">
-                <i class="fas fa-arrow-down" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="pad-btn" data-dir="1" aria-label="Move right">
-                <i class="fas fa-arrow-right" aria-hidden="true"></i>
-            </button>
-        </div>
-        <div class="pad-group">
-            <button type="button" class="pad-btn pad-btn--jump" id="pad-jump" aria-label="Jump">JUMP</button>
-        </div>
-    </div>
-
-    <div id="portal" aria-hidden="true" hidden>
-        <span class="portal-ring"></span>
-        <span class="portal-core"></span>
-        <span class="portal-spark"></span>
-    </div>
-
-    <div id="flash" aria-hidden="true"></div>
-
-    <p class="hint" id="hint" hidden>
-        <i class="fas fa-arrow-right" aria-hidden="true"></i> HOLD RIGHT TO WALK
-    </p>
-
-    <!-- ============ ZONE SHEET (small screens) ============ -->
-    <div class="sheet" id="zones" hidden>
-        <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="zones-title">
-            <div class="sheet-head">
-                <h2 id="zones-title">JUMP TO ZONE</h2>
-                <button type="button" class="icon-btn" id="btn-zones-close" aria-label="Close">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
-                </button>
-            </div>
-            <ul class="sheet-list" id="zones-list"></ul>
-        </div>
-    </div>
-
-    <!-- ============ IN-PIPE TRANSIT HUD (PEEKING MODE) ============ -->
-    <div class="pipe-transit-hud" id="pipe-transit-hud" hidden>
-        <div class="transit-title">
-            <i class="fas fa-satellite-dish"></i>
-            <span id="transit-pipe-name">PEEKING: ZONE 01 / 02 PIPE</span>
-        </div>
-        <div class="transit-controls-row">
-            <button type="button" class="transit-btn" id="btn-peek-prev" aria-label="Peek previous pipe">
-                <i class="fas fa-arrow-left"></i> PREV
-            </button>
-            <button type="button" class="transit-btn transit-emerge-btn" id="btn-peek-emerge" aria-label="Emerge out of pipe">
-                <i class="fas fa-arrow-up"></i> EMERGE [UP / W]
-            </button>
-            <button type="button" class="transit-btn" id="btn-peek-next" aria-label="Peek next pipe">
-                NEXT <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- ============ START / HELP OVERLAY ============ -->
-    <div class="overlay" id="overlay">
-        <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="ov-title">
-            <h1 id="ov-title">KAMIZAN<br>AMIRUDIN</h1>
-            <p class="sub">SENIOR PROGRAMMER · SYSTEM ANALYST · DEVOPS</p>
-            <p>A playable retro arcade CV. Jump to stomp enemies, smash bricks for super mushrooms, and press <b>DOWN</b> on warp pipes to teleport!</p>
-
-            <div class="keys">
-                <div class="key-row"><kbd><i class="fas fa-arrow-left" aria-hidden="true"></i></kbd><kbd><i class="fas fa-arrow-right" aria-hidden="true"></i></kbd><small>Walk Left / Right</small></div>
-                <div class="key-row"><kbd><i class="fas fa-arrow-down" aria-hidden="true"></i></kbd><kbd>S</kbd><small>Enter Warp Pipe</small></div>
-                <div class="key-row"><kbd>Space</kbd><kbd>W</kbd><small>Jump / Stomp / Hit Blocks</small></div>
-                <div class="key-row"><kbd>1</kbd>&ndash;<kbd>8</kbd><small>Jump to Zone</small></div>
-                <div class="key-row"><kbd>🍄</kbd><small>Super Mushroom = Giant Mode!</small></div>
-                <div class="key-row"><kbd>Esc</kbd><small>Pause / Controls</small></div>
-            </div>
-
-            <div class="btn-row">
-                <button type="button" class="btn btn--primary" id="btn-start">START GAME</button>
-                <a class="btn btn--ghost" href="../index.html">STANDARD CV</a>
-                <a class="btn btn--ghost" href="../kamitrack.html"><i class="fas fa-mobile-screen-button"></i> KAMITRACK</a>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-
+    <dialog id="help-dialog">
+      <button id="close-help" aria-label="Close instructions">×</button>
+      <p class="eyebrow">SYSTEMS ARENA / FIELD GUIDE</p>
+      <h2>Ready, player one.</h2>
+      <p>
+        Defeat all bugs in three waves. Move near an enemy and pulse to deal
+        damage. A bug touching you reduces integrity; reach zero and the run
+        ends.
+      </p>
+      <ul>
+        <li><b>Move:</b> WASD / arrows, or the on-screen direction pad.</li>
+        <li>
+          <b>API Pulse:</b> Space or PULSE. Area attack; 0.6 second cooldown.
+        </li>
+        <li>
+          <b>Flutter Dash:</b> Shift or DASH. Evade in your movement direction;
+          3 second cooldown.
+        </li>
+        <li>
+          <b>DevOps Shield:</b> E or SHIELD. Block damage for 2 seconds; 7
+          second cooldown.
+        </li>
+        <li>
+          <b>Pause:</b> P, Escape, or the pause button. Switching tabs also
+          pauses.
+        </li>
+      </ul>
+      <p>
+        Ability cards explain the real experience behind each power. Your best
+        score is saved on this device when storage is available.
+      </p>
+    </dialog>
+    <noscript
+      ><p class="no-script">
+        Enable JavaScript to play, or
+        <a href="../index.html#stack">read my skills on the portfolio</a>.
+      </p></noscript
+    >
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
