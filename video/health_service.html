@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KamiTrack — foreground health service</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0 auto; padding:36px 20px 60px; max-width:820px;
+         background:#0A1628; color:#EAF4FF;
+         font:16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  h1 { font-size:26px; margin:0 0 4px; letter-spacing:-0.5px; }
+  .meta { color:#62789A; font-size:14px; margin-bottom:26px; }
+  video { width:100%; border-radius:12px; border:1px solid #1F3A63; background:#000; }
+  h2 { font-size:17px; color:#2DE2E6; margin:30px 0 8px; }
+  li { color:#C4D6EC; margin-bottom:6px; }
+</style>
+
+<h1>KamiTrack — FOREGROUND_SERVICE_HEALTH</h1>
+<p class="meta">com.kamitrack.app · Kamizan Amirudin</p>
+
+<video controls playsinline preload="metadata">
+  <source src="health_service.mp4" type="video/mp4">
+  Your browser cannot play this video.
+  <a href="health_service.mp4">Download it instead</a>.
+</video>
+
+<h2>What the video shows</h2>
+<ol>
+  <li>The user opens <strong>Profile → Settings</strong> and finds
+      <strong>Background step tracking</strong>, which is <strong>off by
+      default</strong>.</li>
+  <li>The user turns the switch on. Android's <strong>Physical activity</strong>
+      permission is requested and granted.</li>
+  <li>An <strong>ongoing notification</strong> appears — “KamiTrack · Step
+      tracking” — and stays visible for as long as the service runs, so the work
+      is noticeable to the user while they are not in the app.</li>
+  <li>The user leaves KamiTrack entirely and walks with the phone.</li>
+  <li>Returning to the app, today's step total has advanced — the steps taken
+      outside the app were counted.</li>
+  <li>The user turns the switch back off. The service stops and the notification
+      disappears.</li>
+</ol>
+
+<h2>Why the permission is needed</h2>
+<p>
+  KamiTrack is a daily step counter. The step total it shows, the goals it
+  measures against and the streaks it awards are only honest if the count keeps
+  up while the phone is in a pocket — which is when almost all walking happens.
+  Without a foreground health service the count stops the moment Android
+  reclaims the process, and the user is shown a number far below what they
+  actually walked.
+</p>
+<p>
+  The service reads the device's hardware step counter
+  (<code>TYPE_STEP_COUNTER</code>) and nothing else. It has no access to, and
+  never requests, heart rate, body sensors or any other health data.
+</p>
+<p>
+  It is entirely opt-in. The switch is off until the user turns it on, it is
+  never enabled on the user's behalf, an ongoing notification is shown the whole
+  time it runs, and that notification links back to the setting that turns it
+  off. Step counts belong to the signed-in account and are never shared with
+  anyone unless the user chooses to post them.
+</p>
