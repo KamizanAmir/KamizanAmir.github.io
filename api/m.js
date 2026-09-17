@@ -32,7 +32,15 @@
 
 const PACKAGE = 'com.kamitrack.app';
 const STORE = `https://play.google.com/store/apps/details?id=${PACKAGE}`;
-const SITE = 'https://kamizanamir.vercel.app';
+const SITE = 'https://kamizanamir.my';
+const PWA_ORIGIN = process.env.PWA_URL || 'https://app.kamizanamir.my';
+
+const CRAWLER_USER_AGENTS =
+  /bot|crawl|spider|facebookexternalhit|whatsapp|twitterbot|telegrambot|slackbot|discordbot|applebot|linkedinbot|pinterest/i;
+
+function isCrawler(userAgent) {
+  return CRAWLER_USER_AGENTS.test(userAgent || '');
+}
 
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -174,6 +182,14 @@ module.exports = async (req, res) => {
 
   if (!UUID.test(id)) {
     res.setHeader('Location', STORE);
+    res.status(302).end();
+    return;
+  }
+
+  // Redirect human browsers to the PWA; keep crawlers for OG cards
+  const userAgent = req.headers['user-agent'] || '';
+  if (!isCrawler(userAgent)) {
+    res.setHeader('Location', `${PWA_ORIGIN}/m/${id}`);
     res.status(302).end();
     return;
   }
