@@ -23,6 +23,10 @@ function isCrawler(userAgent) {
   return CRAWLER_USER_AGENTS.test(userAgent || '');
 }
 
+function isAndroid(userAgent) {
+  return /Android/i.test(userAgent || '');
+}
+
 const HANDLE = /^[a-z0-9._]{3,30}$/;
 
 function escapeHtml(value) {
@@ -45,9 +49,11 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Redirect human browsers to the PWA profile preview
+  // Same three readers as `m.js` (FR244-05): crawlers get the card, Android
+  // browsers get an explicit Open in KamiTrack, everybody else the web app.
   const userAgent = req.headers['user-agent'] || '';
-  if (!isCrawler(userAgent)) {
+  res.setHeader('Vary', 'User-Agent');
+  if (!isCrawler(userAgent) && !isAndroid(userAgent)) {
     res.setHeader('Location', `${PWA_ORIGIN}/u/${handle}`);
     res.status(302).end();
     return;
@@ -60,9 +66,12 @@ module.exports = async (req, res) => {
   const image = `${SITE}/images/kamitrack-share.png`;
 
   // The escape hatch for in-app browsers, which do not honour App Links.
+  // On the verified host; without the app, the fallback is the profile in
+  // the web app rather than the store.
+  const web = `${PWA_ORIGIN}/u/${handle}`;
   const intent =
-    `intent://kamizanamir.vercel.app/u/${handle}#Intent;scheme=https;` +
-    `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(STORE)};end`;
+    `intent://kamizanamir.my/u/${handle}#Intent;scheme=https;` +
+    `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(web)};end`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
@@ -80,7 +89,7 @@ module.exports = async (req, res) => {
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:image" content="${escapeHtml(image)}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.vercel.app/u/${handle}">
+<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.my/u/${handle}">
 <style>
   :root { color-scheme: dark; }
   body { margin:0; min-height:100vh; display:grid; place-items:center;
@@ -101,13 +110,9 @@ module.exports = async (req, res) => {
     <h1>@${escapeHtml(handle)}</h1>
     <p>${escapeHtml(description)}</p>
     <a class="cta" href="${escapeHtml(intent)}">Open in KamiTrack</a>
+    <a class="alt" href="${escapeHtml(web)}">Continue in the browser</a>
     <a class="alt" href="${STORE}">Don't have the app? Get it on Google Play</a>
   </div>
-<script>
-  if (/Android/i.test(navigator.userAgent)) {
-    setTimeout(function () { window.location.href = ${JSON.stringify(intent)}; }, 900);
-  }
-</script>
 </body>
 </html>`);
 };

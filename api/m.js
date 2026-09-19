@@ -2,7 +2,7 @@
 //
 // ## What this is for
 //
-// The app shares moments as https://kamizanamir.vercel.app/m/<post id>. Three
+// The app shares moments as https://kamizanamir.my/m/<post id>. Three
 // different readers follow that link and each needs something different:
 //
 //   1. A phone with KamiTrack installed. Android verifies the app against
@@ -40,6 +40,10 @@ const CRAWLER_USER_AGENTS =
 
 function isCrawler(userAgent) {
   return CRAWLER_USER_AGENTS.test(userAgent || '');
+}
+
+function isAndroid(userAgent) {
+  return /Android/i.test(userAgent || '');
 }
 
 const UUID =
@@ -97,9 +101,15 @@ function page({ id, title, description, image }) {
   // `intent://` URL is the one thing that reliably hands off from inside one,
   // and `browser_fallback_url` means somebody without the app lands on the
   // store rather than on an error.
+  //
+  // The host is the *verified* one (`kamizanamir.my`); the retired vercel.app
+  // host fails verification. Without the app, Chrome follows the fallback to
+  // the same moment in the web app — not the store — so the reader is never
+  // bounced somewhere they did not ask to go.
+  const web = `${PWA_ORIGIN}/m/${id}`;
   const intent =
-    `intent://kamizanamir.vercel.app/m/${id}#Intent;scheme=https;` +
-    `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(STORE)};end`;
+    `intent://kamizanamir.my/m/${id}#Intent;scheme=https;` +
+    `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(web)};end`;
 
   return `<!doctype html>
 <html lang="en">
@@ -125,7 +135,7 @@ function page({ id, title, description, image }) {
 <!-- Tells Android and Chrome this URL has an app, which is what produces the
      "Open in app" banner on a page reached through a WebView. There is no iOS
      app, so there is no smart-app-banner tag to go with it. -->
-<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.vercel.app/m/${id}">
+<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.my/m/${id}">
 
 <style>
   :root { color-scheme: dark; }
@@ -159,20 +169,13 @@ function page({ id, title, description, image }) {
       <h1>${escapeHtml(title)}</h1>
       <p>${escapeHtml(description)}</p>
       <a class="cta" id="open" href="${escapeHtml(intent)}">Open in KamiTrack</a>
+      <a class="alt" id="web" href="${escapeHtml(web)}">Continue in the browser</a>
       <a class="alt" href="${STORE}">Don't have the app? Get it on Google Play</a>
     </div>
   </div>
-
-<script>
-  // Only on Android, and only for a real browser. Everything else — a desktop
-  // reader, a crawler — is left with the page, which is the useful thing to
-  // give them.
-  if (/Android/i.test(navigator.userAgent)) {
-    setTimeout(function () {
-      window.location.href = ${JSON.stringify(intent)};
-    }, 900);
-  }
-</script>
+  <!-- No automatic launch (FR244-05): the reader chooses. A page that jumps
+       to an app on load bounces people who wanted the web, and loops when the
+       app sends them back. -->
 </body>
 </html>`;
 }
@@ -186,9 +189,15 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Redirect human browsers to the PWA; keep crawlers for OG cards
+  // Three readers (FR244-05):
+  //   * a crawler gets the preview card below;
+  //   * an Android browser — including the WebView inside WhatsApp, which
+  //     never hands a link to an installed app by itself — gets the same page
+  //     with an explicit Open in KamiTrack button;
+  //   * everybody else goes straight to the moment in the web app.
   const userAgent = req.headers['user-agent'] || '';
-  if (!isCrawler(userAgent)) {
+  res.setHeader('Vary', 'User-Agent');
+  if (!isCrawler(userAgent) && !isAndroid(userAgent)) {
     res.setHeader('Location', `${PWA_ORIGIN}/m/${id}`);
     res.status(302).end();
     return;
