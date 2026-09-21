@@ -490,6 +490,11 @@ section.container {
   text-decoration: underline;
   text-underline-offset: 5px;
 }
+.card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
 .card--feature {
   grid-column: span 3;
   display: grid;
