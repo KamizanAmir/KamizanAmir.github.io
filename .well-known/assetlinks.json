@@ -8,7 +8,9 @@
       "package_name": "com.kamitrack.app",
       "sha256_cert_fingerprints": [
         "42:DC:A4:23:77:38:45:50:9A:0D:CD:42:AF:7E:EA:6B:63:AA:A3:9B:A8:D2:11:14:44:4B:5A:7F:0E:ED:DE:8D",
-        "2E:F2:85:D5:C4:8E:89:C2:72:7E:57:F1:B4:A6:6F:B7:8E:D1:D4:F2:22:BE:BE:B0:74:6C:3F:7E:A9:77:D1:A1"
+        "2E:F2:85:D5:C4:8E:89:C2:72:7E:57:F1:B4:A6:6F:B7:8E:D1:D4:F2:22:BE:BE:B0:74:6C:3F:7E:A9:77:D1:A1",
+        "80:AB:48:2E:77:C0:41:58:EC:0E:58:AE:83:6C:6D:33:34:C9:CC:57:C7:D6:9C:CC:FC:B6:86:97:42:1B:A4:B6",
+        "15:F3:AD:8D:FE:14:9F:D3:A0:32:79:1D:87:5D:AA:10:67:09:C5:A3:F9:36:E7:98:E3:B3:E9:79:ED:0C:B2:CA"
       ]
     }
   }
