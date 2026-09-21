@@ -1,9 +1,5 @@
-// A KamiTrack profile, as a web page.
-//
-// This is what a QR code points at. Three readers again, same as `m.js`:
-// a phone with the app opens the profile directly through App Links; a phone
-// without it lands here and is offered the Play Store; a chat app's crawler
-// reads the Open Graph tags to build a preview card.
+// Legacy portfolio-host profile links. Keep an explicit route into KamiTrack
+// for existing QR codes without automatic redirects or portfolio indexing.
 //
 // Deliberately simpler than the moment page: it shows the handle and nothing
 // else. A profile preview would mean exposing name and avatar to anybody
@@ -15,17 +11,6 @@ const PACKAGE = 'com.kamitrack.app';
 const STORE = `https://play.google.com/store/apps/details?id=${PACKAGE}`;
 const SITE = 'https://kamizanamir.my';
 const PWA_ORIGIN = process.env.PWA_URL || 'https://app.kamizanamir.my';
-
-const CRAWLER_USER_AGENTS =
-  /bot|crawl|spider|facebookexternalhit|whatsapp|twitterbot|telegrambot|slackbot|discordbot|applebot|linkedinbot|pinterest/i;
-
-function isCrawler(userAgent) {
-  return CRAWLER_USER_AGENTS.test(userAgent || '');
-}
-
-function isAndroid(userAgent) {
-  return /Android/i.test(userAgent || '');
-}
 
 const HANDLE = /^[a-z0-9._]{3,30}$/;
 
@@ -39,27 +24,18 @@ function escapeHtml(value) {
 }
 
 module.exports = async (req, res) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
   const handle = String((req.query && req.query.u) || '')
     .trim()
     .toLowerCase();
 
   if (!HANDLE.test(handle)) {
-    res.setHeader('Location', STORE);
-    res.status(302).end();
+    res.status(404).send('KamiTrack link not found');
     return;
   }
 
-  // Same three readers as `m.js` (FR244-05): crawlers get the card, Android
-  // browsers get an explicit Open in KamiTrack, everybody else the web app.
-  const userAgent = req.headers['user-agent'] || '';
-  res.setHeader('Vary', 'User-Agent');
-  if (!isCrawler(userAgent) && !isAndroid(userAgent)) {
-    res.setHeader('Location', `${PWA_ORIGIN}/u/${handle}`);
-    res.status(302).end();
-    return;
-  }
-
-  const url = `${SITE}/u/${handle}`;
+  // Retired portfolio links remain readable without an automatic redirect.
+  const url = `${PWA_ORIGIN}/u/${handle}`;
   const title = `@${handle} on KamiTrack`;
   const description =
     'Open this in KamiTrack to see their profile and follow them.';
@@ -70,7 +46,7 @@ module.exports = async (req, res) => {
   // the web app rather than the store.
   const web = `${PWA_ORIGIN}/u/${handle}`;
   const intent =
-    `intent://kamizanamir.my/u/${handle}#Intent;scheme=https;` +
+    `intent://app.kamizanamir.my/u/${handle}#Intent;scheme=https;` +
     `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(web)};end`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -79,8 +55,10 @@ module.exports = async (req, res) => {
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)}</title>
+<link rel="canonical" href="${escapeHtml(url)}">
 <meta name="description" content="${escapeHtml(description)}">
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="KamiTrack">
@@ -89,7 +67,7 @@ module.exports = async (req, res) => {
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:image" content="${escapeHtml(image)}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.my/u/${handle}">
+<link rel="alternate" href="android-app://${PACKAGE}/https/app.kamizanamir.my/u/${handle}">
 <style>
   :root { color-scheme: dark; }
   body { margin:0; min-height:100vh; display:grid; place-items:center;

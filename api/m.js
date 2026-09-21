@@ -1,21 +1,7 @@
-// A shared KamiTrack moment, as a web page.
-//
-// ## What this is for
-//
-// The app shares moments as https://kamizanamir.my/m/<post id>. Three
-// different readers follow that link and each needs something different:
-//
-//   1. A phone with KamiTrack installed. Android verifies the app against
-//      /.well-known/assetlinks.json and opens the moment directly — this file
-//      is never fetched at all.
-//   2. A phone or desktop without it. The browser loads this page, which shows
-//      the moment and offers the Play Store.
-//   3. WhatsApp, Facebook, Telegram, X. Before a human sees anything, their
-//      crawler fetches this URL and reads the Open Graph tags to build the
-//      preview card. Crawlers do not run JavaScript, which is why the redirect
-//      below is in a script and not a 302 — a redirect would send the crawler
-//      to the Play Store and the preview would be an advert for an app rather
-//      than a picture of somebody's run.
+// Legacy portfolio-host moment links remain readable for existing shares.
+// New links use app.kamizanamir.my. These pages do not redirect automatically;
+// readers choose Open in KamiTrack or Continue in the browser. Crawlers get
+// public preview metadata plus noindex, keeping app content off the portfolio.
 //
 // ## Privacy
 //
@@ -34,17 +20,6 @@ const PACKAGE = 'com.kamitrack.app';
 const STORE = `https://play.google.com/store/apps/details?id=${PACKAGE}`;
 const SITE = 'https://kamizanamir.my';
 const PWA_ORIGIN = process.env.PWA_URL || 'https://app.kamizanamir.my';
-
-const CRAWLER_USER_AGENTS =
-  /bot|crawl|spider|facebookexternalhit|whatsapp|twitterbot|telegrambot|slackbot|discordbot|applebot|linkedinbot|pinterest/i;
-
-function isCrawler(userAgent) {
-  return CRAWLER_USER_AGENTS.test(userAgent || '');
-}
-
-function isAndroid(userAgent) {
-  return /Android/i.test(userAgent || '');
-}
 
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -93,30 +68,31 @@ async function loadMoment(id) {
 }
 
 function page({ id, title, description, image }) {
-  const url = `${SITE}/m/${id}`;
+  const url = `${PWA_ORIGIN}/m/${id}`;
 
   // The escape hatch for in-app browsers. WhatsApp and Instagram open links in
   // a WebView, and a WebView does not honour Android App Links — so the app is
   // installed, the link is verified, and it still opens as a web page. An
   // `intent://` URL is the one thing that reliably hands off from inside one,
   // and `browser_fallback_url` means somebody without the app lands on the
-  // store rather than on an error.
+  // web app rather than on an error.
   //
-  // The host is the *verified* one (`kamizanamir.my`); the retired vercel.app
-  // host fails verification. Without the app, Chrome follows the fallback to
+  // New app intents use the app host. Without the app, Chrome follows the fallback to
   // the same moment in the web app — not the store — so the reader is never
   // bounced somewhere they did not ask to go.
   const web = `${PWA_ORIGIN}/m/${id}`;
   const intent =
-    `intent://kamizanamir.my/m/${id}#Intent;scheme=https;` +
+    `intent://app.kamizanamir.my/m/${id}#Intent;scheme=https;` +
     `package=${PACKAGE};S.browser_fallback_url=${encodeURIComponent(web)};end`;
 
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)}</title>
+<link rel="canonical" href="${escapeHtml(url)}">
 <meta name="description" content="${escapeHtml(description)}">
 
 <meta property="og:type" content="article">
@@ -135,7 +111,7 @@ function page({ id, title, description, image }) {
 <!-- Tells Android and Chrome this URL has an app, which is what produces the
      "Open in app" banner on a page reached through a WebView. There is no iOS
      app, so there is no smart-app-banner tag to go with it. -->
-<link rel="alternate" href="android-app://${PACKAGE}/https/kamizanamir.my/m/${id}">
+<link rel="alternate" href="android-app://${PACKAGE}/https/app.kamizanamir.my/m/${id}">
 
 <style>
   :root { color-scheme: dark; }
@@ -181,28 +157,15 @@ function page({ id, title, description, image }) {
 }
 
 module.exports = async (req, res) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
   const id = String((req.query && req.query.id) || '').trim().toLowerCase();
 
   if (!UUID.test(id)) {
-    res.setHeader('Location', STORE);
-    res.status(302).end();
+    res.status(404).send('KamiTrack link not found');
     return;
   }
 
-  // Three readers (FR244-05):
-  //   * a crawler gets the preview card below;
-  //   * an Android browser — including the WebView inside WhatsApp, which
-  //     never hands a link to an installed app by itself — gets the same page
-  //     with an explicit Open in KamiTrack button;
-  //   * everybody else goes straight to the moment in the web app.
-  const userAgent = req.headers['user-agent'] || '';
-  res.setHeader('Vary', 'User-Agent');
-  if (!isCrawler(userAgent) && !isAndroid(userAgent)) {
-    res.setHeader('Location', `${PWA_ORIGIN}/m/${id}`);
-    res.status(302).end();
-    return;
-  }
-
+  // Retired portfolio links remain readable without an automatic redirect.
   const moment = await loadMoment(id);
 
   const author = moment && moment.author_name ? moment.author_name : null;
