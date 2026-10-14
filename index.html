@@ -93,16 +93,19 @@
       }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="assets/fonts/inter-latin-variable.c940764593d0.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
-
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="preload"
+      href="assets/fonts/jetbrains-mono-latin-variable.2c32b9b3ee35.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -161,10 +164,13 @@
             </div>
             <div class="hero-person">
               <img
-                src="images/icon_new.jpg"
+                src="images/optimized/kamizan-avatar-44.d8e346f3391b.webp"
+                srcset="images/optimized/kamizan-avatar-44.d8e346f3391b.webp 44w, images/optimized/kamizan-avatar-88.d2939ce5cf84.webp 88w"
+                sizes="44px"
                 alt="Kamizan Amirudin"
                 width="44"
                 height="44"
+                decoding="async"
               />
               <div>
                 <strong>Kamizan Amirudin</strong
@@ -174,6 +180,7 @@
           </div>
           <div
             class="hero-art"
+            role="img"
             aria-label="Architectural illustration of connected software layers"
           >
             <div class="art-grid"></div>
@@ -222,10 +229,12 @@
             <div class="card-top">
               <span class="card-mark">
                 <img
-                  src="images/projects/spake.png"
+                  src="images/optimized/spake-64.09499b20b847.webp"
+                  srcset="images/optimized/spake-64.09499b20b847.webp 64w, images/optimized/spake-128.b178d95fefb5.webp 128w"
+                  sizes="64px"
                   alt="SPAKE 4.0 emblem"
-                  width="256"
-                  height="256"
+                  width="64"
+                  height="64"
                   loading="lazy"
                   decoding="async"
                 />
@@ -246,7 +255,7 @@
               <span>Laravel 12</span><span>Filament</span><span>Vue 3</span
               ><span>Docker</span
               ><span class="tag-lock"
-                ><i class="fas fa-lock" aria-hidden="true"></i> Private
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#lock"></use></svg> Private
                 repo</span
               >
             </div>
@@ -256,10 +265,12 @@
             <div class="card-top">
               <span class="card-mark">
                 <img
-                  src="images/projects/spkb.png"
+                  src="images/optimized/spkb-64.3b78b7ef0dd0.webp"
+                  srcset="images/optimized/spkb-64.3b78b7ef0dd0.webp 64w, images/optimized/spkb-128.5cd628bcd9d0.webp 128w"
+                  sizes="64px"
                   alt="SPKB PUTD emblem"
-                  width="256"
-                  height="256"
+                  width="64"
+                  height="64"
                   loading="lazy"
                   decoding="async"
                 />
@@ -281,7 +292,7 @@
               <span>Laravel 12</span><span>Filament</span><span>Vue 3</span
               ><span>PostgreSQL</span
               ><span class="tag-lock"
-                ><i class="fas fa-lock" aria-hidden="true"></i> Private
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#lock"></use></svg> Private
                 repo</span
               >
             </div>
@@ -291,10 +302,12 @@
             <div class="card-top">
               <span class="card-mark">
                 <img
-                  src="images/projects/fms.png"
+                  src="images/optimized/fms-64.3aca1a8c4fe7.webp"
+                  srcset="images/optimized/fms-64.3aca1a8c4fe7.webp 64w, images/optimized/fms-128.5240532cec03.webp 128w"
+                  sizes="64px"
                   alt="FMS emblem"
-                  width="256"
-                  height="256"
+                  width="64"
+                  height="64"
                   loading="lazy"
                   decoding="async"
                 />
@@ -313,7 +326,7 @@
               <span>Laravel</span><span>Vue 3</span><span>Flutter</span
               ><span>Redis</span
               ><span class="tag-lock"
-                ><i class="fas fa-lock" aria-hidden="true"></i> Private
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#lock"></use></svg> Private
                 repo</span
               >
             </div>
@@ -330,10 +343,12 @@
           <article class="panel card card--feature">
             <span class="card-mark">
               <img
-                src="images/projects/kamitrack.png"
+                src="images/optimized/kamitrack-90.ff734a819ea5.webp"
+                srcset="images/optimized/kamitrack-60.fd097579cad1.webp 60w, images/optimized/kamitrack-90.ff734a819ea5.webp 90w, images/optimized/kamitrack-120.6539141c8d22.webp 120w, images/optimized/kamitrack-180.d15319ff2970.webp 180w"
+                sizes="(max-width: 720px) 60px, 90px"
                 alt="KamiTrack emblem"
-                width="256"
-                height="256"
+                width="90"
+                height="90"
                 loading="lazy"
                 decoding="async"
               />
@@ -357,11 +372,11 @@
               <div class="card-links">
                 <a href="kamitrack.html" class="card-link">
                   Download the app
-                  <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#arrow-right"></use></svg>
                 </a>
                 <a href="https://app.kamizanamir.my/" class="card-link">
                   Open KamiTrack on the web
-                  <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#arrow-up-right-from-square"></use></svg>
                 </a>
               </div>
             </div>
@@ -370,8 +385,7 @@
           <article class="panel card">
             <div class="card-top">
               <span class="card-mark card-mark--icon"
-                ><i class="fas fa-shield-halved" aria-hidden="true"></i
-              ></span>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#shield-halved"></use></svg></span>
               <span class="badge badge--personal">Personal</span>
             </div>
             <div>
@@ -391,15 +405,14 @@
               rel="noopener"
               class="card-link card-link--ghost"
             >
-              <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+              <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#github"></use></svg> View on GitHub
             </a>
           </article>
 
           <article class="panel card">
             <div class="card-top">
               <span class="card-mark card-mark--icon"
-                ><i class="fas fa-dice-five" aria-hidden="true"></i
-              ></span>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#dice-five"></use></svg></span>
               <span class="badge badge--personal">Personal</span>
             </div>
             <div>
@@ -419,15 +432,14 @@
               rel="noopener"
               class="card-link card-link--ghost"
             >
-              <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+              <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#github"></use></svg> View on GitHub
             </a>
           </article>
 
           <article class="panel card">
             <div class="card-top">
               <span class="card-mark card-mark--icon"
-                ><i class="fas fa-book-open" aria-hidden="true"></i
-              ></span>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#book-open"></use></svg></span>
               <span class="badge badge--personal">Personal</span>
             </div>
             <div>
@@ -441,7 +453,7 @@
             <div class="tags">
               <span>Laravel</span><span>Swagger</span><span>System design</span
               ><span class="tag-lock"
-                ><i class="fas fa-lock" aria-hidden="true"></i> Private
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#lock"></use></svg> Private
                 repo</span
               >
             </div>
@@ -465,12 +477,11 @@
         <a
           href="portfolio/"
           class="arena-preview"
-          aria-label="Play Systems Arena"
-          ><span class="preview-orbit"></span
-          ><span class="preview-bot"><i></i></span
+          ><span class="preview-orbit" aria-hidden="true"></span
+          ><span class="preview-bot" aria-hidden="true"><i></i></span
           ><span class="preview-title"
             >SYSTEMS<br />ARENA<span>PLAYER 01 / KAMIZAN</span></span
-          ><span class="preview-play">↗</span></a
+          ><span class="preview-play" aria-hidden="true">↗</span></a
         >
       </section>
       <section id="about" class="container reveal">
@@ -550,8 +561,7 @@
         <div class="stack-grid stagger">
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-code"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#code"></use></svg></span>
             <div>
               <h3>Languages</h3>
               <span class="mono">core &amp; daily driver</span>
@@ -570,8 +580,7 @@
 
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-layer-group"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#layer-group"></use></svg></span>
             <div>
               <h3>Frameworks</h3>
               <span class="mono">web &amp; mobile</span>
@@ -588,8 +597,7 @@
 
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-database"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#database"></use></svg></span>
             <div>
               <h3>Data</h3>
               <span class="mono">storage &amp; reporting</span>
@@ -607,8 +615,7 @@
 
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-server"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#server"></use></svg></span>
             <div>
               <h3>Platform &amp; DevOps</h3>
               <span class="mono">ship, host, keep it up</span>
@@ -629,8 +636,7 @@
 
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-industry"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#industry"></use></svg></span>
             <div>
               <h3>Enterprise &amp; analysis</h3>
               <span class="mono">the domain half of the job</span>
@@ -647,8 +653,7 @@
 
           <article class="panel stack-card">
             <span class="stack-icon" aria-hidden="true"
-              ><i class="fas fa-chart-line"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#chart-line"></use></svg></span>
             <div>
               <h3>Data science</h3>
               <span class="mono">trained 2022–2023</span>
@@ -812,8 +817,7 @@
         <div class="edu-grid stagger">
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-graduation-cap"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#graduation-cap"></use></svg></span>
             <div class="edu-body">
               <h3>Diploma in Information Technology</h3>
               <span class="edu-org"
@@ -826,8 +830,7 @@
 
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-chart-simple"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#chart-simple"></use></svg></span>
             <div class="edu-body">
               <h3>Data Science with Python &amp; SQL</h3>
               <span class="edu-org"
@@ -843,8 +846,7 @@
 
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-shield-halved"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#shield-halved"></use></svg></span>
             <div class="edu-body">
               <h3>CompTIA Security+</h3>
               <span class="edu-org">Certification</span>
@@ -854,8 +856,7 @@
 
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-server"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#server"></use></svg></span>
             <div class="edu-body">
               <h3>Windows Server Administration</h3>
               <span class="edu-org">Mesiniaga</span>
@@ -865,8 +866,7 @@
 
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-cloud"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#cloud"></use></svg></span>
             <div class="edu-body">
               <h3>Cloud Computing</h3>
               <span class="edu-org">RunCloud</span>
@@ -876,8 +876,7 @@
 
           <article class="panel edu-card">
             <span class="edu-icon" aria-hidden="true"
-              ><i class="fas fa-language"></i
-            ></span>
+              ><svg class="icon"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#language"></use></svg></span>
             <div class="edu-body">
               <h3>Languages</h3>
               <span class="edu-org">Spoken &amp; studied</span>
@@ -925,7 +924,7 @@
 
             <div class="contact-methods">
               <a href="mailto:kamizan980505@gmail.com" class="method">
-                <i class="fas fa-envelope" aria-hidden="true"></i>
+                <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#envelope"></use></svg>
                 <span>
                   <span class="method-label">Email</span>
                   <span class="method-value">kamizan980505@gmail.com</span>
@@ -937,14 +936,14 @@
                 rel="noopener"
                 class="method"
               >
-                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#whatsapp"></use></svg>
                 <span>
                   <span class="method-label">WhatsApp</span>
                   <span class="method-value">+60 13-471 8690</span>
                 </span>
               </a>
               <span class="method">
-                <i class="fas fa-location-dot" aria-hidden="true"></i>
+                <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#location-dot"></use></svg>
                 <span>
                   <span class="method-label">Based in</span>
                   <span class="method-value">Bandar Sunway, Petaling Jaya</span>
@@ -958,18 +957,15 @@
                 target="_blank"
                 rel="noopener"
                 aria-label="LinkedIn"
-                ><i class="fab fa-linkedin-in" aria-hidden="true"></i
-              ></a>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#linkedin-in"></use></svg></a>
               <a
                 href="https://github.com/KamizanAmir"
                 target="_blank"
                 rel="noopener"
                 aria-label="GitHub"
-                ><i class="fab fa-github" aria-hidden="true"></i
-              ></a>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#github"></use></svg></a>
               <a href="resume/resume.pdf" download aria-label="Download resume"
-                ><i class="fas fa-file-arrow-down" aria-hidden="true"></i
-              ></a>
+                ><svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#file-arrow-down"></use></svg></a>
             </div>
           </div>
 
@@ -1017,10 +1013,10 @@
             />
             <input type="hidden" name="_captcha" value="false" />
             <button type="submit" class="btn btn--primary btn--block">
-              Send message <i class="fas fa-paper-plane" aria-hidden="true"></i>
+              Send message <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#paper-plane"></use></svg>
             </button>
             <p class="form-note">
-              <i class="fas fa-lock" aria-hidden="true"></i>
+              <svg class="icon" aria-hidden="true"><use href="assets/icons/fontawesome-6.4.0-subset.a6061092a050.svg#lock"></use></svg>
               Goes straight to my inbox. Usually a reply within a day.
             </p>
           </form>
@@ -1037,6 +1033,6 @@
         </div>
       </footer>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </body>
 </html>

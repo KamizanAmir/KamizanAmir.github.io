@@ -1,7 +1,21 @@
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: optional;
+  src: url("assets/fonts/inter-latin-variable.c940764593d0.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: optional;
+  src: url("assets/fonts/jetbrains-mono-latin-variable.2c32b9b3ee35.woff2") format("woff2");
+}
 :root {
   --paper: #f5f4ef;
   --ink: #242720;
-  --muted: #696e62;
+  --muted: #62675b;
   --line: #d9dbd1;
   --green: #4b5d35;
   --lime: #d9f49b;
@@ -9,6 +23,14 @@
 }
 * {
   box-sizing: border-box;
+}
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
 }
 html {
   scroll-behavior: smooth;
@@ -227,6 +249,7 @@ h1 {
   align-items: center;
 }
 .hero-person img {
+  flex: 0 0 44px;
   border-radius: 50%;
   object-fit: cover;
   filter: grayscale(1);
@@ -839,8 +862,15 @@ section.container {
 }
 .socials {
   display: flex;
-  gap: 24px;
+  gap: 12px;
   margin-top: 25px;
+}
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 .form {
   padding: 30px;
@@ -859,7 +889,7 @@ section.container {
   width: 100%;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #a7af9b;
+  border-bottom: 1px solid #7b846f;
   border-radius: 0;
   padding: 10px 0;
   color: var(--ink);
