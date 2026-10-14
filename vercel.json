@@ -1,4 +1,5 @@
 {
+  "buildCommand": "node scripts/inline-css.mjs",
   "rewrites": [
     {
       "source": "/m/:id",
