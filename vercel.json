@@ -1,5 +1,6 @@
 {
   "buildCommand": "node scripts/inline-css.mjs",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/m/:id",

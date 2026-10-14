@@ -5,3 +5,7 @@
 # the repo only needs update/latest.json to point at it.
 kamitrack-arm64.apk
 *.apk
+
+# Vercel build output (scripts/inline-css.mjs)
+public/
+.vercel/
