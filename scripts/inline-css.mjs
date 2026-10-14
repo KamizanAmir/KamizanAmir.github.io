@@ -10,7 +10,7 @@ const out = join(root, "public");
 
 // Not served: function sources, build tooling and config, which Vercel hid
 // before this build step existed. Dotfiles stay private except .well-known.
-const skip = new Set(["api", "scripts", "public", "node_modules", "vercel.json", "README.md"]);
+const skip = new Set(["api", "scripts", "public", "node_modules", "vercel.json", "README.md", "DESIGN.md"]);
 
 rmSync(out, { recursive: true, force: true });
 for (const name of readdirSync(root)) {

@@ -1,10 +1,10 @@
 # Local web fonts
 
-Unmodified Latin WOFF2 variable-font subsets from Google Fonts, downloaded on 2026-10-14. Fonts retain their existing family names and use the SIL Open Font License included here for each family. Filenames contain the first 12 hexadecimal characters of their SHA-256 content hash.
+Unmodified Latin WOFF2 subsets from Google Fonts, downloaded on 2026-10-14. IBM Plex is licensed under the SIL Open Font License (`ibm-plex-OFL.txt`). Filenames contain the first 12 hexadecimal characters of their SHA-256 content hash.
 
-Requested weights: Inter 400–800 and JetBrains Mono 400–600, upright styles.
+Why Plex: the site follows an engineering-document direction (see `DESIGN.md`), and Plex was drawn for technical documentation.
 
-CSS source: https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=JetBrains+Mono:wght@400..600&display=swap
+CSS source: https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400..700&family=IBM+Plex+Mono:wght@400&display=swap
 
-- Inter: https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2
-- JetBrains Mono: https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2
+- IBM Plex Sans, variable 400 to 700: https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYbSB4Zh.woff2
+- IBM Plex Mono 400: https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2

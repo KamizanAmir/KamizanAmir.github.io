@@ -1,30 +1,24 @@
 "use strict";
-const toggle = document.getElementById("nav-toggle");
-const links = document.getElementById("nav-links");
-if (toggle && links) {
-  const closeMenu = () => {
-    links.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-  };
-  toggle.addEventListener("click", () => {
-    const open = links.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(open));
-  });
-  links.addEventListener("click", (e) => {
-    if (e.target.closest("a")) closeMenu();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && links.classList.contains("open")) {
-      closeMenu();
-      toggle.focus();
-    }
-  });
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".nav")) closeMenu();
-  });
-  matchMedia("(min-width: 721px)").addEventListener("change", (e) => {
-    if (e.matches) closeMenu();
-  });
-}
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
+
+// formsubmit.co takes a few seconds to redirect to thanks.html; show that the
+// submit registered so it isn't pressed twice.
+const form = document.getElementById("contact-form");
+if (form) {
+  form.addEventListener("submit", () => {
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.textContent = "Sending…";
+    document.getElementById("form-note").textContent =
+      "Sending your message. You'll land on a confirmation page when it's through.";
+  });
+  // Back/forward cache can restore the page with the button still disabled.
+  const note = document.getElementById("form-note").textContent;
+  window.addEventListener("pageshow", () => {
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = false;
+    button.textContent = "Send message";
+    document.getElementById("form-note").textContent = note;
+  });
+}
