@@ -1,4 +1,4 @@
-Copyright © 2017 IBM Corp. with Reserved Font Name "Plex"
+Copyright 2024 The Funnel Project Authors (https://github.com/NORD-ID/funnel)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 

@@ -1,38 +1,55 @@
 # Design direction: kamizanamir.my
 
-Chosen by Kamizan on 2026-10-14. Applies to the homepage (`index.html`) and `thanks.html`, which share `styles.css`. The arcade at `/portfolio/` keeps its own style.
+Concept by Kamizan, 2026-10-22. Replaces the engineering-document direction of 2026-10-14. Applies to the homepage (`index.html`) and `thanks.html`, which share `styles.css`. The arcade at `/portfolio/` keeps its own style.
 
-## Identity
+## Identity: the terowong
 
-The portfolio reads like a well-made engineering document: a title block, numbered clauses, registers and tables, ruled lines, figure captions. It ties to the work itself (MES/ERP, plant floors, government asset registers) and should come across calm and credible to employers and clients.
+The visitor arrives in first person in a quiet, empty space. One light glows out of a hole in the floor. Walking into it drops them down a lit shaft into a tunnel (terowong) where the work hangs on the walls like exhibits in a pedestrian subway. The tunnel ends in light, and that light is where Contact lives.
 
-Dial: ENERGY 1 / RHYTHM 2 / MOTION 1
+Feel reference: kiabai.me (soft, tactile, toy-like 3D, warm "deck" surfaces, glass dialogs, day and night). It is a reference for feel only: the scene, the metaphor and the layout are Kamizan's own.
+
+Dial: ENERGY 3 / RHYTHM 3 / MOTION 3
+
+## Two views of one content
+
+- **Tunnel view** (default where WebGL2 works): the 3D experience in `js/tunnel/`.
+- **Page view**: the same content as a readable page. It is the fallback without WebGL2, the default under `prefers-reduced-motion`, and the target of deep links such as `/#contact`. The page is the single source of truth: the tunnel reads its panels and dialogs from the page's `data-exhibit` elements.
 
 ## Palette
 
-| Token | Value | Use |
-|---|---|---|
-| `--paper` | `#f7f6f1` | Page background, the "sheet" |
-| `--ink` | `#171a17` | Text, strong rules, the inverted arcade section |
-| `--ink-2` | `#4f554c` | Secondary text, labels (7.0:1 on paper) |
-| `--rule` | `#cfd1c8` | Hairlines between rows (decorative only, never the only boundary of a control) |
-| `--redline` | `#b3261e` | The single accent: the revision/redline mark. Used for the current role, the revision line and the focus ring. Nowhere else. |
+| Token | Day | Night | Use |
+|---|---|---|---|
+| `--deck` | `#eeebe4` | `#1e2024` | Page and void background |
+| `--surface` | `#f7f5f0` | `#2a2d32` | Raised tiles, dialog body |
+| `--ink` | `#1d1f22` | `#eeebe4` | Text, primary buttons |
+| `--ink-2` | `#5a5650` | `#a9a49b` | Secondary text (6.1:1 day, 6.6:1 night) |
+| `--accent` | `#9a5200` | `#f2a541` | The tunnel light. Used for the light itself, the tactile guide strip on the tunnel floor, the current station, and the focus ring. Nowhere else. |
+
+The 3D scene uses warmer, lighter versions of the same hues (clay walls, amber ring lights) so the page and the scene read as one place.
 
 ## Typography
 
-- IBM Plex Sans (variable 400 to 700) for everything readable. Chosen because Plex was drawn for technical and engineering documentation.
-- IBM Plex Mono 400 for clause numbers, dates, table labels and figure captions: the parts of a document that are reference data.
-- No wide-tracked uppercase labels. Labels are sentence case.
+- Funnel Display for headings and signs: its letters are cut with funnel-shaped notches, which echoes the hole and the tunnel.
+- Funnel Sans for everything readable, from the same family so the voice stays single.
+- No wide-tracked uppercase labels. Station numbers are plain numerals ("01").
 
-## Structure
+## Motif
 
-- Numbered clauses (1 to 7), with sub-clauses (1.1, 1.2) where a section has groups.
-- Content as registers and tables, not card grids. Rows separated by hairlines.
-- One inverted (ink) block: the Systems Arena section, because it is the one interactive piece.
-- Figures carry a caption ("Fig. 2.1 ...") and show real captures only.
+The arch: the tunnel's cross-section. It is the logo mark, the station sign shape, and the top edge of the dialog media.
+
+## Surfaces
+
+- Raised tiles (soft light and dark shadow pair) mark things you can pick up: project tiles, the profile card, the contact form. Plain content sits flat on the deck.
+- Glass is used on two elements only: the project dialog and the tunnel station rail.
+- The void floor carries faint tile joints. Reason: without them a first-person walk on a flat plane has no sense of speed or distance.
+
+## Motion
+
+- The fall is the one big motion moment. Under `prefers-reduced-motion` it becomes a fade, head-bob is off, and the page view is the default.
+- Everything else moves only when the visitor moves.
 
 ## Content rules
 
-- The four key figures (7+ years, 20+ systems shipped, 3 government platforms live, 8 languages and frameworks) are confirmed accurate by Kamizan. Shown as a plain table, not animated counters.
+- The four key figures (7+ years, 20+ systems shipped, 3 government platforms live, 8 languages and frameworks) are confirmed accurate by Kamizan.
 - No em dashes. Date ranges use an en dash.
-- No decorative icons, status dots, or arrows on every link.
+- 3D objects are built in code from simple shapes. Any of them can later be swapped for a `.glb` Kamizan supplies.

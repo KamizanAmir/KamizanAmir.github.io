@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="day" data-mode="page">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -10,10 +10,33 @@
       name="description"
       content="Kamizan Amirudin: Senior Programmer, System Analyst and DevOps engineer in Petaling Jaya, Malaysia. Enterprise systems, manufacturing MES/ERP, SAP integration and Laravel/Flutter product work."
     />
-    <meta name="theme-color" content="#f7f6f1" />
+    <meta name="theme-color" content="#eeebe4" />
     <meta name="author" content="Muhamad Kamizan Amirudin" />
     <title>Kamizan Amirudin | Senior Programmer, System Analyst &amp; DevOps</title>
     <link rel="canonical" href="https://kamizanamir.my/" />
+    <script>
+      // Theme and view are decided before first paint so nothing flashes.
+      (function () {
+        var d = document.documentElement, t, m;
+        try { t = localStorage.getItem("kz-theme"); m = localStorage.getItem("kz-mode"); } catch (e) {}
+        if (t !== "day" && t !== "night") t = matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "day";
+        var gl = "WebGL2RenderingContext" in window;
+        if (m !== "tunnel" && m !== "page") m = matchMedia("(prefers-reduced-motion: reduce)").matches ? "page" : "tunnel";
+        if (!gl || location.hash.length > 1) m = "page";
+        d.dataset.theme = t;
+        d.dataset.mode = m;
+        d.dataset.gl = gl ? "1" : "0";
+        if (t === "night") document.querySelector('meta[name="theme-color"]').content = "#1e2024";
+      })();
+    </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./assets/vendor/three/three.module.min.js",
+          "three/addons/": "./assets/vendor/three/"
+        }
+      }
+    </script>
 
     <meta property="og:type" content="profile" />
     <meta
@@ -93,14 +116,14 @@
 
     <link
       rel="preload"
-      href="assets/fonts/ibm-plex-sans-latin-variable.056e4e2459f5.woff2"
+      href="assets/fonts/funnel-display-latin-variable.96468ae77275.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="assets/fonts/ibm-plex-mono-latin-400.c36f509c0a8f.woff2"
+      href="assets/fonts/funnel-sans-latin-variable.db04420f79a4.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -113,56 +136,148 @@
   </head>
 
   <body>
-    <a class="skip-link" href="#content">Skip to content</a>
+    <a class="skip-link" id="skip-link" href="#content">Skip to content</a>
 
-    <header class="masthead">
-      <div class="wrap">
-        <a class="brand" href="#top">Kamizan Amirudin</a>
-        <nav class="masthead-links" aria-label="Main">
-          <a href="#work">Work</a>
-          <a href="#arena" class="cv-long">Arena</a>
-          <a href="#contact">Contact</a>
-        </nav>
+    <header class="bar">
+      <a class="mark" id="mark" href="/" aria-label="Kamizan Amirudin, back to the start">
+        <svg viewBox="0 0 28 28" aria-hidden="true">
+          <path class="mark-arch" d="M4 25V13a10 10 0 0 1 20 0v12" />
+          <circle class="mark-light" cx="14" cy="17" r="3" />
+        </svg>
+        <span class="mark-name">Kamizan Amirudin</span>
+      </a>
+      <div class="bar-actions">
+        <a class="bar-link" href="resume/resume.pdf" download aria-label="Download CV (PDF)"><span class="long">Download</span><span>CV</span></a>
+        <button class="bar-link mode-toggle" id="mode-toggle" type="button">Page view</button>
+        <button
+          class="switch"
+          id="theme-toggle"
+          type="button"
+          role="switch"
+          aria-checked="false"
+          aria-label="Night mode"
+        >
+          <span class="knob" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <g class="sun">
+                <circle cx="12" cy="12" r="4.4" />
+                <path d="M12 2.8v2.1M12 19.1v2.1M5.5 5.5L7 7M17 17l1.5 1.5M2.8 12h2.1M19.1 12h2.1M5.5 18.5L7 17M17 7l1.5-1.5" />
+              </g>
+              <path class="moon" d="M19.8 14.6A8 8 0 0 1 9.4 4.2a8 8 0 1 0 10.4 10.4z" />
+            </svg>
+          </span>
+        </button>
       </div>
     </header>
 
-    <main id="content">
-      <section class="title-block wrap" id="top" aria-labelledby="name">
-        <div>
-          <p class="doc-line mono">
-            Portfolio of work <span class="rev">Rev. October 2026</span>
+    <!-- Tunnel view. Built by js/tunnel/ from the page content below. -->
+    <div class="xp" id="xp" role="region" aria-label="Tunnel view" data-phase="void">
+      <canvas id="gl" tabindex="-1"></canvas>
+
+      <div class="xp-loader" id="xp-loader" role="status">
+        <svg class="loader-arch" viewBox="0 0 28 28" aria-hidden="true">
+          <path d="M4 25V13a10 10 0 0 1 20 0v12" />
+        </svg>
+        <p id="xp-loader-text">Loading the tunnel</p>
+        <div class="loader-bar" aria-hidden="true"><span id="xp-progress"></span></div>
+      </div>
+
+      <div class="void-ui" id="void-ui">
+        <div class="void-intro">
+          <p class="void-name">Kamizan Amirudin</p>
+          <p class="void-role">
+            Senior programmer and system analyst. The work is down in the
+            tunnel.
           </p>
+        </div>
+        <div class="void-hint">
+          <p id="void-hint">
+            Move your mouse to look around. Walk into the light with W or ↑,
+            or click on it.
+          </p>
+          <button class="btn" id="walk-to-light" type="button">Walk to the light</button>
+        </div>
+      </div>
+
+      <div class="labels" id="labels"></div>
+
+      <p class="tunnel-hint" id="tunnel-hint">
+        Scroll, or hold W, to walk. Click a panel to open it.
+      </p>
+
+      <nav class="rail" id="rail" aria-label="Tunnel stations" hidden>
+        <button class="rail-step" id="rail-prev" type="button" aria-label="Previous station">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <ol class="rail-stops" id="rail-stops"></ol>
+        <p class="rail-now" id="rail-now" aria-hidden="true"></p>
+        <button class="rail-step" id="rail-next" type="button" aria-label="Next station">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </nav>
+
+      <div class="flash" id="flash" aria-hidden="true"></div>
+      <div class="scrim" id="scrim" hidden></div>
+      <div
+        class="card"
+        id="card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="card-title"
+        aria-hidden="true"
+        hidden
+      >
+        <button class="card-x" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+        <div class="card-media"></div>
+        <div class="card-body">
+          <h2 id="card-title"></h2>
+          <div class="card-body-inner"></div>
+        </div>
+      </div>
+      <p class="sr-only" id="xp-live" aria-live="polite"></p>
+    </div>
+
+    <!-- Page view. The single source of truth for every word in the tunnel. -->
+    <main id="content" class="doc" tabindex="-1">
+      <p class="xp-error wrap" id="xp-error" role="status" hidden></p>
+
+      <section class="hero wrap" id="top" aria-labelledby="name">
+        <div class="hero-copy">
+          <p class="hero-role">Senior Programmer · System Analyst · DevOps</p>
           <h1 id="name">Kamizan Amirudin</h1>
           <p class="lede">
-            Senior programmer and system analyst. I turn real-world processes
-            into software people actually use, from the factory floor to the
-            app in your pocket.
+            I turn real-world processes into software people actually use,
+            from the factory floor to the app in your pocket.
           </p>
           <div class="actions">
             <a href="resume/resume.pdf" download class="btn">Download CV (PDF)</a>
-            <a href="#contact" class="text-action">Contact details</a>
+            <button type="button" class="btn btn-quiet enter-tunnel" data-enter-tunnel>
+              Walk the tunnel instead
+            </button>
           </div>
         </div>
 
-        <aside class="sheet" aria-label="Summary">
+        <aside class="sheet raised" aria-label="Summary">
           <div class="sheet-head">
             <img
               src="images/optimized/kamizan-avatar-96.119b4eaf194c.webp"
               srcset="images/optimized/kamizan-avatar-96.119b4eaf194c.webp 96w, images/optimized/kamizan-avatar-192.29c5563b5753.webp 192w"
-              sizes="96px"
+              sizes="80px"
               alt="Kamizan Amirudin"
-              width="96"
-              height="96"
+              width="80"
+              height="80"
               decoding="async"
             />
             <p>
               Muhamad Kamizan Amirudin
-              <span class="mono">Senior Programmer, System Analyst, DevOps</span>
+              <span>Petaling Jaya, Malaysia</span>
             </p>
           </div>
           <dl>
             <div>
-              <dt>Current role</dt>
+              <dt>Now</dt>
               <dd>Senior Programmer, YHCM Sdn Bhd</dd>
             </div>
             <div>
@@ -184,34 +299,32 @@
         </aside>
       </section>
 
-      <nav class="contents wrap" aria-labelledby="contents-title">
-        <h2 id="contents-title">Contents</h2>
+      <nav class="stations wrap" aria-labelledby="stations-title">
+        <h2 id="stations-title" class="sr-only">Sections</h2>
         <ol>
-          <li><a href="#work"><span class="no">1</span><span class="contents-title">Selected work</span><span class="contents-note">7 systems</span></a></li>
-          <li><a href="#arena"><span class="no">2</span><span class="contents-title">Systems Arena</span><span class="contents-note">Playable</span></a></li>
-          <li><a href="#profile"><span class="no">3</span><span class="contents-title">Profile</span><span class="contents-note">Key figures</span></a></li>
-          <li><a href="#toolkit"><span class="no">4</span><span class="contents-title">Toolkit</span><span class="contents-note">By area</span></a></li>
-          <li><a href="#experience"><span class="no">5</span><span class="contents-title">Experience</span><span class="contents-note">2019 to now</span></a></li>
-          <li><a href="#education"><span class="no">6</span><span class="contents-title">Education &amp; training</span><span class="contents-note">Diploma, courses</span></a></li>
-          <li><a href="#contact"><span class="no">7</span><span class="contents-title">Contact</span><span class="contents-note">Email, WhatsApp</span></a></li>
+          <li><a href="#work"><span class="no">01</span> Government systems</a></li>
+          <li><a href="#personal"><span class="no">02</span> Personal projects</a></li>
+          <li><a href="#arena"><span class="no">03</span> Systems Arena</a></li>
+          <li><a href="#profile"><span class="no">04</span> Profile</a></li>
+          <li><a href="#experience"><span class="no">05</span> Career</a></li>
+          <li><a href="#toolkit"><span class="no">06</span> Toolkit &amp; education</a></li>
+          <li><a href="#contact"><span class="no">07</span> Contact</a></li>
         </ol>
       </nav>
 
-      <section id="work" class="clause wrap" aria-labelledby="work-title">
-        <header class="clause-head">
-          <span class="clause-no">1</span>
-          <h2 id="work-title">Selected work</h2>
-          <p class="clause-intro">
-            Systems in production for Malaysian government agencies, alongside
-            the things I build on my own time.
+      <section id="work" class="section wrap" aria-labelledby="work-title">
+        <header class="sec-head">
+          <span class="no">01</span>
+          <h2 id="work-title">Government systems</h2>
+          <p class="sec-intro">
+            Platforms in production for Malaysian government agencies.
           </p>
         </header>
 
-        <h3 class="subclause"><span class="mono">1.1</span> Government systems</h3>
-        <ol class="register">
-          <li>
+        <ol class="gov">
+          <li class="tile raised" data-exhibit="spake">
             <img
-              class="reg-mark"
+              class="emblem"
               src="images/optimized/spake-64.09499b20b847.webp"
               srcset="images/optimized/spake-64.09499b20b847.webp 64w, images/optimized/spake-128.b178d95fefb5.webp 128w"
               sizes="56px"
@@ -221,12 +334,10 @@
               loading="lazy"
               decoding="async"
             />
-            <div class="reg-name">
-              <h4>SPAKE 4.0</h4>
-              <p class="reg-full" lang="ms">
-                Sistem Pengurusan Aset Komunikasi dan Elektronik
-              </p>
-            </div>
+            <h3>SPAKE 4.0</h3>
+            <p class="reg-full" lang="ms">
+              Sistem Pengurusan Aset Komunikasi dan Elektronik
+            </p>
             <p class="reg-desc">
               Asset management for communications and electronics equipment:
               registry, servicing and full lifecycle records.
@@ -236,9 +347,9 @@
               <span>Private repository</span>
             </div>
           </li>
-          <li>
+          <li class="tile raised" data-exhibit="spkb">
             <img
-              class="reg-mark"
+              class="emblem"
               src="images/optimized/spkb-64.3b78b7ef0dd0.webp"
               srcset="images/optimized/spkb-64.3b78b7ef0dd0.webp 64w, images/optimized/spkb-128.efd89c01f1cb.webp 128w"
               sizes="56px"
@@ -248,12 +359,10 @@
               loading="lazy"
               decoding="async"
             />
-            <div class="reg-name">
-              <h4>SPKB PUTD</h4>
-              <p class="reg-full" lang="ms">
-                Sistem Pengurusan Komputer Bersepadu, Pasukan Udara Tentera Darat
-              </p>
-            </div>
+            <h3>SPKB PUTD</h3>
+            <p class="reg-full" lang="ms">
+              Sistem Pengurusan Komputer Bersepadu, Pasukan Udara Tentera Darat
+            </p>
             <p class="reg-desc">
               Integrated computer and equipment management for an army air
               corps: inventory, servicing and reporting.
@@ -263,9 +372,9 @@
               <span>Private repository</span>
             </div>
           </li>
-          <li>
+          <li class="tile raised" data-exhibit="fms">
             <img
-              class="reg-mark"
+              class="emblem"
               src="images/optimized/fms-64.3aca1a8c4fe7.webp"
               srcset="images/optimized/fms-64.3aca1a8c4fe7.webp 64w, images/optimized/fms-128.5240532cec03.webp 128w"
               sizes="56px"
@@ -275,10 +384,8 @@
               loading="lazy"
               decoding="async"
             />
-            <div class="reg-name">
-              <h4>FMS</h4>
-              <p class="reg-full">Fleet Management System</p>
-            </div>
+            <h3>FMS</h3>
+            <p class="reg-full">Fleet Management System</p>
             <p class="reg-desc">
               Fleet management across web and mobile: vehicles, bookings,
               journeys and live location tracking.
@@ -289,9 +396,16 @@
             </div>
           </li>
         </ol>
+      </section>
 
-        <h3 class="subclause"><span class="mono">1.2</span> Personal projects</h3>
-        <article class="feature">
+      <section id="personal" class="section wrap" aria-labelledby="personal-title">
+        <header class="sec-head">
+          <span class="no">02</span>
+          <h2 id="personal-title">Personal projects</h2>
+          <p class="sec-intro">The things I build on my own time.</p>
+        </header>
+
+        <article class="feature raised" data-exhibit="kamitrack">
           <img
             src="images/optimized/kamitrack-90.ff734a819ea5.webp"
             srcset="images/optimized/kamitrack-60.fd097579cad1.webp 60w, images/optimized/kamitrack-90.ff734a819ea5.webp 90w, images/optimized/kamitrack-120.6539141c8d22.webp 120w, images/optimized/kamitrack-180.d15319ff2970.webp 180w"
@@ -303,7 +417,7 @@
             decoding="async"
           />
           <div>
-            <h4>KamiTrack</h4>
+            <h3>KamiTrack</h3>
             <p class="reg-full">Android fitness app, built solo</p>
             <p class="reg-desc">
               Step and run tracking, self-completing tasks, group chat with
@@ -320,10 +434,10 @@
           </div>
         </article>
 
-        <ol class="register register--plain">
-          <li>
+        <ol class="register">
+          <li data-exhibit="runcloud">
             <div class="reg-name">
-              <h4>RunCloud System Assessment</h4>
+              <h3>RunCloud System Assessment</h3>
               <p class="reg-full">Server hardening review</p>
             </div>
             <p class="reg-desc">
@@ -335,9 +449,9 @@
               <a href="https://github.com/KamizanAmir/runcloud/" target="_blank" rel="noopener">Source on GitHub</a>
             </div>
           </li>
-          <li>
+          <li data-exhibit="kamching">
             <div class="reg-name">
-              <h4>Kamching</h4>
+              <h3>Kamching</h3>
               <p class="reg-full">Flutter interactive app</p>
             </div>
             <p class="reg-desc">
@@ -349,9 +463,9 @@
               <a href="https://github.com/KamizanAmir/kamching/" target="_blank" rel="noopener">Source on GitHub</a>
             </div>
           </li>
-          <li>
+          <li data-exhibit="apidocs">
             <div class="reg-name">
-              <h4>Enterprise API Docs</h4>
+              <h3>Enterprise API Docs</h3>
               <p class="reg-full">API design &amp; documentation</p>
             </div>
             <p class="reg-desc">
@@ -366,11 +480,19 @@
         </ol>
       </section>
 
-      <section id="arena" class="arena" aria-labelledby="arena-title">
-        <div class="wrap">
+      <section
+        id="arena"
+        class="arena"
+        aria-labelledby="arena-title"
+        data-exhibit="arena"
+        data-title="Systems Arena"
+        data-sub="A small 3D game I built as a second way to show the work."
+        data-tags="3 waves, keyboard and touch, runs in the browser"
+      >
+        <div class="wrap arena-inner">
           <div class="arena-copy">
-            <header class="clause-head">
-              <span class="clause-no">2</span>
+            <header class="sec-head">
+              <span class="no">03</span>
               <h2 id="arena-title">Systems Arena</h2>
             </header>
             <p>
@@ -379,28 +501,36 @@
               Flutter dash and a DevOps shield, each tied to the skills behind
               it.
             </p>
-            <p class="arena-facts mono">3 waves · keyboard and touch · runs in the browser, no install</p>
-            <a href="portfolio/" class="btn">Play Systems Arena</a>
+            <p class="arena-facts">3 waves · keyboard and touch · runs in the browser, no install</p>
+            <a href="portfolio/" class="btn btn-invert">Play Systems Arena</a>
           </div>
           <figure>
             <img
               src="images/optimized/systems-arena-1280.027e0afb3589.webp"
               srcset="images/optimized/systems-arena-640.0a9f879b8599.webp 640w, images/optimized/systems-arena-1280.027e0afb3589.webp 1280w"
-              sizes="(min-width: 900px) 620px, calc(100vw - 32px)"
+              sizes="(min-width: 960px) 600px, calc(100vw - 32px)"
               alt="Systems Arena gameplay: the player robot on a green octagonal arena surrounded by four bug robots, with the system integrity bar at 100% and wave 1 of 3."
               width="1280"
               height="879"
               loading="lazy"
               decoding="async"
             />
-            <figcaption class="mono">Fig. 2.1 Wave 1 of 3, captured in the browser.</figcaption>
+            <figcaption>Wave 1 of 3, captured in the browser.</figcaption>
           </figure>
         </div>
       </section>
 
-      <section id="profile" class="clause wrap" aria-labelledby="profile-title">
-        <header class="clause-head">
-          <span class="clause-no">3</span>
+      <section
+        id="profile"
+        class="section wrap"
+        aria-labelledby="profile-title"
+        data-exhibit="profile"
+        data-title="Profile"
+        data-sub="I build systems that production floors depend on."
+        data-tags="Manufacturing, semiconductor, government"
+      >
+        <header class="sec-head">
+          <span class="no">04</span>
           <h2 id="profile-title">Profile</h2>
         </header>
 
@@ -425,18 +555,18 @@
             </p>
           </div>
 
-          <div>
-            <table class="spec figures">
-              <caption>Table 3.1 Key figures</caption>
+          <div class="profile-side">
+            <table class="figures">
+              <caption class="sr-only">Key figures</caption>
               <tbody>
-                <tr><th scope="row">Years in industry</th><td>7+</td></tr>
-                <tr><th scope="row">Systems shipped</th><td>20+</td></tr>
-                <tr><th scope="row">Government platforms live</th><td>3</td></tr>
-                <tr><th scope="row">Languages &amp; frameworks</th><td>8</td></tr>
+                <tr><td>7+</td><th scope="row">Years in industry</th></tr>
+                <tr><td>20+</td><th scope="row">Systems shipped</th></tr>
+                <tr><td>3</td><th scope="row">Government platforms live</th></tr>
+                <tr><td>8</td><th scope="row">Languages &amp; frameworks</th></tr>
               </tbody>
             </table>
             <div class="now">
-              <span class="mono">Currently</span>
+              <p class="now-label">Currently</p>
               <p>
                 <strong>Senior Programmer at YHCM Sdn Bhd</strong> in Wangsa
                 Maju, KL. Leading the design of enterprise-grade applications,
@@ -448,63 +578,18 @@
         </div>
       </section>
 
-      <section id="toolkit" class="clause wrap" aria-labelledby="toolkit-title">
-        <header class="clause-head">
-          <span class="clause-no">4</span>
-          <h2 id="toolkit-title">Toolkit</h2>
-          <p class="clause-intro">What I reach for, grouped by what it's for.</p>
-        </header>
-
-        <table class="spec toolkit">
-          <caption>Table 4.1 Tools by area</caption>
-          <thead>
-            <tr><th scope="col">Area</th><th scope="col">Tools</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Languages <small>Core and daily driver</small></th>
-              <td><strong>C++</strong>, C#, PHP, Java, Dart, Python, HTML/CSS, JavaScript</td>
-            </tr>
-            <tr>
-              <th scope="row">Frameworks <small>Web and mobile</small></th>
-              <td><strong>Laravel</strong>, <strong>Android Studio</strong>, Flutter, Filament, Vue 3, Swift</td>
-            </tr>
-            <tr>
-              <th scope="row">Data <small>Storage and reporting</small></th>
-              <td><strong>MySQL</strong>, MS SQL Server, PostgreSQL, Supabase, Redis, MongoDB, phpMyAdmin</td>
-            </tr>
-            <tr>
-              <th scope="row">Platform &amp; DevOps <small>Ship, host, keep it up</small></th>
-              <td><strong>Linux / open source OS</strong>, Docker, GitLab CI/CD, GCP, RunCloud, VMware vSphere, Hyper-V, Nutanix, Veeam, Cisco</td>
-            </tr>
-            <tr>
-              <th scope="row">Enterprise &amp; analysis <small>The domain half of the job</small></th>
-              <td>SAP Business One, MES/ERP, Electronic Data Capture, B2B modules, UAT/FAT cycles, requirements gathering</td>
-            </tr>
-            <tr>
-              <th scope="row">Data science <small>Trained 2022–2023</small></th>
-              <td>Python, SQL, data visualisation, Visual Studio, SQL Server Management</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="toolkit-key">
-          <strong>Bold</strong>: the ones I'd be comfortable being tested on
-          tomorrow.
-        </p>
-      </section>
-
-      <section id="experience" class="clause wrap" aria-labelledby="experience-title">
-        <header class="clause-head">
-          <span class="clause-no">5</span>
-          <h2 id="experience-title">Experience</h2>
+      <section id="experience" class="section wrap" aria-labelledby="experience-title">
+        <header class="sec-head">
+          <span class="no">05</span>
+          <h2 id="experience-title">Career</h2>
+          <p class="sec-intro">2019 to now, most recent first.</p>
         </header>
 
         <ol class="jobs">
-          <li class="job">
+          <li class="job" data-exhibit="job-yhcm">
             <div class="job-when">
-              <span class="mono">Jan 2025 – present</span>
-              <span class="mono">Wangsa Maju, KL</span>
-              <span class="mono job-current">Current role</span>
+              <span>Jan 2025 – present</span>
+              <span>Wangsa Maju, KL</span>
             </div>
             <div class="job-body">
               <h3>Senior Programmer</h3>
@@ -520,10 +605,10 @@
               <p class="job-tools">Laravel, Vue 3, Filament, Docker, code review, mentoring</p>
             </div>
           </li>
-          <li class="job">
+          <li class="job" data-exhibit="job-aic">
             <div class="job-when">
-              <span class="mono">Nov 2023 – Oct 2024</span>
-              <span class="mono">Kulim, Kedah</span>
+              <span>Nov 2023 – Oct 2024</span>
+              <span>Kulim, Kedah</span>
             </div>
             <div class="job-body">
               <h3>Software Analyst</h3>
@@ -543,10 +628,10 @@
               <p class="job-tools">MES/ERP, SAP Business One, EDC, B2B integration, UAT/FAT</p>
             </div>
           </li>
-          <li class="job">
+          <li class="job" data-exhibit="job-risau">
             <div class="job-when">
-              <span class="mono">May 2023 – Sep 2023</span>
-              <span class="mono">Cyberjaya, Selangor</span>
+              <span>May 2023 – Sep 2023</span>
+              <span>Cyberjaya, Selangor</span>
             </div>
             <div class="job-body">
               <h3>Software Engineer</h3>
@@ -560,10 +645,10 @@
               <p class="job-tools">Laravel, Flutter, GitLab, GCP, RunCloud</p>
             </div>
           </li>
-          <li class="job">
+          <li class="job" data-exhibit="job-mesiniaga">
             <div class="job-when">
-              <span class="mono">Nov 2021 – Oct 2022</span>
-              <span class="mono">Bayan Lepas, Penang</span>
+              <span>Nov 2021 – Oct 2022</span>
+              <span>Bayan Lepas, Penang</span>
             </div>
             <div class="job-body">
               <h3>Solution Engineer</h3>
@@ -578,10 +663,10 @@
               <p class="job-tools">VMware vSphere, Hyper-V, Nutanix, Veeam, disaster recovery</p>
             </div>
           </li>
-          <li class="job">
+          <li class="job" data-exhibit="job-aspen">
             <div class="job-when">
-              <span class="mono">Apr 2021 – Nov 2022</span>
-              <span class="mono">Kulim, Kedah</span>
+              <span>Apr 2021 – Nov 2022</span>
+              <span>Kulim, Kedah</span>
             </div>
             <div class="job-body">
               <h3>Quality Assurance Specialist</h3>
@@ -596,77 +681,151 @@
           </li>
         </ol>
 
-        <h3 class="subclause"><span class="mono">5.1</span> Earlier roles</h3>
-        <ol class="earlier">
-          <li>
-            <span class="mono">Nov 2021</span>
-            <span><strong>PPV Non-Medical Volunteer</strong>, Flextronic Technology Sdn Bhd, Perai.</span>
-          </li>
-          <li>
-            <span class="mono">Jun 2020</span>
-            <span><strong>Equipment Specialist</strong>, Intel Technology Sdn Bhd, Kulim. Repaired TCUs at STHI to Intel guidelines, diagnosing error codes to replace faulty components before chipset corruption.</span>
-          </li>
-          <li>
-            <span class="mono">Jun – Nov 2019</span>
-            <span><strong>Database Management</strong>, Raffelinna Sdn Bhd, Baling. Excel-based data visualisation for analysis and decision-making, plus server performance monitoring through phpMyAdmin.</span>
-          </li>
-        </ol>
-      </section>
-
-      <section id="education" class="clause wrap" aria-labelledby="education-title">
-        <header class="clause-head">
-          <span class="clause-no">6</span>
-          <h2 id="education-title">Education &amp; training</h2>
-        </header>
-
-        <div class="education">
-          <table class="spec quals">
-            <caption>Table 6.1 Qualifications and courses</caption>
-            <thead>
-              <tr><th scope="col">When</th><th scope="col">Qualification</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">2016–2019</th>
-                <td>Diploma in Information Technology<small>Politeknik Tuanku Syed Sirajuddin, Perlis. CGPA 3.27</small></td>
-              </tr>
-              <tr>
-                <th scope="row">Dec 2022 – Mar 2023</th>
-                <td>Data Science with Python &amp; SQL<small>Perak Human Capital Development Center. Visual Studio and MS SQL Server Management; contributed data visualisation and graphical data creation on a training project.</small></td>
-              </tr>
-              <tr>
-                <th scope="row">2021</th>
-                <td>CompTIA Security+<small>Certification</small></td>
-              </tr>
-              <tr>
-                <th scope="row"><abbr title="no date">n.d.</abbr></th>
-                <td>Windows Server Administration<small>Mesiniaga, internal certification</small></td>
-              </tr>
-              <tr>
-                <th scope="row"><abbr title="no date">n.d.</abbr></th>
-                <td>Cloud Computing<small>RunCloud certification</small></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table class="spec">
-            <caption>Table 6.2 Languages</caption>
-            <thead>
-              <tr><th scope="col">Language</th><th scope="col">Level</th></tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Bahasa Malaysia</th><td>Native</td></tr>
-              <tr><th scope="row">English</th><td>Conversational</td></tr>
-              <tr><th scope="row">Bahasa Indonesia</th><td>Conversational</td></tr>
-              <tr><th scope="row"><span lang="ja">日本語</span> (Japanese)</th><td>Learning</td></tr>
-            </tbody>
-          </table>
+        <div
+          class="earlier-block"
+          data-exhibit="earlier"
+          data-title="Earlier roles"
+          data-sub="Intel, Flextronic and Raffelinna, 2019–2021."
+          data-tags="Equipment repair, database management, volunteering"
+        >
+          <h3 class="sub-head">Earlier roles</h3>
+          <ol class="earlier">
+            <li>
+              <span class="when">Nov 2021</span>
+              <span><strong>PPV Non-Medical Volunteer</strong>, Flextronic Technology Sdn Bhd, Perai.</span>
+            </li>
+            <li>
+              <span class="when">Jun 2020</span>
+              <span><strong>Equipment Specialist</strong>, Intel Technology Sdn Bhd, Kulim. Repaired TCUs at STHI to Intel guidelines, diagnosing error codes to replace faulty components before chipset corruption.</span>
+            </li>
+            <li>
+              <span class="when">Jun – Nov 2019</span>
+              <span><strong>Database Management</strong>, Raffelinna Sdn Bhd, Baling. Excel-based data visualisation for analysis and decision-making, plus server performance monitoring through phpMyAdmin.</span>
+            </li>
+          </ol>
         </div>
       </section>
 
-      <section id="contact" class="clause wrap" aria-labelledby="contact-title">
-        <header class="clause-head">
-          <span class="clause-no">7</span>
+      <section id="toolkit" class="section wrap" aria-labelledby="toolkit-title">
+        <header class="sec-head">
+          <span class="no">06</span>
+          <h2 id="toolkit-title">Toolkit &amp; education</h2>
+          <p class="sec-intro">What I reach for, grouped by what it's for, and where I learned it.</p>
+        </header>
+
+        <div
+          class="toolkit-block"
+          data-exhibit="toolkit"
+          data-title="Toolkit"
+          data-sub="What I reach for, grouped by what it's for."
+          data-tags="Laravel, C++, MySQL, Linux, Android Studio"
+        >
+          <table class="spec">
+            <caption class="sr-only">Tools by area</caption>
+            <thead>
+              <tr><th scope="col">Area</th><th scope="col">Tools</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Languages <small>Core and daily driver</small></th>
+                <td><strong>C++</strong>, C#, PHP, Java, Dart, Python, HTML/CSS, JavaScript</td>
+              </tr>
+              <tr>
+                <th scope="row">Frameworks <small>Web and mobile</small></th>
+                <td><strong>Laravel</strong>, <strong>Android Studio</strong>, Flutter, Filament, Vue 3, Swift</td>
+              </tr>
+              <tr>
+                <th scope="row">Data <small>Storage and reporting</small></th>
+                <td><strong>MySQL</strong>, MS SQL Server, PostgreSQL, Supabase, Redis, MongoDB, phpMyAdmin</td>
+              </tr>
+              <tr>
+                <th scope="row">Platform &amp; DevOps <small>Ship, host, keep it up</small></th>
+                <td><strong>Linux / open source OS</strong>, Docker, GitLab CI/CD, GCP, RunCloud, VMware vSphere, Hyper-V, Nutanix, Veeam, Cisco</td>
+              </tr>
+              <tr>
+                <th scope="row">Enterprise &amp; analysis <small>The domain half of the job</small></th>
+                <td>SAP Business One, MES/ERP, Electronic Data Capture, B2B modules, UAT/FAT cycles, requirements gathering</td>
+              </tr>
+              <tr>
+                <th scope="row">Data science <small>Trained 2022–2023</small></th>
+                <td>Python, SQL, data visualisation, Visual Studio, SQL Server Management</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="toolkit-key">
+            <strong>Bold</strong>: the ones I'd be comfortable being tested on
+            tomorrow.
+          </p>
+        </div>
+
+        <div
+          class="education"
+          id="education"
+          data-exhibit="education"
+          data-title="Education & training"
+          data-sub="Diploma in Information Technology, plus data science and security training."
+          data-tags="Politeknik Tuanku Syed Sirajuddin, CompTIA Security+"
+        >
+          <div>
+            <h3 class="sub-head">Qualifications and courses</h3>
+            <table class="spec">
+              <caption class="sr-only">Qualifications and courses</caption>
+              <thead>
+                <tr><th scope="col">When</th><th scope="col">Qualification</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">2016–2019</th>
+                  <td>Diploma in Information Technology<small>Politeknik Tuanku Syed Sirajuddin, Perlis. CGPA 3.27</small></td>
+                </tr>
+                <tr>
+                  <th scope="row">Dec 2022 – Mar 2023</th>
+                  <td>Data Science with Python &amp; SQL<small>Perak Human Capital Development Center. Visual Studio and MS SQL Server Management; contributed data visualisation and graphical data creation on a training project.</small></td>
+                </tr>
+                <tr>
+                  <th scope="row">2021</th>
+                  <td>CompTIA Security+<small>Certification</small></td>
+                </tr>
+                <tr>
+                  <th scope="row"><abbr title="no date">n.d.</abbr></th>
+                  <td>Windows Server Administration<small>Mesiniaga, internal certification</small></td>
+                </tr>
+                <tr>
+                  <th scope="row"><abbr title="no date">n.d.</abbr></th>
+                  <td>Cloud Computing<small>RunCloud certification</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3 class="sub-head">Languages</h3>
+            <table class="spec">
+              <caption class="sr-only">Languages</caption>
+              <thead>
+                <tr><th scope="col">Language</th><th scope="col">Level</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Bahasa Malaysia</th><td>Native</td></tr>
+                <tr><th scope="row">English</th><td>Conversational</td></tr>
+                <tr><th scope="row">Bahasa Indonesia</th><td>Conversational</td></tr>
+                <tr><th scope="row"><span lang="ja">日本語</span> (Japanese)</th><td>Learning</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        class="section wrap"
+        aria-labelledby="contact-title"
+        data-exhibit="contact"
+        data-title="Let's talk"
+        data-sub="Open to senior engineering and system analyst roles, and to consulting work."
+        data-tags="Email, WhatsApp, LinkedIn, GitHub"
+      >
+        <header class="sec-head">
+          <span class="no">07</span>
           <h2 id="contact-title">Contact</h2>
         </header>
 
@@ -703,7 +862,7 @@
           <form
             action="https://formsubmit.co/kamizan980505@gmail.com"
             method="POST"
-            class="form"
+            class="form raised"
             id="contact-form"
           >
             <h3>Send a message</h3>
@@ -732,7 +891,7 @@
 
     <footer class="colophon">
       <div class="wrap">
-        <p>End of document. © <span id="year">2026</span> Muhamad Kamizan Amirudin</p>
+        <p>End of the tunnel. © <span id="year">2026</span> Muhamad Kamizan Amirudin</p>
         <nav aria-label="Footer">
           <a href="privacy-policy.html">Privacy policy</a>
           <a href="kamitrack.html">KamiTrack</a>
