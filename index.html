@@ -173,6 +173,9 @@
     <!-- Tunnel view. Built by js/tunnel/ from the page content below. -->
     <div class="xp" id="xp" role="region" aria-label="Tunnel view" data-phase="void">
       <canvas id="gl" tabindex="-1"></canvas>
+      <!-- The System's windows, placed in 3D by js/tunnel/holo.js. -->
+      <div class="holo-layer" id="holo-layer"></div>
+      <canvas id="gl-hands" aria-hidden="true"></canvas>
 
       <div class="xp-loader" id="xp-loader" role="status">
         <svg class="loader-arch" viewBox="0 0 28 28" aria-hidden="true">
@@ -186,54 +189,53 @@
         <div class="void-intro">
           <p class="void-name">Kamizan Amirudin</p>
           <p class="void-role">
-            Senior programmer and system analyst. The work is down in the
-            tunnel.
+            Senior programmer and system analyst. The work is down the well,
+            one stop at a time.
           </p>
         </div>
         <div class="void-hint">
           <p id="void-hint">
-            Move your mouse to look around. Walk into the light with W or ↑,
-            or click on it.
+            WASD to walk, move the mouse to look. Walk into the light, or
+            click it.
           </p>
           <button class="btn" id="walk-to-light" type="button">Walk to the light</button>
         </div>
       </div>
 
-      <div class="labels" id="labels"></div>
+      <!-- The fall: everything around the System's windows. -->
+      <div class="well-ui" id="well-ui" hidden>
+        <nav class="gauge" id="gauge" aria-label="Sections of the well">
+          <ol id="gauge-stops"></ol>
+          <p class="gauge-depth"><span class="sr-only">Depth </span><span id="gauge-depth">0</span> m</p>
+        </nav>
 
-      <p class="tunnel-hint" id="tunnel-hint">
-        Scroll, or hold W, to walk. Click a panel to open it.
-      </p>
+        <p class="well-hint" id="well-hint">Look or drift left and right to read more. Space dives.</p>
 
-      <nav class="rail" id="rail" aria-label="Tunnel stations" hidden>
-        <button class="rail-step" id="rail-prev" type="button" aria-label="Previous station">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        <button class="dive" id="dive" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" /></svg>
+          <span class="dive-label" id="dive-label">Dive</span>
+          <kbd>Space</kbd>
         </button>
-        <ol class="rail-stops" id="rail-stops"></ol>
-        <p class="rail-now" id="rail-now" aria-hidden="true"></p>
-        <button class="rail-step" id="rail-next" type="button" aria-label="Next station">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
-        </button>
-      </nav>
+      </div>
+
+      <div class="stick" id="stick" hidden aria-hidden="true"><span class="stick-knob"></span></div>
 
       <div class="flash" id="flash" aria-hidden="true"></div>
-      <div class="scrim" id="scrim" hidden></div>
+
       <div
-        class="card"
-        id="card"
-        role="dialog"
+        class="end"
+        id="end"
+        role="alertdialog"
         aria-modal="true"
-        aria-labelledby="card-title"
-        aria-hidden="true"
+        aria-labelledby="end-title"
+        aria-describedby="end-text"
         hidden
       >
-        <button class="card-x" type="button" aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-        </button>
-        <div class="card-media"></div>
-        <div class="card-body">
-          <h2 id="card-title"></h2>
-          <div class="card-body-inner"></div>
+        <canvas class="end-blood" id="end-blood" aria-hidden="true"></canvas>
+        <div class="end-band">
+          <h2 id="end-title">You hit the bottom</h2>
+          <p id="end-text">That was every stop in the well.</p>
+          <button class="btn end-retry" id="end-retry" type="button">Try again</button>
         </div>
       </div>
       <p class="sr-only" id="xp-live" aria-live="polite"></p>

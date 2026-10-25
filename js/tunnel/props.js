@@ -1,8 +1,9 @@
-// Small clay objects that stand beside each exhibit, built from simple shapes.
-// Each is roughly 0.5 m across and sits with its base at y = 0.
+// Small clay objects that fall alongside the visitor at each stop, built from
+// simple shapes. Each is roughly 0.5 m across with its base at y = 0.
 // Swap any of them for a .glb later by returning a loaded scene instead.
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/RoundedBoxGeometry.js";
+import { buildHand } from "./body.js";
 
 const clay = (c, extra = {}) =>
   new THREE.MeshStandardMaterial({ color: c, roughness: 0.78, ...extra });
@@ -176,19 +177,121 @@ function hardhat() {
   return g;
 }
 
-const BUILDERS = { radio, laptop, truck, phone, server, die, docs, toolbox, cap, hardhat };
+// Career, current role: a briefcase.
+function briefcase() {
+  const g = new THREE.Group();
+  g.add(at(box(0.5, 0.34, 0.15, 0.04, M.stone), 0, 0.17, 0));
+  g.add(at(box(0.5, 0.02, 0.152, 0.008, M.ink), 0, 0.27, 0));
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.017, 8, 20, Math.PI), M.ink);
+  g.add(at(handle, 0, 0.34, 0));
+  for (const x of [-0.13, 0.13]) g.add(at(box(0.05, 0.035, 0.02, 0.008, M.amber), x, 0.27, 0.078));
+  return g;
+}
 
-// A rounded plinth with the object on top.
-export function buildProp(kind) {
-  const group = new THREE.Group();
-  const plinth = box(0.62, 0.7, 0.62, 0.08, M.cream);
-  plinth.position.y = 0.35;
-  group.add(plinth);
+// AIC Semiconductor: a chip on its pins.
+function chip() {
+  const g = new THREE.Group();
+  g.add(at(box(0.36, 0.05, 0.36, 0.02, M.ink), 0, 0.06, 0));
+  g.add(at(box(0.12, 0.012, 0.12, 0.006, M.amber), 0, 0.09, 0));
+  for (let i = 0; i < 5; i++) {
+    const o = -0.12 + i * 0.06;
+    g.add(at(box(0.026, 0.02, 0.07, 0.006, M.cream), o, 0.03, 0.2));
+    g.add(at(box(0.026, 0.02, 0.07, 0.006, M.cream), o, 0.03, -0.2));
+    g.add(at(box(0.07, 0.02, 0.026, 0.006, M.cream), 0.2, 0.03, o));
+    g.add(at(box(0.07, 0.02, 0.026, 0.006, M.cream), -0.2, 0.03, o));
+  }
+  return g;
+}
+
+// RISAU: GCP and RunCloud hosting, so a cloud.
+function cloud() {
+  const g = new THREE.Group();
+  for (const [x, y, r] of [[-0.15, 0.14, 0.12], [0, 0.2, 0.16], [0.16, 0.14, 0.12], [0.05, 0.1, 0.13]]) {
+    g.add(at(new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), M.cream), x, y, 0));
+  }
+  g.add(at(box(0.08, 0.08, 0.02, 0.01, M.amber), 0.02, 0.17, 0.17));
+  return g;
+}
+
+// Aspen Glove: quality checks on gloves, so an inspection glove.
+function glove() {
+  const g = new THREE.Group();
+  const hand = buildHand(M.cream, 1);
+  hand.scale.setScalar(2.4);
+  hand.rotation.set(-Math.PI / 2, 0, 0.2);
+  g.add(at(hand, 0, 0.12, 0.1));
+  g.add(at(cyl(0.075, 0.12, M.cream), 0, 0.06, 0.12));
+  return g;
+}
+
+// Earlier roles, mostly equipment repair: a wrench.
+function wrench() {
+  const g = new THREE.Group();
+  const w = new THREE.Group();
+  w.add(at(box(0.07, 0.44, 0.035, 0.016, M.stone), 0, 0, 0));
+  const head = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.03, 10, 24, Math.PI * 1.45), M.ink);
+  head.rotation.z = -Math.PI * 0.22;
+  w.add(at(head, 0, 0.27, 0));
+  w.rotation.z = 0.5;
+  w.position.y = 0.25;
+  g.add(w);
+  return g;
+}
+
+// Systems Arena: the game, so a gamepad.
+function gamepad() {
+  const g = new THREE.Group();
+  g.add(at(box(0.44, 0.1, 0.22, 0.05, M.ink), 0, 0.08, 0));
+  for (const x of [-0.18, 0.18]) g.add(at(box(0.12, 0.09, 0.2, 0.045, M.ink), x, 0.07, 0.07));
+  g.add(at(box(0.09, 0.02, 0.03, 0.008, M.cream), -0.12, 0.14, -0.01));
+  g.add(at(box(0.03, 0.02, 0.09, 0.008, M.cream), -0.12, 0.14, -0.01));
+  for (const [x, z] of [[0.1, -0.03], [0.15, 0.01]]) {
+    g.add(at(new THREE.Mesh(new THREE.SphereGeometry(0.022, 12, 10), M.amber), x, 0.14, z));
+  }
+  return g;
+}
+
+// Contact: an envelope.
+function envelope() {
+  const g = new THREE.Group();
+  g.add(at(box(0.46, 0.03, 0.32, 0.012, M.cream), 0, 0.02, 0));
+  const flap = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.012, 3), M.stone);
+  flap.scale.set(1.2, 1, 0.75);
+  flap.rotation.y = Math.PI;
+  g.add(at(flap, 0, 0.04, -0.03));
+  g.add(at(cyl(0.035, 0.014, M.amber), 0, 0.048, 0.03));
+  return g;
+}
+
+const BUILDERS = {
+  radio,
+  laptop,
+  truck,
+  phone,
+  server,
+  die,
+  docs,
+  toolbox,
+  cap,
+  hardhat,
+  briefcase,
+  chip,
+  cloud,
+  glove,
+  wrench,
+  gamepad,
+  envelope,
+};
+
+// The object alone, centred on its own middle so it can tumble in the air.
+export function buildObject(kind) {
   const make = BUILDERS[kind];
   const object = make ? make() : new THREE.Group();
-  object.position.y = 0.72;
+  const box3 = new THREE.Box3().setFromObject(object);
+  const mid = box3.getCenter(new THREE.Vector3());
+  object.position.sub(mid);
+  const group = new THREE.Group();
   group.add(object);
-  group.userData.object = object;
   return group;
 }
 

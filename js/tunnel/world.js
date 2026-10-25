@@ -1,26 +1,17 @@
-// The static world: the void with its glowing hole, the shaft, and the tunnel.
-// Units are metres. The void floor is y = 0; the tunnel floor is y = -DEPTH.
+// The static world: the void with its glowing hole, and the well under it.
+// Units are metres. The void floor is y = 0; the well has no bottom until the
+// last stop, so its wall follows the visitor down.
 import * as THREE from "three";
 
 export const HOLE = new THREE.Vector3(0, 0, -16);
 export const HOLE_R = 2;
-export const DEPTH = 60;
 export const EYE = 1.6;
 
-export const TUNNEL = {
-  halfWidth: 3,
-  wallHeight: 1.8, // straight wall before the arch starts
-  height: 4.8, // wallHeight + halfWidth
-  length: 130,
-  ringGap: 6,
+export const WELL = {
+  r: 3.2, // below the throat the well opens up so there is room to drift
+  throat: -9, // where the flare ends and the endless wall begins
+  ringGap: 7,
 };
-
-const CHAMBER_R = 3.4;
-// Distance 0 in the tunnel is the mouth, just past the landing chamber.
-export const T0 = HOLE.z - 1.2;
-export const FLOOR_Y = -DEPTH;
-export const zAt = (d) => T0 - d;
-export const LANDING_D = T0 - HOLE.z; // the chamber centre, in tunnel distance
 
 export const PALETTES = {
   day: {
@@ -31,11 +22,8 @@ export const PALETTES = {
     glowStrength: 0.55,
     beam: 0.34,
     rim: "#f3eee4",
-    shaftWall: "#d9cbb3",
-    tunnelFog: "#d8d1c4",
-    wall: "#e6e0d4",
-    floor: "#cfc7b8",
-    strip: "#d9962f",
+    well: "#ddd0b9",
+    deep: "#f2c27c",
     ring: "#ffd28c",
     ambient: 0.62,
     pool: 0.5,
@@ -43,9 +31,9 @@ export const PALETTES = {
     hemiGround: "#bfb4a2",
     hemi: 1.5,
     sun: 1.1,
-    paint: "#2b2d31",
-    paintSoft: "#6a645b",
-    end: "#fff3dc",
+    up: 3.5,
+    streak: "#8a6533",
+    streakAdd: false,
   },
   night: {
     sky: "#16181c",
@@ -55,21 +43,18 @@ export const PALETTES = {
     glowStrength: 0.95,
     beam: 0.42,
     rim: "#3a3d43",
-    shaftWall: "#3b3227",
-    tunnelFog: "#141518",
-    wall: "#45464b",
-    floor: "#2c2d31",
-    strip: "#c98426",
+    well: "#5b5046",
+    deep: "#8c5418",
     ring: "#ffc06a",
-    ambient: 0.3,
+    ambient: 0.32,
     pool: 1.05,
     hemiSky: "#8d93a3",
     hemiGround: "#1a1b1f",
     hemi: 0.75,
     sun: 0.55,
-    paint: "#eeebe4",
-    paintSoft: "#a9a49b",
-    end: "#ffe2b0",
+    up: 5,
+    streak: "#ffe2b0",
+    streakAdd: true,
   },
 };
 
@@ -82,6 +67,7 @@ export const shared = {
   uFogFar: { value: 70 },
   uTime: { value: 0 },
   uGlow: { value: color("#ffbf5e") },
+  uDeep: { value: color("#f2c27c") },
 };
 
 const FOG_GLSL = /* glsl */ `
@@ -91,6 +77,11 @@ const FOG_GLSL = /* glsl */ `
 `;
 const FOG_APPLY = /* glsl */ `
   col = mix(col, uFogColor, smoothstep(uFogNear, uFogFar, vDepth));
+`;
+// The well always fades into its own glowing depth, whatever the void is doing,
+// so from the rim the hole reads as deep and lit from below.
+const DEEP_APPLY = /* glsl */ `
+  col = mix(col, uDeep, smoothstep(6.0, 72.0, vDepth));
 `;
 
 const BASE_VERT = /* glsl */ `
@@ -128,10 +119,10 @@ function canvasTexture(w, h, draw, repeat = true) {
   return t;
 }
 
-// Subway wall tiles: 0.5 m x 0.25 m, staggered. Greyscale, tinted per theme.
-function tileTexture() {
+// Stone courses: 0.5 m x 0.25 m, staggered. Greyscale, tinted per theme.
+function blockTexture() {
   return canvasTexture(512, 512, (g, w, h) => {
-    g.fillStyle = "#cfcfcf";
+    g.fillStyle = "#bdbdbd";
     g.fillRect(0, 0, w, h);
     const tw = w / 2;
     const th = h / 4;
@@ -140,107 +131,20 @@ function tileTexture() {
       for (let c = -1; c < 3; c++) {
         const x = c * tw + off;
         const y = r * th;
-        const shade = 242 + ((r * 7 + c * 13) % 3) * 4;
+        const shade = 232 + ((r * 7 + c * 13) % 3) * 6;
         const grad = g.createLinearGradient(0, y, 0, y + th);
-        grad.addColorStop(0, `rgb(${shade + 6},${shade + 6},${shade + 6})`);
-        grad.addColorStop(1, `rgb(${shade - 8},${shade - 8},${shade - 8})`);
+        grad.addColorStop(0, `rgb(${shade + 8},${shade + 8},${shade + 8})`);
+        grad.addColorStop(1, `rgb(${shade - 12},${shade - 12},${shade - 12})`);
         g.fillStyle = grad;
         g.beginPath();
-        g.roundRect(x + 3, y + 3, tw - 6, th - 6, 6);
+        g.roundRect(x + 4, y + 4, tw - 8, th - 8, 10);
         g.fill();
       }
     }
   });
 }
 
-function floorTexture() {
-  return canvasTexture(512, 512, (g, w, h) => {
-    g.fillStyle = "#f2f2f2";
-    g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 2200; i++) {
-      const v = 225 + Math.random() * 30;
-      g.fillStyle = `rgba(${v},${v},${v},0.5)`;
-      g.fillRect(Math.random() * w, Math.random() * h, 2, 2);
-    }
-    g.strokeStyle = "rgba(0,0,0,0.1)";
-    g.lineWidth = 4;
-    g.strokeRect(0, 0, w, h);
-  });
-}
-
-// Tactile paving bars, the kind that guide people along a walkway.
-function stripTexture() {
-  return canvasTexture(128, 128, (g, w, h) => {
-    g.fillStyle = "#c8c8c8";
-    g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 4; i++) {
-      g.fillStyle = "#ffffff";
-      g.beginPath();
-      g.roundRect(i * 32 + 8, 10, 16, h - 20, 8);
-      g.fill();
-    }
-  });
-}
-
 // ---------- materials ----------
-
-function tunnelMaterial(map, tile, base) {
-  return new THREE.ShaderMaterial({
-    side: THREE.DoubleSide,
-    uniforms: {
-      ...shared,
-      uMap: { value: map },
-      uTile: { value: new THREE.Vector2(tile[0], tile[1]) },
-      uColor: { value: color(base) },
-      uLight: tunnelUniforms.uLight,
-      uAmbient: tunnelUniforms.uAmbient,
-      uPool: tunnelUniforms.uPool,
-      uEnd: tunnelUniforms.uEnd,
-      uHoleGlow: tunnelUniforms.uHoleGlow,
-    },
-    vertexShader: BASE_VERT,
-    fragmentShader: finish(/* glsl */ `
-      ${FOG_GLSL}
-      uniform sampler2D uMap;
-      uniform vec2 uTile;
-      uniform vec3 uColor;
-      uniform vec3 uLight;
-      uniform vec3 uEnd;
-      uniform vec3 uGlow;
-      uniform float uAmbient;
-      uniform float uPool;
-      uniform float uHoleGlow;
-      varying vec2 vUv;
-      varying vec3 vWorld;
-      varying float vDepth;
-      void main() {
-        vec3 tex = texture2D(uMap, vUv * uTile).rgb;
-        float h = clamp((vWorld.y - ${FLOOR_Y.toFixed(1)}) / ${TUNNEL.height.toFixed(1)}, 0.0, 1.0);
-        float rz = mod(${T0.toFixed(2)} - vWorld.z, ${TUNNEL.ringGap.toFixed(1)});
-        float dz = min(rz, ${TUNNEL.ringGap.toFixed(1)} - rz);
-        float pool = exp(-dz * dz * 0.14) * (0.55 + 0.45 * h);
-        float ao = mix(0.72, 1.0, smoothstep(0.0, 0.7, vWorld.y - ${FLOOR_Y.toFixed(1)}));
-        ao *= mix(1.0, 0.8, smoothstep(2.3, 3.0, abs(vWorld.x)) * step(vWorld.y, ${(FLOOR_Y + 0.02).toFixed(2)}));
-        float toEnd = max(vWorld.z - ${(T0 - TUNNEL.length).toFixed(1)}, 0.0);
-        float endF = exp(-toEnd * 0.09);
-        float hd = length(vWorld.xz - vec2(${HOLE.x.toFixed(1)}, ${HOLE.z.toFixed(1)}));
-        float hole = uHoleGlow * exp(-hd * 0.45) * (0.35 + 0.65 * h);
-        vec3 col = uColor * tex * (uAmbient + uPool * pool) * ao;
-        col += uLight * pool * 0.05 + uGlow * hole * 0.45 + uEnd * endF * 0.75;
-        ${FOG_APPLY}
-        #FINISH
-      }
-    `),
-  });
-}
-
-const tunnelUniforms = {
-  uLight: { value: color("#ffd28c") },
-  uAmbient: { value: 0.6 },
-  uPool: { value: 0.5 },
-  uEnd: { value: color("#fff3dc") },
-  uHoleGlow: { value: 0.6 },
-};
 
 function voidFloorMaterial() {
   return new THREE.ShaderMaterial({
@@ -277,25 +181,86 @@ function voidFloorMaterial() {
   });
 }
 
-function shaftMaterial(top, bottom) {
+const wellUniforms = {
+  uWall: { value: color("#ddd0b9") },
+  uRing: { value: color("#ffd28c") },
+  uAmbient: { value: 0.62 },
+  uPool: { value: 0.5 },
+};
+
+// Stone wall with a pool of light around every ring. The pattern is anchored to
+// world height, so the wall mesh can slide down with the visitor without the
+// stones swimming.
+function wellMaterial(map) {
   return new THREE.ShaderMaterial({
-    side: THREE.BackSide,
-    uniforms: {
-      ...shared,
-      uWall: { value: color("#d9cbb3") },
-    },
+    side: THREE.DoubleSide,
+    uniforms: { ...shared, ...wellUniforms, uMap: { value: map } },
     vertexShader: BASE_VERT,
     fragmentShader: finish(/* glsl */ `
+      uniform sampler2D uMap;
       uniform vec3 uWall;
-      uniform vec3 uGlow;
-      uniform float uTime;
+      uniform vec3 uRing;
+      uniform vec3 uDeep;
+      uniform float uAmbient;
+      uniform float uPool;
+      varying vec2 vUv;
       varying vec3 vWorld;
+      varying float vDepth;
       void main() {
-        float t = clamp((${top.toFixed(1)} - vWorld.y) / ${(top - bottom).toFixed(1)}, 0.0, 1.0);
-        float band = smoothstep(0.86, 1.0, abs(fract(vWorld.y / 3.0) * 2.0 - 1.0));
-        vec3 col = mix(uWall * 0.55, uGlow, smoothstep(0.0, 0.35, t) * 0.85);
-        col += uGlow * band * (0.25 + 0.6 * smoothstep(0.02, 0.2, t));
-        col *= mix(0.45, 1.0, smoothstep(0.0, 0.03, t));
+        vec3 tex = texture2D(uMap, vec2(vUv.x * 20.0, vWorld.y)).rgb;
+        float ry = mod(vWorld.y, ${WELL.ringGap.toFixed(1)});
+        float dy = min(ry, ${WELL.ringGap.toFixed(1)} - ry);
+        float lit = 1.0 - smoothstep(${(WELL.throat - 4).toFixed(1)}, -4.0, vWorld.y);
+        float pool = exp(-dy * dy * 0.3) * lit;
+        float rim = smoothstep(-1.2, 0.0, vWorld.y);
+        vec3 col = uWall * tex * (uAmbient + uPool * pool) * mix(1.0, 0.7, rim);
+        col += uRing * pool * 0.08;
+        ${DEEP_APPLY}
+        #FINISH
+      }
+    `),
+  });
+}
+
+// Unlit glowing parts of the well (ring lights, the gate, the bottom), faded
+// into the same depth as the wall.
+function glowMaterial(hex) {
+  return new THREE.ShaderMaterial({
+    uniforms: { ...shared, uColor: { value: color(hex) } },
+    vertexShader: BASE_VERT,
+    fragmentShader: finish(/* glsl */ `
+      uniform vec3 uColor;
+      uniform vec3 uDeep;
+      varying float vDepth;
+      void main() {
+        vec3 col = uColor;
+        ${DEEP_APPLY}
+        #FINISH
+      }
+    `),
+  });
+}
+
+// Flagstones at the bottom of the well, with a soft pool of the light you
+// were falling toward.
+function bottomMaterial(map) {
+  return new THREE.ShaderMaterial({
+    uniforms: { ...shared, ...wellUniforms, uMap: { value: map } },
+    vertexShader: BASE_VERT,
+    fragmentShader: finish(/* glsl */ `
+      uniform sampler2D uMap;
+      uniform vec3 uGlow;
+      uniform vec3 uWall;
+      uniform vec3 uDeep;
+      uniform float uAmbient;
+      varying vec3 vWorld;
+      varying float vDepth;
+      void main() {
+        vec2 p = vWorld.xz - vec2(${HOLE.x.toFixed(1)}, ${HOLE.z.toFixed(1)});
+        vec3 tex = texture2D(uMap, p * 0.7).rgb;
+        float pool = exp(-dot(p, p) * 0.3);
+        vec3 col = uWall * tex * (uAmbient * 0.85 + 0.3 * pool) + uGlow * pool * 0.22;
+        ${DEEP_APPLY}
         #FINISH
       }
     `),
@@ -359,71 +324,6 @@ function dustMaterial(size) {
     blending: THREE.AdditiveBlending,
     opacity: 0.8,
   });
-}
-
-// ---------- geometry ----------
-
-// The tunnel's cross-section: straight walls, then a half-circle roof.
-function archProfile() {
-  const { halfWidth: w, wallHeight: h } = TUNNEL;
-  const pts = [
-    [-w, 0],
-    [-w, h * 0.5],
-    [-w, h],
-  ];
-  const segs = 28;
-  for (let i = 1; i < segs; i++) {
-    const a = Math.PI - (Math.PI * i) / segs;
-    pts.push([w * Math.cos(a), h + w * Math.sin(a)]);
-  }
-  pts.push([w, h], [w, h * 0.5], [w, 0]);
-  return pts;
-}
-
-function archShape(inset = 0) {
-  const { halfWidth: w, wallHeight: h } = TUNNEL;
-  const s = new THREE.Shape();
-  s.moveTo(-w + inset, 0);
-  s.lineTo(-w + inset, h);
-  s.absarc(0, h, w - inset, Math.PI, 0, true);
-  s.lineTo(w - inset, 0);
-  s.lineTo(-w + inset, 0);
-  return s;
-}
-
-function tunnelGeometry() {
-  const prof = archProfile();
-  const lens = [0];
-  for (let i = 1; i < prof.length; i++) {
-    lens.push(
-      lens[i - 1] +
-        Math.hypot(prof[i][0] - prof[i - 1][0], prof[i][1] - prof[i - 1][1]),
-    );
-  }
-  const rows = TUNNEL.length + 1;
-  const pos = [];
-  const uv = [];
-  const idx = [];
-  for (let r = 0; r < rows; r++) {
-    for (let i = 0; i < prof.length; i++) {
-      pos.push(prof[i][0], prof[i][1], -r);
-      uv.push(r, lens[i]);
-    }
-  }
-  const n = prof.length;
-  for (let r = 0; r < rows - 1; r++) {
-    for (let i = 0; i < n - 1; i++) {
-      const a = r * n + i;
-      const b = a + n;
-      idx.push(a, b, a + 1, a + 1, b, b + 1);
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
-  g.setIndex(idx);
-  g.computeVertexNormals();
-  return g;
 }
 
 // ---------- builders ----------
@@ -496,152 +396,127 @@ function buildVoid(mats) {
   return { group, floor, rim, beam, hit, dust, glowLight };
 }
 
-function buildShaft(mats) {
-  const group = new THREE.Group();
-  const top = 0;
-  const bottom = FLOOR_Y + TUNNEL.height;
-  const shaft = new THREE.Mesh(
-    new THREE.CylinderGeometry(HOLE_R, HOLE_R, top - bottom, 40, 1, true),
-    mats.shaft,
-  );
-  shaft.position.set(HOLE.x, (top + bottom) / 2, HOLE.z);
-  group.add(shaft);
-
-  // A light disc at the bottom, seen only from above, so the hole reads as
-  // bright and deep from the void. Falling through it is the transition.
-  const disc = new THREE.Mesh(
-    new THREE.CircleGeometry(HOLE_R, 40),
-    new THREE.MeshBasicMaterial({ color: shared.uGlow.value }),
-  );
-  disc.rotation.x = -Math.PI / 2;
-  disc.position.set(HOLE.x, bottom + 0.02, HOLE.z);
-  group.add(disc);
-  return { group, shaft, disc };
-}
-
-function buildTunnel(mats) {
-  const group = new THREE.Group();
-  group.name = "tunnel";
-
-  const shell = new THREE.Mesh(tunnelGeometry(), mats.wall);
-  shell.position.set(0, FLOOR_Y, T0);
-  group.add(shell);
-
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(TUNNEL.halfWidth * 2, TUNNEL.length, 1, 1),
-    mats.floor,
-  );
-  floor.rotation.x = -Math.PI / 2;
-  floor.position.set(0, FLOOR_Y, T0 - TUNNEL.length / 2);
-  scaleUv(floor.geometry, TUNNEL.halfWidth * 2, TUNNEL.length);
-  group.add(floor);
-
-  const strip = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.34, TUNNEL.length - 4),
-    mats.strip,
-  );
-  strip.rotation.x = -Math.PI / 2;
-  strip.position.set(0, FLOOR_Y + 0.004, T0 - (TUNNEL.length - 4) / 2);
-  scaleUv(strip.geometry, 1, (TUNNEL.length - 4) / 0.34);
-  group.add(strip);
-
-  // Landing chamber: a round room under the shaft, open toward the tunnel.
-  const gap = Math.asin(TUNNEL.halfWidth / CHAMBER_R);
-  const chamber = new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      CHAMBER_R,
-      CHAMBER_R,
-      TUNNEL.height,
-      48,
-      1,
-      true,
-      Math.PI + gap,
-      Math.PI * 2 - gap * 2,
-    ),
-    mats.wall,
-  );
-  chamber.position.set(HOLE.x, FLOOR_Y + TUNNEL.height / 2, HOLE.z);
-  scaleUv(chamber.geometry, CHAMBER_R * 2 * Math.PI, TUNNEL.height);
-  group.add(chamber);
-
-  const ceiling = new THREE.Mesh(
-    new THREE.RingGeometry(HOLE_R, CHAMBER_R + 0.05, 48, 1),
-    mats.wall,
-  );
-  ceiling.rotation.x = Math.PI / 2;
-  ceiling.position.set(HOLE.x, FLOOR_Y + TUNNEL.height, HOLE.z);
-  group.add(ceiling);
-
-  const chamberFloor = new THREE.Mesh(
-    new THREE.CircleGeometry(CHAMBER_R + 0.05, 48),
-    mats.floor,
-  );
-  chamberFloor.rotation.x = -Math.PI / 2;
-  chamberFloor.position.set(HOLE.x, FLOOR_Y - 0.003, HOLE.z);
-  scaleUv(chamberFloor.geometry, CHAMBER_R * 2, CHAMBER_R * 2);
-  group.add(chamberFloor);
-
-  // Header wall above the tunnel mouth, filling the space the arch leaves.
-  const header = new THREE.Shape();
-  header.moveTo(-CHAMBER_R, 0);
-  header.lineTo(CHAMBER_R, 0);
-  header.lineTo(CHAMBER_R, TUNNEL.height + 0.05);
-  header.lineTo(-CHAMBER_R, TUNNEL.height + 0.05);
-  header.lineTo(-CHAMBER_R, 0);
-  header.holes.push(archShape(0.01));
-  const headerMesh = new THREE.Mesh(new THREE.ShapeGeometry(header, 24), mats.wall);
-  headerMesh.position.set(0, FLOOR_Y, T0 + 0.01);
-  group.add(headerMesh);
-
-  // Ring lights following the roof every ringGap metres.
-  const ringCount = Math.floor(TUNNEL.length / TUNNEL.ringGap);
-  const rings = new THREE.InstancedMesh(
-    new THREE.TorusGeometry(TUNNEL.halfWidth - 0.06, 0.05, 6, 40, Math.PI),
-    mats.ring,
-    ringCount,
-  );
-  const m = new THREE.Matrix4();
-  for (let i = 0; i < ringCount; i++) {
-    m.makeTranslation(0, FLOOR_Y + TUNNEL.wallHeight, zAt(i * TUNNEL.ringGap));
-    rings.setMatrixAt(i, m);
+// Thin vertical streaks that rush past while falling. Their length follows the
+// fall speed, which is what sells a dive more than anything else on screen.
+function buildStreaks(mat) {
+  const count = 160;
+  const pos = new Float32Array(count * 6);
+  const seeds = [];
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.sqrt(Math.random()) * (WELL.r - 0.25);
+    seeds.push({ x: HOLE.x + Math.cos(a) * r, z: HOLE.z + Math.sin(a) * r, y: -40 + Math.random() * 52 });
   }
-  group.add(rings);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  const lines = new THREE.LineSegments(geo, mat);
+  lines.frustumCulled = false;
 
-  // The light at the end of the tunnel.
-  const end = new THREE.Mesh(new THREE.ShapeGeometry(archShape(0), 24), mats.end);
-  end.position.set(0, FLOOR_Y, zAt(TUNNEL.length) + 0.02);
-  group.add(end);
-
-  return { group, rings, end };
+  // y in seeds is relative to the camera, so the field travels with it.
+  function update(camY, vy, dt) {
+    const len = Math.min(Math.max(vy * 0.045, 0.04), 4.5);
+    const a = geo.attributes.position.array;
+    for (let i = 0; i < count; i++) {
+      const s = seeds[i];
+      s.y += vy * dt;
+      if (s.y > 12) s.y -= 52;
+      const y = camY + s.y;
+      a[i * 6] = a[i * 6 + 3] = s.x;
+      a[i * 6 + 2] = a[i * 6 + 5] = s.z;
+      a[i * 6 + 1] = y;
+      a[i * 6 + 4] = y - len;
+    }
+    geo.attributes.position.needsUpdate = true;
+    mat.opacity = Math.min(1, 0.15 + vy / 70);
+  }
+  return { lines, update };
 }
 
-function scaleUv(geo, sx, sy) {
-  const uv = geo.attributes.uv;
-  for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * sx, uv.getY(i) * sy);
+function buildWell(mats) {
+  const group = new THREE.Group();
+  group.name = "well";
+
+  // The throat: as wide as the hole at the top, flaring out below the floor.
+  const pts = [
+    [HOLE_R, 0.02],
+    [HOLE_R, -2.5],
+    [2.45, -4.5],
+    [3.0, -6.6],
+    [WELL.r, -8],
+    [WELL.r, WELL.throat],
+  ].map(([r, y]) => new THREE.Vector2(r, y));
+  const throat = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), mats.well);
+  throat.position.set(HOLE.x, 0, HOLE.z);
+  group.add(throat);
+
+  const SPAN = 420;
+  const wallGeo = new THREE.CylinderGeometry(WELL.r, WELL.r, SPAN, 48, 1, true);
+  wallGeo.translate(0, -SPAN / 2, 0);
+  const wall = new THREE.Mesh(wallGeo, mats.well);
+  wall.position.set(HOLE.x, WELL.throat, HOLE.z);
+  wall.frustumCulled = false;
+  group.add(wall);
+
+  const ringGeo = new THREE.TorusGeometry(WELL.r - 0.05, 0.05, 6, 64);
+  const rings = [];
+  for (let i = 0; i < 16; i++) {
+    const ring = new THREE.Mesh(ringGeo, mats.ring);
+    ring.rotation.x = Math.PI / 2;
+    ring.frustumCulled = false;
+    group.add(ring);
+    rings.push(ring);
+  }
+
+  // Passed on every dive, so the visitor feels each stop go by.
+  const gate = new THREE.Mesh(new THREE.TorusGeometry(WELL.r - 0.1, 0.11, 10, 72), mats.gate);
+  gate.rotation.x = Math.PI / 2;
+  gate.visible = false;
+  group.add(gate);
+
+  const bottom = new THREE.Mesh(new THREE.CircleGeometry(WELL.r + 0.05, 48), mats.bottom);
+  bottom.rotation.x = -Math.PI / 2;
+  bottom.visible = false;
+  group.add(bottom);
+
+  const streaks = buildStreaks(mats.streak);
+  streaks.lines.visible = false;
+  group.add(streaks.lines);
+
+  // Warm light from below, so hands and shoes read against the wall.
+  const up = new THREE.PointLight(0xffbf5e, 4, 14, 1.2);
+  group.add(up);
+
+  function follow(camY) {
+    wall.position.y = Math.min(WELL.throat, camY + 70);
+    const base = Math.floor(camY / WELL.ringGap) * WELL.ringGap;
+    rings.forEach((ring, i) => {
+      const y = base + (3 - i) * WELL.ringGap;
+      ring.visible = y < WELL.throat - 1;
+      ring.position.set(HOLE.x, y, HOLE.z);
+    });
+  }
+
+  return { group, wall, rings, gate, bottom, streaks, up, follow };
 }
 
 export function buildWorld(scene) {
-  const tiles = tileTexture();
-  const floorTex = floorTexture();
-  const stripTex = stripTexture();
+  const blocks = blockTexture();
   const mats = {
     voidFloor: voidFloorMaterial(),
     rim: new THREE.MeshStandardMaterial({ color: "#f3eee4", roughness: 0.7 }),
     beam: beamMaterial(),
     dust: dustMaterial(0.07),
-    shaft: shaftMaterial(0, FLOOR_Y + TUNNEL.height),
-    wall: tunnelMaterial(tiles, [1 / 1.0, 1 / 1.0], "#e6e0d4"),
-    floor: tunnelMaterial(floorTex, [1 / 1.5, 1 / 1.5], "#cfc7b8"),
-    strip: tunnelMaterial(stripTex, [1, 1], "#d9962f"),
-    ring: new THREE.MeshBasicMaterial({ color: "#ffd28c" }),
-    end: new THREE.MeshBasicMaterial({ color: "#fff3dc" }),
+    well: wellMaterial(blocks),
+    ring: glowMaterial("#ffd28c"),
+    gate: glowMaterial("#fff3dc"),
+    bottom: bottomMaterial(blocks),
+    streak: new THREE.LineBasicMaterial({ transparent: true, opacity: 0.3, depthWrite: false }),
   };
   const voidParts = buildVoid(mats);
-  const shaftParts = buildShaft(mats);
-  const tunnelParts = buildTunnel(mats);
-  scene.add(voidParts.group, shaftParts.group, tunnelParts.group);
+  const wellParts = buildWell(mats);
+  scene.add(voidParts.group, wellParts.group);
 
-  // Scene-wide light for the clay objects and the rim. Direction only matters.
+  // Scene-wide light for the clay objects, the body and the rim.
   const hemi = new THREE.HemisphereLight(0xffffff, 0xbfb4a2, 1.5);
   const sun = new THREE.DirectionalLight(0xffffff, 1.1);
   sun.position.set(2, 10, 6);
@@ -650,35 +525,34 @@ export function buildWorld(scene) {
   function setTheme(name) {
     const p = PALETTES[name];
     shared.uGlow.value.set(p.glow);
+    shared.uDeep.value.set(p.deep);
     mats.voidFloor.uniforms.uColor.value.set(p.voidFloor);
     mats.voidFloor.uniforms.uLine.value.set(p.voidLine);
     mats.voidFloor.uniforms.uStrength.value = p.glowStrength;
     mats.beam.uniforms.uOpacity.value = p.beam;
     mats.rim.color.set(p.rim);
-    mats.shaft.uniforms.uWall.value.set(p.shaftWall);
-    mats.wall.uniforms.uColor.value.set(p.wall);
-    mats.floor.uniforms.uColor.value.set(p.floor);
-    mats.strip.uniforms.uColor.value.set(p.strip);
-    mats.ring.color.set(p.ring);
-    mats.end.color.set(p.end);
-    tunnelUniforms.uLight.value.set(p.ring);
-    tunnelUniforms.uAmbient.value = p.ambient;
-    tunnelUniforms.uPool.value = p.pool;
-    tunnelUniforms.uEnd.value.set(p.end);
+    wellUniforms.uWall.value.set(p.well);
+    wellUniforms.uRing.value.set(p.ring);
+    wellUniforms.uAmbient.value = p.ambient;
+    wellUniforms.uPool.value = p.pool;
+    mats.ring.uniforms.uColor.value.set(p.ring);
     hemi.color.set(p.hemiSky);
     hemi.groundColor.set(p.hemiGround);
     hemi.intensity = p.hemi;
     sun.intensity = p.sun;
     voidParts.glowLight.color.set(p.glow);
-    shaftParts.disc.material.color.set(p.glow);
+    wellParts.up.color.set(p.glow);
+    wellParts.up.intensity = p.up;
     mats.dust.color.set(p.glow);
+    mats.streak.color.set(p.streak);
+    mats.streak.blending = p.streakAdd ? THREE.AdditiveBlending : THREE.NormalBlending;
+    mats.streak.needsUpdate = true;
   }
 
   return {
     void: voidParts,
-    shaft: shaftParts,
-    tunnel: tunnelParts,
+    well: wellParts,
+    lights: { hemi, sun },
     setTheme,
-    tunnelUniforms,
   };
 }

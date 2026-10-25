@@ -27,7 +27,7 @@
   --raise-l: rgba(255, 255, 255, 0.95);
   --glass: rgba(251, 248, 241, 0.84);
   --glass-line: rgba(255, 255, 255, 0.75);
-  --scrim: rgba(24, 22, 18, 0.42);
+  --hud-glass: rgba(251, 248, 241, 0.88);
   --display: "Funnel Display", system-ui, -apple-system, "Segoe UI", sans-serif;
   --sans: "Funnel Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --r-tile: 18px;
@@ -50,7 +50,7 @@
   --raise-l: rgba(255, 255, 255, 0.045);
   --glass: rgba(36, 38, 43, 0.86);
   --glass-line: rgba(255, 255, 255, 0.12);
-  --scrim: rgba(0, 0, 0, 0.55);
+  --hud-glass: rgba(36, 38, 43, 0.92);
   color-scheme: dark;
 }
 
@@ -453,9 +453,9 @@ html[data-mode="tunnel"] .bar-actions {
   inset: 0;
   z-index: 10;
   pointer-events: none;
-  transition:
-    opacity 0.4s ease,
-    visibility 0s;
+  /* No visibility transition on the way in: it shows at once, so focus can
+     land on the walk button straight after a respawn. */
+  transition: opacity 0.4s ease;
 }
 
 .xp:not([data-phase="void"]) .void-ui {
@@ -519,164 +519,825 @@ html[data-mode="tunnel"] .bar-actions {
   flex: none;
 }
 
-/* Exhibit labels, placed over the 3D panels by script. */
-.labels {
+/* ---------- the fall ---------- */
+
+.well-ui {
   position: absolute;
   inset: 0;
-  z-index: 8;
+  z-index: 12;
   pointer-events: none;
 }
 
-.tag {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink);
-  font: 600 0.9375rem/1 var(--sans);
-  white-space: nowrap;
-  cursor: pointer;
-  pointer-events: auto;
-  box-shadow:
-    -6px 8px 18px var(--raise-d),
-    0 0 0 1px var(--line);
-  will-change: transform;
-}
-
-.tag[hidden] {
+.well-ui[hidden] {
   display: none;
 }
 
-.tag:hover {
-  background: var(--ink);
-  color: var(--deck);
-}
+/* ---------- the System ---------- */
 
-.tunnel-hint {
+/* Holographic windows in front of the eyes, one set per stop, placed in 3D
+   by js/tunnel/holo.js. Dark glass lit by the section's colour (--holo, set
+   per stop), so the text holds up over any wall in either theme. */
+.holo-layer {
   position: absolute;
-  left: 50%;
-  bottom: calc(max(20px, env(safe-area-inset-bottom)) + 76px);
-  z-index: 9;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink);
-  font-size: 0.875rem;
-  text-align: center;
-  transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease;
+  inset: 0;
+  z-index: 2;
   pointer-events: none;
-  max-width: calc(100vw - 2 * var(--gutter));
 }
 
-.xp[data-phase="tunnel"]:not(.has-walked) .tunnel-hint {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Station rail: glass, docked at the bottom. */
-.rail {
+/* The hands, drawn above the windows so a press lands on the glass. */
+#gl-hands {
   position: absolute;
-  left: 50%;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 12;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* --c lights the glass and frame; --ct is its paler text form, which keeps
+   4.5:1 or better even with a bright wall behind the glass. */
+.holo {
+  --c: var(--holo, #5ad7ff);
+  --ct: color-mix(in srgb, var(--c) 62%, #fff);
+  color: #eaf4ff;
+  font: 400 0.9375rem/1.5 var(--sans);
+  text-align: left;
+  touch-action: pan-y;
+}
+
+.holo-in {
+  position: relative;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 18px 16px;
+  border: 1px solid color-mix(in srgb, var(--c) 70%, transparent);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--c) 14%, transparent), transparent 140px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+    rgba(6, 12, 22, 0.88);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 0 26px color-mix(in srgb, var(--c) 32%, transparent),
+    inset 0 0 28px color-mix(in srgb, var(--c) 12%, transparent);
+  scrollbar-color: color-mix(in srgb, var(--c) 60%, transparent) transparent;
+  scrollbar-width: thin;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Corner brackets: the System's frame. */
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: 1;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / 18px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) left top / 2px 18px no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / 18px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / 2px 18px no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / 18px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / 2px 18px no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / 18px 2px no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / 2px 18px no-repeat;
+  pointer-events: none;
+}
+
+/* The window you're looking at burns a little brighter. */
+.holo.is-near .holo-in {
+  border-color: var(--c);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 0 36px color-mix(in srgb, var(--c) 50%, transparent),
+    inset 0 0 32px color-mix(in srgb, var(--c) 18%, transparent);
+}
+
+/* Boot: a bright line that opens into the window, with one flicker. */
+.holo.is-in .holo-in {
+  animation: holo-boot 0.46s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+.holo-left.is-in .holo-in {
+  animation-delay: 0.08s;
+}
+
+.holo-right.is-in .holo-in {
+  animation-delay: 0.14s;
+}
+
+.holo.is-out .holo-in {
+  animation: holo-shut 0.2s ease-in both;
+}
+
+@keyframes holo-boot {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.02);
+  }
+  25% {
+    opacity: 1;
+    transform: scaleY(0.02);
+  }
+  45% {
+    opacity: 0.45;
+  }
+  62% {
+    opacity: 1;
+    transform: scaleY(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes holo-shut {
+  to {
+    opacity: 0;
+    transform: scaleY(0.02);
+  }
+}
+
+.holo-bar {
   display: flex;
   align-items: center;
-  gap: 4px;
-  max-width: calc(100vw - 2 * var(--gutter));
-  padding: 6px;
-  border-radius: 999px;
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
-  -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  backdrop-filter: blur(14px) saturate(1.3);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
-  transform: translateX(-50%);
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
 }
 
-.rail[hidden] {
+.holo-tag {
+  color: var(--ct);
+  font: 700 0.875rem/1 var(--display);
+}
+
+.holo-count {
+  color: #b9cbe0;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.holo-ding {
+  min-height: 1.5em;
+  color: var(--ct);
+  font-weight: 600;
+}
+
+/* The caret blinks while the notice types, then goes. */
+.holo-typed::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--c);
+  animation: holo-caret 0.9s steps(1) 4 forwards;
+}
+
+@keyframes holo-caret {
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.holo-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.holo-emblem {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f4f7fb;
+  object-fit: contain;
+}
+
+.holo-kicker {
+  color: var(--ct);
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.holo-title {
+  color: #f4f9ff;
+  font: 700 1.5rem/1.05 var(--display);
+  letter-spacing: -0.01em;
+}
+
+.holo-left .holo-title,
+.holo-right .holo-title {
+  margin-bottom: 6px;
+  font-size: 1.25rem;
+}
+
+.holo-sub {
+  margin-top: 3px;
+  color: #b9cbe0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.holo-shot {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--c) 50%, transparent);
+  border-radius: 8px;
+  aspect-ratio: 1280 / 879;
+  object-fit: cover;
+}
+
+.holo-when {
+  margin-top: 10px;
+  color: var(--ct);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.holo-text {
+  margin-top: 10px;
+  color: #dce8f5;
+}
+
+.holo-text + .holo-text {
+  margin-top: 8px;
+}
+
+.holo-note {
+  margin-top: 10px;
+  color: #b9cbe0;
+  font-size: 0.8125rem;
+}
+
+.holo-guide {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  color: #b9cbe0;
+  font-size: 0.8125rem;
+}
+
+.holo-foot {
+  margin-top: 12px;
+}
+
+.holo-dive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0 10px;
+  border: 1px solid var(--c);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--c) 20%, transparent);
+  color: #f4f9ff;
+  font: 700 1rem/1 var(--sans);
+  cursor: pointer;
+}
+
+.holo-dive:hover {
+  background: color-mix(in srgb, var(--c) 34%, transparent);
+}
+
+.holo-dive svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.holo-rows {
+  margin: 4px 0 0;
+}
+
+.holo-rows div {
+  display: grid;
+  grid-template-columns: minmax(84px, 34%) 1fr;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.holo-rows dt {
+  color: var(--ct);
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.holo-rows dd {
+  margin: 0;
+  color: #e6eff9;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.holo-rows small {
+  display: block;
+  margin-top: 2px;
+  color: #a9bcd2;
+  font-size: 0.75rem;
+}
+
+.holo-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 4px 0 0;
+}
+
+/* Value above label, read label first. */
+.holo-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--c) 8%, transparent);
+}
+
+.holo-stats dd {
+  margin: 0;
+  color: var(--ct);
+  font: 800 1.75rem/1 var(--display);
+}
+
+.holo-stats dt {
+  margin-top: 4px;
+  color: #b9cbe0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.holo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.holo-chips li {
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  border-radius: 6px;
+  color: #e6eff9;
+  font-size: 0.8125rem;
+}
+
+.holo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.holo-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--c) 60%, transparent);
+  border-radius: 8px;
+  color: #f4f9ff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.holo-link:hover {
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+}
+
+.holo-rows .holo-link {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.holo-rows .holo-link:hover {
+  background: none;
+}
+
+.holo :focus-visible {
+  outline-color: var(--c);
+}
+
+/* A ring spreads from where the hand pressed. */
+.holo-ripple {
+  position: absolute;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid var(--c);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: holo-ripple 0.6s ease-out forwards;
+}
+
+@keyframes holo-ripple {
+  to {
+    opacity: 0;
+    transform: scale(9);
+  }
+}
+
+/* The message form, lent from the page, wears the System's glass. */
+.holo .form,
+.holo .raised {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.holo .form h3 {
   display: none;
 }
 
-.rail-stops {
+.holo .field label {
+  color: #e6eff9;
+}
+
+.holo .field input,
+.holo .field textarea {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4f9ff;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 55%, transparent);
+}
+
+.holo .form .btn {
+  width: 100%;
+  border: 1px solid var(--c);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--c) 24%, transparent);
+  color: #f4f9ff;
+}
+
+.holo .form-note {
+  color: #b9cbe0;
+}
+
+/* Key caps: the keyboard shortcut printed on the control it triggers. */
+.well-ui kbd,
+.holo kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  font: 600 0.75rem/1 var(--sans);
+}
+
+/* Section gauge along the bottom: where you are in the well, and a way to
+   skip ahead. The current section takes the System's colour. */
+.gauge {
+  position: absolute;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  bottom: max(20px, env(safe-area-inset-bottom));
   display: flex;
-  gap: 2px;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.gauge ol {
+  position: relative;
+  display: flex;
+  gap: 4px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.rail-stop,
-.rail-step {
-  display: inline-flex;
-  align-items: center;
+.gauge ol::before {
+  content: "";
+  position: absolute;
+  top: 21px;
+  right: 22px;
+  left: 22px;
+  height: 2px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.gauge li {
+  position: relative;
+  display: flex;
   justify-content: center;
-  gap: 6px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 12px;
+}
+
+.gauge-node {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: 50%;
   background: transparent;
-  font: 500 0.875rem/1 var(--sans);
-  white-space: nowrap;
+  color: var(--ink);
+  font: 700 0.8125rem/1 var(--display);
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
 
-.rail-stop:hover,
-.rail-step:hover:not(:disabled) {
+.gauge-node::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 6px 14px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s ease;
+}
+
+.gauge-node svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+}
+
+.gauge li.passed .gauge-node {
+  color: var(--ink-2);
+}
+
+.gauge-node[aria-current] {
+  color: #0b1016;
+}
+
+.gauge-node[aria-current]::before {
+  background: var(--holo, var(--accent));
+}
+
+.gauge-node:hover::before {
   background: var(--line);
 }
 
-.rail-no {
-  color: var(--ink-2);
+.gauge-node[aria-current]:hover::before {
+  background: var(--holo, var(--accent));
+}
+
+.gauge-name {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: none;
+}
+
+.gauge li:has([aria-current]) .gauge-name,
+.gauge-node:hover + .gauge-name,
+.gauge-node:focus-visible + .gauge-name {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.gauge-depth {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+  font-weight: 600;
+  font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
 }
 
-.rail-stop[aria-current] {
+.dive {
+  position: absolute;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 14px 0 18px;
+  border: 0;
+  border-radius: 16px;
   background: var(--ink);
   color: var(--deck);
+  font: 700 1.0625rem/1 var(--sans);
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+  transition: opacity 0.2s ease;
 }
 
-/* The current stop is inverted, so its number takes the other theme's accent. */
-.rail-stop[aria-current] .rail-no {
-  color: #f2a541;
-}
-
-:root[data-theme="night"] .rail-stop[aria-current] .rail-no {
-  color: #9a5200;
-}
-
-.rail-step svg {
-  width: 20px;
-  height: 20px;
+.dive svg {
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2.2;
+  stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
+  transition: transform 0.2s ease;
 }
 
-.rail-step:disabled {
-  opacity: 0.35;
+/* The arrow leans the way the button takes you. */
+.dive:hover:not([aria-disabled]) svg {
+  transform: translateY(3px);
+}
+
+.dive[aria-disabled] {
+  opacity: 0.5;
   cursor: default;
 }
 
-.rail-now {
+.well-hint {
+  position: absolute;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: max(28px, env(safe-area-inset-bottom));
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+  transition: opacity 0.5s ease;
+}
+
+.well-hint.gone {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    visibility 0s 0.5s;
+}
+
+/* Touch screens: an analog stick on the left thumb. */
+.stick {
+  position: absolute;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 13;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border: 2px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  touch-action: none;
+}
+
+.stick[hidden] {
   display: none;
-  min-width: 0;
-  padding: 0 8px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.xp:not([data-phase="void"]):not([data-phase="well"]) .stick {
+  visibility: hidden;
+}
+
+.stick-knob {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 8px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.12s ease-out;
+}
+
+.stick.on .stick-knob {
+  transition: none;
+}
+
+/* The bottom of the well. */
+.end {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+}
+
+.end[hidden] {
+  display: none;
+}
+
+.end::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #b0120e;
+  opacity: 0;
+}
+
+.end.on::before {
+  animation: end-hit 0.5s ease-out;
+}
+
+@keyframes end-hit {
+  from {
+    opacity: 0.7;
+  }
+}
+
+.end-blood {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(1.06);
+}
+
+.end.on .end-blood {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.12s ease-out,
+    transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.end-band {
+  position: relative;
+  width: 100%;
+  padding: clamp(24px, 5vh, 44px) var(--gutter);
+  background: rgba(12, 6, 6, 0.8);
+  color: #f4efe6;
+  text-align: center;
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.end.on .end-band {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.45s ease 0.75s,
+    transform 0.6s cubic-bezier(0.2, 0.9, 0.25, 1) 0.75s;
+}
+
+.end-band h2 {
+  font: 800 clamp(2.4rem, 9vw, 5.6rem) / 0.95 var(--display);
+  letter-spacing: -0.02em;
+}
+
+.end-band p {
+  margin-top: 12px;
+  color: #d8cfc5;
+  font-size: clamp(1rem, 2.4vw, 1.1875rem);
+}
+
+.end-retry {
+  margin-top: 22px;
+  background: #f4efe6;
+  color: #1d1f22;
+}
+
+.end-retry:focus-visible {
+  outline-color: #f2a541;
+}
+
+.xp[data-phase="dead"] #gl,
+.xp[data-phase="dead"] #gl-hands {
+  filter: grayscale(0.85) brightness(0.6) contrast(1.05);
+  transition: filter 1.2s ease;
 }
 
 /* Light flash while dropping through the shaft, and for fades. */
@@ -688,203 +1349,6 @@ html[data-mode="tunnel"] .bar-actions {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
-}
-
-/* ---------- exhibit dialog ---------- */
-
-.scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 24;
-  background: var(--scrim);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.scrim.on {
-  opacity: 1;
-}
-
-.scrim[hidden],
-.card[hidden] {
-  display: none;
-}
-
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 25;
-  display: flex;
-  gap: 28px;
-  width: min(900px, calc(100vw - 32px));
-  max-height: calc(100dvh - 32px);
-  padding: 12px;
-  border-radius: var(--r-card);
-  background: var(--glass);
-  border: 1px solid var(--glass-line);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  backdrop-filter: blur(20px) saturate(1.4);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-  color: var(--ink);
-  user-select: text;
-  -webkit-user-select: text;
-  opacity: 0;
-  transform: translate(-50%, -48%) scale(0.97);
-  transition:
-    opacity 0.22s ease,
-    transform 0.4s cubic-bezier(0.2, 0.85, 0.25, 1);
-}
-
-.card.on {
-  opacity: 1;
-  transform: translate(-50%, -50%);
-}
-
-.card:not(.has-media) {
-  width: min(760px, calc(100vw - 32px));
-}
-
-.card:not(.has-media) .card-media {
-  display: none;
-}
-
-.card-media {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 260px;
-  border-radius: 140px 140px 18px 18px;
-  background: var(--deck);
-  box-shadow:
-    inset -6px 8px 16px var(--raise-d),
-    inset 6px -6px 14px var(--raise-l);
-}
-
-.card-media img {
-  width: 128px;
-  height: 128px;
-  border-radius: 26px;
-  object-fit: cover;
-}
-
-.card-body {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 26px 22px 18px 6px;
-}
-
-.card:not(.has-media) .card-body {
-  padding-left: 18px;
-}
-
-.card-body h2 {
-  padding-right: 48px;
-  font-size: clamp(1.9rem, 4vw, 2.6rem);
-}
-
-.card-sub {
-  margin-top: 8px;
-  color: var(--ink-2);
-  font-size: 1.0625rem;
-}
-
-.card-text {
-  margin-top: 18px;
-  line-height: 1.6;
-}
-
-.card-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 22px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.card-chips li {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: var(--deck);
-  font-size: 0.875rem;
-  box-shadow:
-    -3px 3px 7px var(--raise-d),
-    3px -3px 7px var(--raise-l);
-}
-
-.card-note {
-  margin-top: 16px;
-  color: var(--ink-2);
-  font-size: 0.9375rem;
-}
-
-.card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 18px;
-  margin-top: 24px;
-}
-
-.card-section {
-  margin-top: 20px;
-}
-
-.card-section .wrap {
-  padding: 0;
-}
-
-.card-x {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--surface);
-  cursor: pointer;
-  box-shadow: 0 0 0 1px var(--line);
-}
-
-.card-x svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-}
-
-/* Section content lent to the dialog keeps its page look but loses page chrome. */
-.card .arena-inner {
-  display: block;
-}
-
-.card .arena-copy .btn {
-  background: var(--ink);
-  color: var(--deck);
-}
-
-.card .arena figure,
-.card .arena-copy > p:first-of-type {
-  margin-top: 0;
-}
-
-.card .profile,
-.card .contact,
-.card .education {
-  grid-template-columns: 1fr;
 }
 
 /* ---------- page view ---------- */
@@ -1234,16 +1698,6 @@ html[data-mode="tunnel"] .bar-actions {
   opacity: 0.8;
 }
 
-.card .arena figcaption,
-.card .arena-facts {
-  color: var(--ink-2);
-  opacity: 1;
-}
-
-.card .arena figure img {
-  border-radius: 140px 140px 18px 18px;
-}
-
 /* Profile */
 .profile {
   display: grid;
@@ -1573,35 +2027,6 @@ abbr[title] {
   .void-hint p {
     max-width: none;
   }
-  .card {
-    flex-direction: column;
-    gap: 4px;
-    top: auto;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    max-height: calc(100dvh - 24px - var(--bar-h));
-    padding: 8px;
-    border-radius: 24px;
-    transform: translate(-50%, 16px);
-  }
-  .card.on {
-    transform: translate(-50%, 0);
-  }
-  .card-media {
-    width: 100%;
-    height: 140px;
-    border-radius: 70px 70px 16px 16px;
-  }
-  .card-media img {
-    width: 88px;
-    height: 88px;
-  }
-  .card-body {
-    padding: 18px 12px 12px;
-  }
-  .card-x {
-    top: 12px;
-    right: 12px;
-  }
   .channels div {
     grid-template-columns: 1fr;
     gap: 0;
@@ -1629,18 +2054,83 @@ abbr[title] {
   }
 }
 
-@media (max-width: 899.98px) {
-  .rail-stops {
+/* The gauge needs a wide screen next to the hint; phones dive stop by stop. */
+@media (max-width: 959.98px), (max-height: 559.98px) {
+  .gauge {
     display: none;
   }
-  .rail-now {
-    display: block;
-    flex: 1;
-    text-align: center;
+}
+
+/* On a wide touch screen the stick owns the bottom-left corner. */
+@media (pointer: coarse) and (min-width: 960px) {
+  .gauge {
+    left: 50%;
+    transform: translateX(-50%);
   }
-  .rail {
-    width: min(420px, calc(100vw - 2 * var(--gutter)));
-    justify-content: space-between;
+}
+
+/* With a mouse and keyboard, Space, scroll and the System's own button dive. */
+@media (pointer: fine) {
+  .dive {
+    display: none;
+  }
+}
+
+/* Touch: the stick takes the left thumb, the dive button the right. */
+@media (pointer: coarse) {
+  .well-ui kbd,
+  .holo kbd {
+    display: none;
+  }
+  /* In the void the hint sits over the stick and the walk button takes the
+     right thumb, where Dive appears later, so the middle stays clear for
+     looking down at yourself. */
+  .void-hint {
+    display: contents;
+  }
+  .void-hint p {
+    position: absolute;
+    left: max(16px, env(safe-area-inset-left));
+    bottom: calc(max(20px, env(safe-area-inset-bottom)) + 146px);
+    max-width: min(280px, calc(100vw - 32px));
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: var(--surface);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    transition: opacity 0.6s ease;
+  }
+  .void-ui.walking .void-hint p {
+    opacity: 0;
+  }
+  .void-hint .btn {
+    position: absolute;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(max(20px, env(safe-area-inset-bottom)) + 42px);
+    max-width: calc(100vw - 180px);
+    pointer-events: auto;
+  }
+  .dive {
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    width: 80px;
+    height: 80px;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0.8125rem;
+  }
+  .dive svg {
+    width: 30px;
+    height: 30px;
+  }
+  .well-hint {
+    left: max(16px, env(safe-area-inset-left));
+    bottom: calc(max(20px, env(safe-area-inset-bottom)) + 146px);
+    max-width: min(260px, 60vw);
+    white-space: normal;
+    transform: none;
   }
 }
 
@@ -1705,11 +2195,14 @@ abbr[title] {
   }
 }
 
+/* No transitions at all, rather than very short ones: a short one on every
+   element briefly holds back inherited changes like visibility, which kept
+   the walk button unfocusable for a frame after a respawn. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
+    transition: none !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -1717,10 +2210,11 @@ abbr[title] {
 
 @media (forced-colors: active) {
   .raised,
-  .tag,
-  .rail,
-  .card,
-  .void-hint {
+  .void-hint,
+  .holo-in,
+  .gauge-depth,
+  .dive,
+  .end-band {
     border: 1px solid CanvasText;
   }
 }

@@ -9,3 +9,9 @@ kamitrack-arm64.apk
 # Vercel build output (scripts/inline-css.mjs)
 public/
 .vercel/
+
+# graphify knowledge graph output (local only)
+graphify-out/
+
+# macOS Finder metadata
+.DS_Store
